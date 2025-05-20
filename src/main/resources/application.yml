@@ -28,3 +28,8 @@ jwt:
   secret: va9TVkfZSFlAI4ifEoV6mjSHkZSYbaIJF8L3Y7douCM=
   expiration: 86400
 
+build:
+  environment:
+    JAVA_HOME: /opt/render/project/.java
+
+
