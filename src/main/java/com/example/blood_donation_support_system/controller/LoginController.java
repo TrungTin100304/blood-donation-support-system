@@ -10,15 +10,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/login")
-@CrossOrigin()
+@CrossOrigin(origins = "*")
 public class LoginController {
     @Autowired
     private LoginServiceImp loginServiceImp;
     @PostMapping
     public ResponseEntity <?> login(@RequestBody UserEntity nguoiDungEntity){
         String token = loginServiceImp.login(nguoiDungEntity.getTenDangNhap(), nguoiDungEntity.getMatKhau());
-        System.out.println(token);
         BaseResponse response = new BaseResponse();
+        if(token == null || token.isEmpty()){
+            response.setMessage("Login failed");
+            response.setCode(400);
+            return ResponseEntity.badRequest().body(response);
+        }
         response.setData(token);
         response.setCode(200);
 

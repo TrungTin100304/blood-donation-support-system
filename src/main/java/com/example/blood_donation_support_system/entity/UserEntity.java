@@ -23,6 +23,12 @@ public class UserEntity {
     @Column(name = "full_name",length = 100)
     private String hoTen;
 
+    @Column(name = "google_id", length = 100)
+    private String gooleId;
+
+    @Column(name = "login_provider", length = 10)
+    private String login_provider;
+
     @Column(name = "phone_number", length = 15)
     private String soDienThoai;
 
