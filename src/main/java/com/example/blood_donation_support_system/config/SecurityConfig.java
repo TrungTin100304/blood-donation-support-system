@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> {
                     // giúp định nghĩa quyền truy cập cho các link
                     request.requestMatchers("/api/login",  "/api/register").permitAll();
+                    request.requestMatchers(("/api/auth/**")).permitAll();
                     request.requestMatchers(HttpMethod.POST, "/api/register/admin", "/api/register/staff").hasRole("ADMIN");
                     request.anyRequest().authenticated();
                 })

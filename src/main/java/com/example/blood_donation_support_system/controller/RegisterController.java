@@ -5,13 +5,11 @@ import com.example.blood_donation_support_system.response.BaseResponse;
 import com.example.blood_donation_support_system.service.RegisterServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/register")
+@CrossOrigin(origins = "*")
 public class RegisterController {
     private static final String ADMIN_ROLE = "ROLE_ADMIN";
     private static final String STAFF_ROLE = "ROLE_STAFF";
