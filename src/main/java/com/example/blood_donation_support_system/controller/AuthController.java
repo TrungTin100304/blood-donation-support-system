@@ -39,8 +39,11 @@ public class AuthController {
             response.setCode(400);
             return ResponseEntity.badRequest().body(response);
         }
+
+        // RegisterOrLogin Oauth2 Google
+        String token = authService.loginOrSignup(data, "ROLE_MEMBER");
         response.setCode(200);
-        response.setData(data);
+        response.setData(token);
         return ResponseEntity.ok(response);
     }
 }

@@ -14,8 +14,8 @@ spring:
       client:
         registration:
           google:
-            client-id: "${GOOGLE_CLIENT_ID:xxxxxxxxxxxx}"
-            client-secret: "${GOOGLE_CLIENT_SECRET:xxxxxxxxxxxxxxxxx}"
+            client-id: "${GOOGLE_CLIENT_ID:1061123444145-ga7gecn3snrnrvkg79fvp759n5iq8ibd.apps.googleusercontent.com}"
+            client-secret: "${GOOGLE_CLIENT_SECRET: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}"
             redirect-uri: "${GOOGLE_REDIRECT_URI:http://localhost:3000/auth/social/callback/google}"
             auth-uri: "https://accounts.google.com/o/oauth2/v2/auth"
             token-uri: "https://www.googleapis.com/oauth2/v3/token"
@@ -28,8 +28,8 @@ jwt:
   secret: va9TVkfZSFlAI4ifEoV6mjSHkZSYbaIJF8L3Y7douCM=
   expiration: 86400
 
-build:
-  environment:
-    JAVA_HOME: /opt/render/project/.java
+buildCommand: ./mvnw clean install
+
+
 
 
