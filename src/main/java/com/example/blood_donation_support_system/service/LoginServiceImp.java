@@ -20,7 +20,7 @@ public class LoginServiceImp implements LoginService{
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UserRepository nguoiDungRepository;
+    private UserRepository userRepository;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -29,22 +29,22 @@ public class LoginServiceImp implements LoginService{
     public String login(String tenDangNhap, String matKhau) {
         String token = "";
 
-        Optional<UserEntity> user = nguoiDungRepository.findByTenDangNhap(tenDangNhap);
+        Optional<UserEntity> user = userRepository.findFirstByUserName(tenDangNhap);
         if (user.isPresent()) {
-            UserEntity nguoiDungEntity = user.get();
+            UserEntity userEntity = user.get();
             // Set issued at and expiration times
             Date now = new Date();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(now);
             calendar.add(Calendar.HOUR, 1); // Set expiration time to 1 hour from now
             Date expiration = calendar.getTime();
-            if (passwordEncoder.matches(matKhau, nguoiDungEntity.getMatKhau())) {
+            if (passwordEncoder.matches(matKhau, userEntity.getPassword())) {
 
                 SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
                 token = Jwts.builder()
-                        .claim("MaNguoiDung", nguoiDungEntity.getMaNguoiDung())
-                        .claim("VaiTro", nguoiDungEntity.getRoleEntity().getRoleName())
-                        .claim("TenDangNhap", nguoiDungEntity.getTenDangNhap())
+                        .claim("MaNguoiDung", userEntity.getUserId ())
+                        .claim("VaiTro", userEntity.getRoleEntity().getRoleName())
+                        .claim("TenDangNhap", userEntity.getUserName())
                         .setIssuedAt(now)
                         .setExpiration(expiration)
                         .signWith(key)

@@ -58,7 +58,7 @@ public class ArticleServiceImp implements ArticleService{
         articleDto.setCategory(articleEntity.getCategory());
 
         if (articleEntity.getUserEntity() != null) {
-            articleDto.setAuthor(articleEntity.getUserEntity().getHoTen());
+            articleDto.setAuthor(articleEntity.getUserEntity().getFullName());
         }
 
         return articleDto;
