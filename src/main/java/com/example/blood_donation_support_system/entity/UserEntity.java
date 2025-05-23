@@ -3,6 +3,7 @@ package com.example.blood_donation_support_system.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -50,4 +51,7 @@ public class UserEntity {
     @ManyToOne
     @JoinColumn(name = "role_id") // khóa ngoại trong bảng user
     private RoleEntity roleEntity;
+
+    @OneToMany(mappedBy = "userEntity")
+    private List<ArticleEntity> articleEntities;
 }

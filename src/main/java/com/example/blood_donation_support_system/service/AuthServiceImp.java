@@ -1,6 +1,6 @@
 package com.example.blood_donation_support_system.service;
 
-import com.example.blood_donation_support_system.dto.UserDTO;
+import com.example.blood_donation_support_system.dto.UserDto;
 import com.example.blood_donation_support_system.entity.RoleEntity;
 import com.example.blood_donation_support_system.entity.UserEntity;
 import com.example.blood_donation_support_system.repository.RoleRepository;
@@ -94,7 +94,7 @@ public class AuthServiceImp implements AuthService {
     @Override
     public String loginOrSignup(Map<String, Object> userInfo, String role) {
 
-        UserDTO userDTO = new UserDTO();
+        UserDto userDTO = new UserDto();
         //Lấy email của người dùng
         userDTO.setEmail(userInfo.get("email").toString());
         //Lấy tên của người dùng
