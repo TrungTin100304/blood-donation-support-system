@@ -3,6 +3,7 @@ package com.example.blood_donation_support_system.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -11,13 +12,13 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id")
     private int maNguoiDung;
 
-    @Column(name = "username", nullable = false, length = 50)
+    @Column(name = "username")
     private String tenDangNhap;
 
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password")
     private String matKhau;
 
     @Column(name = "full_name",length = 100)
@@ -44,7 +45,13 @@ public class UserEntity {
     @Column(name = "ready_time")
     private LocalDateTime thoiGianSanSang;
 
+    @Column(name = "avatar")
+    private String avatar;
+
     @ManyToOne
     @JoinColumn(name = "role_id") // khóa ngoại trong bảng user
     private RoleEntity roleEntity;
+
+    @OneToMany(mappedBy = "userEntity")
+    private List<ArticleEntity> articleEntities;
 }
