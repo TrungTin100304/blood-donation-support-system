@@ -15,8 +15,8 @@ public class LoginController {
     @Autowired
     private LoginServiceImp loginServiceImp;
     @PostMapping
-    public ResponseEntity <?> login(@RequestBody UserEntity nguoiDungEntity){
-        String token = loginServiceImp.login(nguoiDungEntity.getTenDangNhap(), nguoiDungEntity.getMatKhau());
+    public ResponseEntity <?> login(@RequestBody UserEntity userEntity){
+        String token = loginServiceImp.login(userEntity.getUserName(), userEntity.getPassword());
         BaseResponse response = new BaseResponse();
         if(token == null || token.isEmpty()){
             response.setMessage("Login failed");

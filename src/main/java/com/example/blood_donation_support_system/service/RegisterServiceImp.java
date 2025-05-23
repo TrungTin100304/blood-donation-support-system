@@ -25,26 +25,27 @@ public class RegisterServiceImp implements RegisterService {
     private RoleRepository roleRepository;
 
     @Override
-    public void register(UserRequest userRequest, String vaiTro) {
+    public void register(UserRequest userRequest, String role) {
         // Kiểm tra tên đăng nhập đã tồn tại chưa
-        if (userRepository.existsByTenDangNhap(userRequest.getTenDangNhap())) {
+        if (userRepository.existsByUserName(userRequest.getUserName())) {
             throw new InsertException("Username already exists");
         }
 
         try {
             // Mã hóa mật khẩu
-            String encodedPassword = passwordEncoder.encode(userRequest.getMatKhau());
+            String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
 
             // Tìm role
 
-            RoleEntity role = roleRepository.findByRoleName(vaiTro)
-                    .orElseThrow(() -> new InsertException("Role not found: " + vaiTro));
+            RoleEntity roles = roleRepository.findByRoleName(role)
+                    .orElseThrow(() -> new InsertException("Role not found: " + role));
 
             // Tạo mới user
             UserEntity user = new UserEntity();
-            user.setTenDangNhap(userRequest.getTenDangNhap());
-            user.setMatKhau(encodedPassword);
-            user.setRoleEntity(role) ;
+            user.setUserName(userRequest.getUserName());
+            user.setPassword(encodedPassword);
+            user.setRoleEntity(roles) ;
+            user.setLoginProvider("local");
 
             // Lưu vào database
             userRepository.save(user);

@@ -122,7 +122,7 @@ public class AuthServiceImp implements AuthService {
             token = Jwts.builder()
                     .claim("googleID", nguoiDungEntity.getGooleId())
                     .claim("email",nguoiDungEntity.getEmail())
-                    .claim("name", nguoiDungEntity.getHoTen())
+                    .claim("name", nguoiDungEntity.getFullName())
                     .claim("avatar", nguoiDungEntity.getAvatar())
                     .claim("role", nguoiDungEntity.getRoleEntity().getRoleName())
                     .setIssuedAt(now)
@@ -136,12 +136,12 @@ public class AuthServiceImp implements AuthService {
 
 
             UserEntity nguoiDungEntity = new UserEntity();
-            nguoiDungEntity.setHoTen(userDTO.getName());
+            nguoiDungEntity.setFullName(userDTO.getName());
             nguoiDungEntity.setEmail(userDTO.getEmail());
             nguoiDungEntity.setGooleId(userDTO.getSub());
             nguoiDungEntity.setAvatar(userDTO.getAvatar());
             nguoiDungEntity.setRoleEntity(roleEntity);
-            nguoiDungEntity.setLogin_provider("google");
+            nguoiDungEntity.setLoginProvider("google");
             userRepository.save(nguoiDungEntity);
 
             //Tạo Jwt
@@ -154,7 +154,7 @@ public class AuthServiceImp implements AuthService {
             token = Jwts.builder()
                     .claim("googleID", nguoiDungEntity.getGooleId())
                     .claim("email",nguoiDungEntity.getEmail())
-                    .claim("name", nguoiDungEntity.getHoTen())
+                    .claim("name", nguoiDungEntity.getFullName())
                     .claim("avatar", nguoiDungEntity.getAvatar())
                     .claim("role", nguoiDungEntity.getRoleEntity().getRoleName())
                     .setIssuedAt(now)

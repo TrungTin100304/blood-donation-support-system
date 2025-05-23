@@ -27,7 +27,7 @@ public class RegisterController {
 
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setCode(200);
-        baseResponse.setMessage("Register " + request.getTenDangNhap()  + " successfully");
+        baseResponse.setMessage("Register " + request.getUserName()  + " successfully");
         baseResponse.setData(200);
         return ResponseEntity.ok(baseResponse);
     }
@@ -39,7 +39,7 @@ public class RegisterController {
 
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setCode(200);
-        baseResponse.setMessage("Register " + request.getTenDangNhap()  + " successfully");
+        baseResponse.setMessage("Register " + request.getUserName()  + " successfully");
         baseResponse.setData(200);
         return ResponseEntity.ok(baseResponse);
     }
@@ -51,7 +51,7 @@ public class RegisterController {
 
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setCode(200);
-        baseResponse.setMessage("Register " + request.getTenDangNhap()  + " successfully");
+        baseResponse.setMessage("Register " + request.getUserName()  + " successfully");
         baseResponse.setData(200);
         return ResponseEntity.ok(baseResponse);
     }

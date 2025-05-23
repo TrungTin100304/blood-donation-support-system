@@ -13,37 +13,37 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int maNguoiDung;
+    private int userId;
 
-    @Column(name = "username")
-    private String tenDangNhap;
+    @Column(name = "username" , unique = true)
+    private String userName;
 
     @Column(name = "password")
-    private String matKhau;
+    private String password;
 
     @Column(name = "full_name",length = 100)
-    private String hoTen;
+    private String fullName;
 
     @Column(name = "google_id", length = 100)
     private String gooleId;
 
     @Column(name = "login_provider", length = 10)
-    private String login_provider;
+    private String loginProvider;
 
     @Column(name = "phone_number", length = 15)
-    private String soDienThoai;
+    private String phoneNumber;
 
-    @Column(name = "email", length = 100)
+    @Column(name = "email", length = 100, unique = true)
     private String email;
 
     @Column(name = "address", length = 255)
-    private String diaChi;
+    private String address;
 
     @Column(name = "blood_type", length = 5)
-    private String nhomMau;
+    private String bloodType;
 
     @Column(name = "ready_time")
-    private LocalDateTime thoiGianSanSang;
+    private LocalDateTime readeTime;
 
     @Column(name = "avatar")
     private String avatar;
