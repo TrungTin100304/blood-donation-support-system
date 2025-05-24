@@ -6,7 +6,9 @@ import com.example.blood_donation_support_system.request.RegisterDonorRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
+
 
 @Service
 public class DonorServiceImp implements DonorService{
@@ -17,6 +19,7 @@ public class DonorServiceImp implements DonorService{
     public void registerDonor(int userId, RegisterDonorRequest registerDonorRequest) {
         UserEntity userEntity = userRepository.findById(userId).
                 orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
+
         if(userEntity.getBloodType() != null && userEntity.getReadyTime() != null){
             throw new IllegalArgumentException("User already has ready time");
         }
@@ -27,6 +30,7 @@ public class DonorServiceImp implements DonorService{
         userEntity.setBloodType(registerDonorRequest.getBloodType());
         userEntity.setReadyTime(registerDonorRequest.getReadyTime());
         userRepository.save(userEntity);
+
 
     }
 }

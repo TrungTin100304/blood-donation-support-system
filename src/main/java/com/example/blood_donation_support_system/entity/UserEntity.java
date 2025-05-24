@@ -47,7 +47,9 @@ public class UserEntity {
     private String bloodType;
 
     @Column(name = "ready_time")
+
     private LocalDateTime readyTime;
+
 
     @Column(name = "avatar")
     private String avatar;
