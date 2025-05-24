@@ -69,6 +69,26 @@ public class JwtHelper {
             e.printStackTrace();
             return null;
         }
+
+
+    }
+    public Integer getUserId(String token) {
+        try {
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(getSignKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            return claims.get("MaNguoiDung", Integer.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

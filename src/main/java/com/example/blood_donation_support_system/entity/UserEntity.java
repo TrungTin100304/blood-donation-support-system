@@ -2,8 +2,12 @@ package com.example.blood_donation_support_system.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
+
 
 @Data
 @Entity
@@ -43,7 +47,9 @@ public class UserEntity {
     private String bloodType;
 
     @Column(name = "ready_time")
-    private LocalDateTime readeTime;
+
+    private LocalDateTime readyTime;
+
 
     @Column(name = "avatar")
     private String avatar;
