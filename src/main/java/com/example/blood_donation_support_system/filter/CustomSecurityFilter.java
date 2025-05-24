@@ -37,8 +37,7 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
                 // TODO START: recheck this code snippet to see if it's correct
                 String role = jwtHelper.getDataToken(token);
                 System.out.println(role);
-                String username = jwtHelper.getUsername(token);
-                System.out.println(username);
+
                 List<SimpleGrantedAuthority> authoritiesList = new ArrayList<>();
                 SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
                 authoritiesList.add(authority);
@@ -46,7 +45,7 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
                 //Tạo ra chứng thực để bypass filter của security
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(username,"", authoritiesList);
+                        new UsernamePasswordAuthenticationToken("","", authoritiesList);
                 //Lưu vào context security
                 securityContext.setAuthentication(authenticationToken);
                 // TODO END: recheck this code snippet to see if it's correct
