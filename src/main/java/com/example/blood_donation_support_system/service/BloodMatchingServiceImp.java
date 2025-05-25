@@ -1,5 +1,6 @@
 package com.example.blood_donation_support_system.service;
 
+import com.example.blood_donation_support_system.dto.UserDto;
 import com.example.blood_donation_support_system.entity.UserEntity;
 import com.example.blood_donation_support_system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,24 @@ public class BloodMatchingServiceImp implements BloodMatchingService {
     private UserRepository userRepository;
 
     @Override
-    public List<UserEntity> findCompatibleDonor(String recipentBloodType) {
-        recipentBloodType = recipentBloodType.trim().toUpperCase(); // chuẩn hóa đầu vào
+    public List<UserDto> findCompatibleDonor(String recipentBloodType) {
+        // chuẩn hóa đầu vào
+        recipentBloodType = recipentBloodType.trim().toUpperCase();
+
         List<String> compatibleTypes = getCompatibleBloodTypes(recipentBloodType);
-        System.out.println("Compatible types: " + compatibleTypes.size());
-        return userRepository.findByBloodTypeIn(compatibleTypes);
+        List<UserEntity> userEntities = userRepository.findByBloodTypeIn(compatibleTypes);
+
+        List<UserDto> userDtos = new ArrayList<>();
+        for(UserEntity userEntity : userEntities){
+            UserDto userDto = this.convertToDto(userEntity);
+            userDtos.add(userDto);
+        }
+        return userDtos;
+
+        //return userEntities.stream()
+        //        .map(this::convertToDto)
+        //        .collect(Collectors.toList());
+        //return userEntities.stream()
 
     }
 
@@ -36,5 +50,16 @@ public class BloodMatchingServiceImp implements BloodMatchingService {
         compatibilityMap.put("AB+", List.of("O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"));
 
         return compatibilityMap.getOrDefault(recipientBloodType, new ArrayList<>());
+    }
+
+    private UserDto convertToDto(UserEntity userEntity) {
+        UserDto userDto = new UserDto();
+        userDto.setName(userEntity.getFullName());
+        userDto.setEmail(userEntity.getEmail());
+        userDto.setPhoneNumber(userEntity.getPhoneNumber());
+        userDto.setAddress(userEntity.getAddress());
+        userDto.setBloodType(userEntity.getBloodType());
+
+        return userDto;
     }
 }
