@@ -60,4 +60,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userEntity")
     private List<ArticleEntity> articleEntities;
+
+    @OneToMany(mappedBy = "requesterId")
+    private List<EmergencyEntity> emergencyEntities;
 }

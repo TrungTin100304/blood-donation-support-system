@@ -21,7 +21,7 @@ public class DonorController {
     public ResponseEntity<?> registerDonor(@RequestHeader("Authorization") String authHeader,
                                            @RequestBody RegisterDonorRequest registerDonorRequest){
 
-        System.out.println("authHeader" + authHeader);
+
         Integer userId = jwtHelper.getUserId(authHeader);
         donorService.registerDonor(userId, registerDonorRequest);
         BaseResponse baseResponse = new BaseResponse();
