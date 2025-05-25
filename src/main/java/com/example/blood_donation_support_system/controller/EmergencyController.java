@@ -20,12 +20,17 @@ public class EmergencyController {
     @PostMapping("/register")
     public ResponseEntity<?> registerEmergency(@RequestBody EmergencyRequest request, @RequestHeader("Authorization") String userId){
          Integer userIdInt = jwtHelper.getUserId(userId);
-         EmergencyEntity saved =  emergencyServiceImp.registerEmergency(request, userIdInt);
+         EmergencyEntity issucced =  emergencyServiceImp.registerEmergency(request, userIdInt);
          BaseResponse response = new BaseResponse();
-         response.setCode(200);
-         response.setMessage("Đăng ký Emergency Blood thành công");
-         return ResponseEntity.ok(response);
-
-
+        if (issucced != null) {
+            response.setCode(200);
+            response.setMessage("Đăng ký Emergency Blood thành công");
+            response.setData(issucced.getRequestId());
+            return ResponseEntity.ok(response);
+        } else {
+            response.setCode(500);
+            response.setMessage("Đăng ký Emergency Blood thất bại");
+            return ResponseEntity.status(500).body(response);
+        }
     }
 }
