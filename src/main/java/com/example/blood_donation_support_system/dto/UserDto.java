@@ -13,6 +13,10 @@ public class UserDto {
     private String name;
     private String avatar;
     private String sub;
+    private String phoneNumber;
+    private String address;
+    private String bloodType;
+    private String readyTime;
 }
 
 
