@@ -44,7 +44,7 @@ public class UserEntity {
     private String address;
 
     @Column(name = "blood_type", length = 5)
-    private String bloodType;
+    private String blood;
 
     @Column(name = "ready_time")
 
