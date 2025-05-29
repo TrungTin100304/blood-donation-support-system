@@ -21,7 +21,7 @@ public class RegisterController {
 
 
     @PostMapping()
-    public ResponseEntity<?> registerAccount(@RequestBody UserRequest request) {
+    public ResponseEntity<?> registerAccount( @RequestBody UserRequest request) {
 
         registerServiceImp.register(request, MEMBER_ROLE);
 
