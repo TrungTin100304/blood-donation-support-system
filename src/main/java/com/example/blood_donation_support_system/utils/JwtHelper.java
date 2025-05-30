@@ -45,7 +45,7 @@ public class JwtHelper {
                     .parseClaimsJws(token)
                     .getBody();
 
-            return claims.get("VaiTro", String.class);
+            return claims.get("role", String.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -64,7 +64,7 @@ public class JwtHelper {
                     .parseClaimsJws(token)
                     .getBody();
 
-            return claims.get("TenDangNhap", String.class);
+            return claims.get("username", String.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -84,7 +84,7 @@ public class JwtHelper {
                     .parseClaimsJws(token)
                     .getBody();
 
-            return claims.get("MaNguoiDung", Integer.class);
+            return claims.get("userID", Integer.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

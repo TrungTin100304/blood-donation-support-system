@@ -23,6 +23,12 @@ spring:
             scope:
               - email
               - public_profile
+              -
+
+
+
+  upload:
+    path: ./upload
 
 jwt:
   secret: va9TVkfZSFlAI4ifEoV6mjSHkZSYbaIJF8L3Y7douCM=
@@ -33,3 +39,9 @@ buildCommand: ./mvnw clean install
 
 
 
+
+# application.yml
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.http.converter: DEBUG
