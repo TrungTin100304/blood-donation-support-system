@@ -28,6 +28,8 @@ public class SecurityConfig {
                 .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> {
                     // giúp định nghĩa quyền truy cập cho các link
+                    request.requestMatchers(HttpMethod.POST, "/api/updateProfile/update").permitAll();
+
                     request.requestMatchers("/api/login",  "/api/register").permitAll();
                     request.requestMatchers(("/api/auth/**")).permitAll();
                     request.requestMatchers(HttpMethod.POST, "/api/register/admin", "/api/register/staff").hasRole("ADMIN");
@@ -36,6 +38,8 @@ public class SecurityConfig {
                     request.requestMatchers(HttpMethod.GET, "/api/matching/**").hasAnyRole("MEMBER", "ADMIN","STAFF");
                     request.requestMatchers(HttpMethod.GET, "/api/emergency/**").hasAnyRole("MEMBER", "ADMIN","STAFF");
                     request.requestMatchers( "/api/article/**").permitAll();
+
+
                     request.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

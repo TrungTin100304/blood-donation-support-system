@@ -26,7 +26,7 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authenHeader = request.getHeader("Authorization");
+            String authenHeader = request.getHeader("Authorization");
         System.out.println(authenHeader);
         if(authenHeader != null && authenHeader.startsWith("Bearer ")) {
             //Authen header có giá trị
@@ -37,7 +37,10 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
                 // TODO START: recheck this code snippet to see if it's correct
                 String role = jwtHelper.getDataToken(token);
                 System.out.println(role);
-
+                String userName = jwtHelper.getUsername(token);
+                System.out.println(userName);
+                Integer userId = jwtHelper.getUserId(token);
+                System.out.println(userId);
                 List<SimpleGrantedAuthority> authoritiesList = new ArrayList<>();
                 SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
                 authoritiesList.add(authority);
