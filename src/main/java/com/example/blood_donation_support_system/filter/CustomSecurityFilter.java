@@ -26,7 +26,7 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authenHeader = request.getHeader("Authorization");
+            String authenHeader = request.getHeader("Authorization");
         System.out.println(authenHeader);
         if(authenHeader != null && authenHeader.startsWith("Bearer ")) {
             //Authen header có giá trị
