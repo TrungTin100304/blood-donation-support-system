@@ -12,8 +12,8 @@ public class DonationHistoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "donation_id")
-    private int donationId;
+    @Column(name = "history_id")
+    private int historyId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -25,6 +25,9 @@ public class DonationHistoryEntity {
     @ManyToOne
     @JoinColumn(name = "blood_unit_id", nullable = false)
     private BloodUnitEntity bloodUnit;
+
+    @Column(name = "recovery_time")
+    private Integer recoveryTime;
 
     @Column(name = "recovery_status", nullable = false, length = 20)
     private String recoveryStatus = "RECOVERING";

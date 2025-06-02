@@ -7,7 +7,7 @@ spring:
     password: ${MYSQL_ROOT_PASSWORD:admin123}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
   security:
     oauth2:
@@ -23,6 +23,19 @@ spring:
             scope:
               - email
               - public_profile
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: bloodsystem123@gmail.com
+    password: hxmz gmzi qfrf qzqa
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    jackson:
+      time-zone: Asia/Ho_Chi_Minh
 
 jwt:
   secret: va9TVkfZSFlAI4ifEoV6mjSHkZSYbaIJF8L3Y7douCM=

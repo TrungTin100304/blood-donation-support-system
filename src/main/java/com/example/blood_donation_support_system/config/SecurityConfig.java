@@ -36,6 +36,7 @@ public class SecurityConfig {
                     request.requestMatchers(HttpMethod.GET, "/api/matching/**").hasAnyRole("MEMBER", "ADMIN","STAFF");
                     request.requestMatchers(HttpMethod.GET, "/api/emergency/**").hasAnyRole("MEMBER", "ADMIN","STAFF");
                     request.requestMatchers( "/api/article/**").permitAll();
+                    request.requestMatchers(HttpMethod.POST, "/api/donor/test-email").permitAll();
 
 
 //                    request.requestMatchers(HttpMethod.POST,"/api/inventory/update").hasAnyRole("ADMIN", "STAFF","MEMBER");

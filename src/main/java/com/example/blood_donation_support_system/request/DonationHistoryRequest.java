@@ -1,5 +1,6 @@
 package com.example.blood_donation_support_system.request;
 
+import com.example.blood_donation_support_system.entity.BloodUnitEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -8,5 +9,5 @@ import java.time.LocalDateTime;
 public class DonationHistoryRequest {
     private Integer userId;
     private LocalDateTime donationDate;
-    private Integer bloodUnitId;
+    private BloodUnitEntity bloodUnit;
 }
