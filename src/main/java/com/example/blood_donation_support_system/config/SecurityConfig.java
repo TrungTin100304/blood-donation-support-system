@@ -28,6 +28,8 @@ public class SecurityConfig {
                 .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> {
                     // giúp định nghĩa quyền truy cập cho các link
+                    request.requestMatchers(HttpMethod.POST, "/api/updateProfile/update").permitAll();
+
                     request.requestMatchers("/api/login",  "/api/register").permitAll();
                     request.requestMatchers(("/api/auth/**")).permitAll();
                     request.requestMatchers(HttpMethod.POST, "/api/register/admin", "/api/register/staff").hasRole("ADMIN");

@@ -42,9 +42,11 @@ public class LoginServiceImp implements LoginService{
 
                 SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
                 token = Jwts.builder()
-                        .claim("MaNguoiDung", userEntity.getUserId ())
-                        .claim("VaiTro", userEntity.getRoleEntity().getRoleName())
-                        .claim("TenDangNhap", userEntity.getUserName())
+                        .claim("userID", userEntity.getUserId ())
+                        .claim("role", userEntity.getRoleEntity().getRoleName())
+                        .claim("username", userEntity.getUserName())
+                        .claim("name", userEntity.getFullName())
+                        .claim("avatar", userEntity.getAvatar())
                         .setIssuedAt(now)
                         .setExpiration(expiration)
                         .signWith(key)

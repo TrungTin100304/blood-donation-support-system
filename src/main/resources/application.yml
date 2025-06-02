@@ -37,6 +37,17 @@ spring:
     jackson:
       time-zone: Asia/Ho_Chi_Minh
 
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+
+
+  upload:
+    path: ./upload
+
 jwt:
   secret: va9TVkfZSFlAI4ifEoV6mjSHkZSYbaIJF8L3Y7douCM=
   expiration: 86400
@@ -46,3 +57,9 @@ buildCommand: ./mvnw clean install
 
 
 
+
+# application.yml
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.http.converter: DEBUG
