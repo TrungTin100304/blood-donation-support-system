@@ -84,7 +84,7 @@ public class JwtHelper {
                     .parseClaimsJws(token)
                     .getBody();
 
-            return claims.get("TenDangNhap", String.class);
+            return claims.get("name", String.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

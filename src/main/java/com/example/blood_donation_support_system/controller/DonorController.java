@@ -90,7 +90,7 @@ public class DonorController {
             @RequestHeader("Authorization") String autho,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayHienMauGanNhat) {
 
-
+            String fullName = jwtHelper.getFullName(autho);
 
         try {
             // Tính ngày có thể hiến máu tiếp theo: ngày hiến máu + 2 tháng
@@ -117,7 +117,7 @@ public class DonorController {
             Trung tâm Hiến máu Quốc gia
             bloodsystem123@gmail.com – 1900 123 456
             """,
-                    hoTenNguoiHienMau,
+                    fullName,
                     ngayHienMauGanNhat.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                     ngayTiepTheo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
             );
