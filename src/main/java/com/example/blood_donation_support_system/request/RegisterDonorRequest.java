@@ -13,4 +13,6 @@ import java.time.LocalDateTime;
 public class RegisterDonorRequest {
     private String bloodType;
     private LocalDateTime readyTime;
+    private Integer hospitalId;
+    private String componentType;
 }
