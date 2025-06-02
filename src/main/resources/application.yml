@@ -41,12 +41,3 @@ jwt:
 
 buildCommand: ./mvnw clean install
 
-
-
-
-
-# application.yml
-logging:
-  level:
-    org.springframework.web: DEBUG
-    org.springframework.http.converter: DEBUG
