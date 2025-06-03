@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -56,6 +57,13 @@ public class UserEntity {
 
     @Column(name = "avatar")
     private String avatar;
+
+    @Column(name = "gender", length = 10)
+    private String gender;
+
+    @Column(name = "year_of_birth")
+    private LocalDate yearOfBirth;
+
 
     @ManyToOne
     @JoinColumn(name = "role_id") // khóa ngoại trong bảng user
