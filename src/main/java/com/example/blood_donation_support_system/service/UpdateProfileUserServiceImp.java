@@ -36,9 +36,15 @@ public class UpdateProfileUserServiceImp implements UpdateProfileUserService {
         if (emailOpt.isPresent() && !emailOpt.get().getUserName().equals(userName)) {
             return new UpdateResultResponse(false, "Email already exists");
         }
+        if(userRequest.getYearOfBirth().getYear() < 1900 || userRequest.getYearOfBirth().getYear() > 2020){
+            return new UpdateResultResponse(false, "Year of birth must be between 1900 and 2020");
+        }
+
         userEntity.setAddress(userRequest.getAddress());
         userEntity.setPhoneNumber(userRequest.getPhoneNumber());
         userEntity.setEmail(userRequest.getEmail());
+        userEntity.setGender(userRequest.getGender());
+        userEntity.setYearOfBirth(userRequest.getYearOfBirth());
 
         // Xử lý lưu ảnh nếu có
         if (avatarFile != null && !avatarFile.isEmpty()) {

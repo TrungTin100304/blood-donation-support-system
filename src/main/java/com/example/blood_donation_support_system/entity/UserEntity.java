@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,8 +47,8 @@ public class UserEntity {
     @Column(name = "blood_type", length = 5)
     private String bloodType;
 
-    @Column(name = "component_type", length = 10)
-    private String component_Type;
+//    @Column(name = "component_type", length = 10)
+//    private String componentType;
 
     @Column(name = "ready_time")
 
@@ -56,6 +57,13 @@ public class UserEntity {
 
     @Column(name = "avatar")
     private String avatar;
+
+    @Column(name = "gender", length = 10)
+    private String gender;
+
+    @Column(name = "year_of_birth")
+    private LocalDate yearOfBirth;
+
 
     @ManyToOne
     @JoinColumn(name = "role_id") // khóa ngoại trong bảng user
@@ -66,4 +74,10 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "requesterId")
     private List<EmergencyEntity> emergencyEntities;
+
+
+    @OneToMany(mappedBy = "userId")
+    private List<BloodUnitEntity> bloodUnits;
+
+
 }
