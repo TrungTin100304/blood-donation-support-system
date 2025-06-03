@@ -14,8 +14,8 @@ spring:
       client:
         registration:
           google:
-            client-id: "${GOOGLE_CLIENT_ID:xxxxxxxxxxx}"
-            client-secret: "${GOOGLE_CLIENT_SECRET:xxxxxxxxxxxxxxxxx}"
+            client-id: "${GOOGLE_CLIENT_ID:xxxxxxxxxxxxxxx}"
+            client-secret: "${GOOGLE_CLIENT_SECRET:xxxxxxxxxxx}"
             redirect-uri: "${GOOGLE_REDIRECT_URI:http://localhost:3000/auth/social/callback/google}"
             auth-uri: "https://accounts.google.com/o/oauth2/v2/auth"
             token-uri: "https://www.googleapis.com/oauth2/v3/token"
@@ -54,12 +54,10 @@ jwt:
 
 buildCommand: ./mvnw clean install
 
-<<<<<<< HEAD
-=======
 
 # application.yml
 logging:
   level:
     org.springframework.web: DEBUG
     org.springframework.http.converter: DEBUG
->>>>>>> develop
+

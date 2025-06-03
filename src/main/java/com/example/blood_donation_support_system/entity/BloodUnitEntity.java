@@ -18,4 +18,8 @@ public class BloodUnitEntity {
 
     @Column(name = "component_type", nullable = false, length = 20)
     private String componentType;
+
+    @ManyToOne
+    @JoinColumn(name= "user_id")
+    private UserEntity userId;
 }
