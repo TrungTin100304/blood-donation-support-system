@@ -24,8 +24,9 @@ public class UpdateProfileUserController {
             @ModelAttribute UserRequest userRequest,
             @RequestPart(required = false) MultipartFile avatarFile) {
 
-        String userName = jwtHelper.getUsername(auHeader);
-        UpdateResultResponse result = updateProfileUserService.updateProfile(userName, userRequest, avatarFile);
+        Integer userId = jwtHelper.getUserId(auHeader);
+        System.out.println(userId);
+        UpdateResultResponse result = updateProfileUserService.updateProfile(userId, userRequest, avatarFile);
 
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setMessage(result.getMessage());

@@ -23,8 +23,8 @@ public class UpdateProfileUserServiceImp implements UpdateProfileUserService {
     private String uploadPath;
 
     @Override
-    public UpdateResultResponse updateProfile(String userName, UserRequest userRequest, MultipartFile avatarFile) {
-        Optional<UserEntity> userOpt = userRepository.findByUserName(userName);
+    public UpdateResultResponse updateProfile(Integer userId, UserRequest userRequest, MultipartFile avatarFile) {
+        Optional<UserEntity> userOpt = userRepository.findByUserId(userId);
         if (!userOpt.isPresent()) {
             return new UpdateResultResponse(false, "User not found");
         }
@@ -33,7 +33,7 @@ public class UpdateProfileUserServiceImp implements UpdateProfileUserService {
 
         Optional<UserEntity> emailOpt = userRepository.findByEmail(userRequest.getEmail());
         // Kiểm tra email đã tồn tại và không phải của chính user đang đăng nhập
-        if (emailOpt.isPresent() && !emailOpt.get().getUserName().equals(userName)) {
+        if (emailOpt.isPresent() && emailOpt.get().getUserId() != userId) {
             return new UpdateResultResponse(false, "Email already exists");
         }
         if(userRequest.getYearOfBirth().getYear() < 1900 || userRequest.getYearOfBirth().getYear() > 2020){
