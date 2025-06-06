@@ -51,7 +51,7 @@ public class UserProfileController {
 
 
     // API để xem danh sách tất cả người dùng
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')or hasRole('MEMBER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
     @GetMapping("/all")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserEntity> users = userRepository.findAll();
@@ -61,42 +61,8 @@ public class UserProfileController {
         return ResponseEntity.ok(userDtos);
     }
 
-    // API để cập nhật hồ sơ người dùng
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
-    @PutMapping("/{userName}")
-    public ResponseEntity<UpdateResultResponse> updateUserProfile(
-            @PathVariable String userName,
-            @RequestPart("userRequest") UserRequest userRequest,
-            @RequestPart(value = "avatarFile", required = false) MultipartFile avatarFile) {
-        UpdateResultResponse response = updateProfileUserService.updateProfile(userName, userRequest, avatarFile);
-        if (response.isSuccess()) {
-            return ResponseEntity.ok(response);
-        }
-        return ResponseEntity.badRequest().body(response);
-    }
 
-    // API để đăng ký làm người hiến máu, bị trùng với bên DonorController
-//    @PostMapping("/register-donor/{userId}")
-//    public ResponseEntity<String> registerDonor(
-//            @PathVariable int userId,
-//            @RequestBody RegisterDonorRequest registerDonorRequest) {
-//        try {
-//            donorService.registerDonor(userId, registerDonorRequest);
-//            return ResponseEntity.ok("Successfully registered as a donor");
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
 
-    // API để xem lịch sử hiến máu
-    @GetMapping("/donation-history/{userId}")
-    public ResponseEntity<List<DonationHistoryDto>> getDonationHistory(@PathVariable int userId) {
-        List<DonationHistoryEntity> donations = donationHistoryRepository.findByUserUserIdOrderByDonationDateDesc(userId);
-        List<DonationHistoryDto> donationDtos = donations.stream()
-                .map(this::convertToDonationDto)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(donationDtos);
-    }
 
     private UserDto convertToDto(UserEntity userEntity) {
         UserDto userDto = new UserDto();
