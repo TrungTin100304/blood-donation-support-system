@@ -62,6 +62,16 @@ public class UserProfileController {
     }
 
 
+    @GetMapping("/donation-history/{userId}")
+    public ResponseEntity<List<DonationHistoryDto>> getDonationHistory(@PathVariable int userId) {
+        List<DonationHistoryEntity> donations = donationHistoryRepository.findByUserUserIdOrderByDonationDateDesc(userId);
+        List<DonationHistoryDto> donationDtos = donations.stream()
+                .map(this::convertToDonationDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(donationDtos);
+    }
+
+
 
 
     private UserDto convertToDto(UserEntity userEntity) {
