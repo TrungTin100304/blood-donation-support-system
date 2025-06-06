@@ -54,7 +54,7 @@ public class UserEntity {
     private String gender;
 
     @Column(name = "year_of_birth")
-    private Integer yearOfBirth;
+    private LocalDate yearOfBirth;
 
     @Column(name = "ready_time")
 

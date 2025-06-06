@@ -2,7 +2,7 @@ package com.example.blood_donation_support_system.controller;
 
 import com.example.blood_donation_support_system.request.UserRequest;
 import com.example.blood_donation_support_system.response.BaseResponse;
-import com.example.blood_donation_support_system.service.RegisterServiceImp;
+import com.example.blood_donation_support_system.service.user.RegisterServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

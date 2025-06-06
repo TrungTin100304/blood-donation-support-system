@@ -1,4 +1,4 @@
-package com.example.blood_donation_support_system.service;
+package com.example.blood_donation_support_system.service.user;
 
 import com.example.blood_donation_support_system.entity.UserEntity;
 import com.example.blood_donation_support_system.repository.UserRepository;
@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
-public class LoginServiceImp implements LoginService{
+public class LoginServiceImp implements LoginService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
