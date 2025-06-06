@@ -17,6 +17,9 @@ public class UserDto {
     private String address;
     private String bloodType;
     private String readyTime;
+    private String gender;
+    private Integer yearOfBirth;
+
 }
 
 
