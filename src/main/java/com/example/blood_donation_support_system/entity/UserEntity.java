@@ -49,6 +49,12 @@ public class UserEntity {
     @Column(name = "component_type", length = 10)
     private String component_Type;
 
+    @Column(name = "gender", length = 10)
+    private String gender;
+
+    @Column(name = "year_of_birth")
+    private Integer yearOfBirth;
+
     @Column(name = "ready_time")
 
     private LocalDateTime readyTime;
