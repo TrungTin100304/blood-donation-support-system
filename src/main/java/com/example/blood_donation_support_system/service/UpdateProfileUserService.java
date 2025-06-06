@@ -5,5 +5,5 @@ import com.example.blood_donation_support_system.response.UpdateResultResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UpdateProfileUserService {
-    UpdateResultResponse updateProfile(String userName, UserRequest userRequest, MultipartFile file);
+    UpdateResultResponse updateProfile(Integer userId, UserRequest userRequest, MultipartFile file);
 }

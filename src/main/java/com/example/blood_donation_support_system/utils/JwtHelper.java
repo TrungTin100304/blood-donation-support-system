@@ -103,7 +103,7 @@ public class JwtHelper {
                     .parseClaimsJws(token)
                     .getBody();
 
-            return claims.get("userID", Integer.class);
+            return claims.get("userId", Integer.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

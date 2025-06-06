@@ -105,13 +105,13 @@ public class AuthServiceImp implements AuthService {
         userDTO.setSub(userInfo.get("sub").toString());
         String token = "";
 
-        // Kiểm tra email có tồn tại ở database chưa
-        Optional<UserEntity>  existingUserEmail =  userRepository.findByEmail(userDTO.getEmail());
+        // Kiểm tra googleId có tồn tại ở database chưa
+        Optional<UserEntity>  existingUserEmail =  userRepository.findByGooleId(userDTO.getSub());
 
         // Kiểm tra tên đăng nhập đã tồn tại chưa
         if(existingUserEmail.isPresent()){
             //Login
-            UserEntity nguoiDungEntity = existingUserEmail.get();
+            UserEntity userEntity = existingUserEmail.get();
 
             Date now = new Date();
             Calendar calendar = Calendar.getInstance();
@@ -120,11 +120,13 @@ public class AuthServiceImp implements AuthService {
             Date expiration = calendar.getTime();
             SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
             token = Jwts.builder()
-                    .claim("googleID", nguoiDungEntity.getGooleId())
-                    .claim("email",nguoiDungEntity.getEmail())
-                    .claim("name", nguoiDungEntity.getFullName())
-                    .claim("avatar", nguoiDungEntity.getAvatar())
-                    .claim("role", nguoiDungEntity.getRoleEntity().getRoleName())
+
+                    .claim("userId", userEntity.getUserId())
+                    .claim("googleID", userEntity.getGooleId())
+                    .claim("email",userEntity.getEmail())
+                    .claim("name", userEntity.getFullName())
+                    .claim("avatar", userEntity.getAvatar())
+                    .claim("role", userEntity.getRoleEntity().getRoleName())
                     .setIssuedAt(now)
                     .setExpiration(expiration)
                     .signWith(key)
@@ -135,14 +137,16 @@ public class AuthServiceImp implements AuthService {
                     orElseThrow(() -> new RuntimeException("Role not found: " + role));
 
 
-            UserEntity nguoiDungEntity = new UserEntity();
-            nguoiDungEntity.setFullName(userDTO.getName());
-            nguoiDungEntity.setEmail(userDTO.getEmail());
-            nguoiDungEntity.setGooleId(userDTO.getSub());
-            nguoiDungEntity.setAvatar(userDTO.getAvatar());
-            nguoiDungEntity.setRoleEntity(roleEntity);
-            nguoiDungEntity.setLoginProvider("google");
-            userRepository.save(nguoiDungEntity);
+            UserEntity userEntity = new UserEntity();
+
+            userEntity.setUserId(userEntity.getUserId());
+            userEntity.setFullName(userDTO.getName());
+            userEntity.setEmail(userDTO.getEmail());
+            userEntity.setGooleId(userDTO.getSub());
+            userEntity.setAvatar(userDTO.getAvatar());
+            userEntity.setRoleEntity(roleEntity);
+            userEntity.setLoginProvider("google");
+            userRepository.save(userEntity);
 
             //Tạo Jwt
             Date now = new Date();
@@ -152,11 +156,12 @@ public class AuthServiceImp implements AuthService {
             Date expiration = calendar.getTime();
             SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
             token = Jwts.builder()
-                    .claim("googleID", nguoiDungEntity.getGooleId())
-                    .claim("email",nguoiDungEntity.getEmail())
-                    .claim("name", nguoiDungEntity.getFullName())
-                    .claim("avatar", nguoiDungEntity.getAvatar())
-                    .claim("role", nguoiDungEntity.getRoleEntity().getRoleName())
+                    .claim("userId", userEntity.getUserId())
+                    .claim("googleID", userEntity.getGooleId())
+                    .claim("email",userEntity.getEmail())
+                    .claim("name", userEntity.getFullName())
+                    .claim("avatar", userEntity.getAvatar())
+                    .claim("role", userEntity.getRoleEntity().getRoleName())
                     .setIssuedAt(now)
                     .setExpiration(expiration)
                     .signWith(key)

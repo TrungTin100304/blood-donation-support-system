@@ -17,6 +17,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     Optional<UserEntity> findByEmail(String email);
     Optional<UserEntity> findByUserName(String userName);
     List<UserEntity> findByBloodTypeIn(List<String> bloodTypes);
+    Optional<UserEntity> findByGooleId(String gooleId);
+    Optional<UserEntity> findByUserId(int userId);
 
     @Query("SELECT u FROM UserEntity u WHERE NOT EXISTS (SELECT dh FROM DonationHistoryEntity dh WHERE dh.user.userId = u.userId)")
     List<UserEntity> findUsersWithNoDonationHistory();
