@@ -13,13 +13,15 @@ public class GetUserServiceImp implements GetUserService {
     @Autowired
     private UserRepository userRepository;
 
+    private final String BASE_URL = "http://localhost:8080/upload/";
+
     @Override
     public UserDto getUserById(Integer id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
         if(userEntity.isPresent()){
             return convertUserToUserDto(userEntity.get());
-        }else{
-            throw  new RuntimeException("User with ID" + id + " not found");
+        } else {
+            throw new RuntimeException("User with ID " + id + " not found");
         }
     }
 
@@ -33,7 +35,18 @@ public class GetUserServiceImp implements GetUserService {
         userDto.setPhoneNumber(userEntity.getPhoneNumber());
         userDto.setAddress(userEntity.getAddress());
         userDto.setBloodType(userEntity.getBloodType());
-        userDto.setAvatar(userEntity.getAvatar());
+
+        // Xử lý avatar
+        String avatarPath = userEntity.getAvatar(); // ví dụ: "./upload/hinh-nen-gai-xinh.jpg"
+        if (avatarPath != null && !avatarPath.isEmpty()) {
+            String fileName = avatarPath.substring(avatarPath.lastIndexOf("/") + 1);
+            System.out.println(fileName);
+            String avatarUrl = BASE_URL + fileName;
+            userDto.setAvatar(avatarUrl);
+        } else {
+            userDto.setAvatar(null); // hoặc ảnh mặc định nếu bạn muốn
+        }
+
         return userDto;
     }
 
