@@ -1,4 +1,4 @@
-package com.example.blood_donation_support_system.service;
+package com.example.blood_donation_support_system.service.user;
 
 import com.example.blood_donation_support_system.entity.RoleEntity;
 import com.example.blood_donation_support_system.entity.UserEntity;
@@ -6,12 +6,9 @@ import com.example.blood_donation_support_system.exception.InsertException;
 import com.example.blood_donation_support_system.repository.RoleRepository;
 import com.example.blood_donation_support_system.repository.UserRepository;
 import com.example.blood_donation_support_system.request.UserRequest;
-import com.example.blood_donation_support_system.utils.JwtHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class RegisterServiceImp implements RegisterService {

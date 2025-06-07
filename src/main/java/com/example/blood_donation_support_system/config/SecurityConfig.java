@@ -29,7 +29,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> {
                     // giúp định nghĩa quyền truy cập cho các link
                     request.requestMatchers(HttpMethod.POST, "/api/updateProfile/update").permitAll();
-
+                    // getUser
+                    request.requestMatchers(HttpMethod.GET, "/api/profile").hasAnyRole("MEMBER", "ADMIN","STAFF");
                     request.requestMatchers("/api/login",  "/api/register").permitAll();
                     request.requestMatchers(("/api/auth/**")).permitAll();
                     request.requestMatchers(HttpMethod.POST, "/api/register/admin", "/api/register/staff").hasRole("ADMIN");
@@ -38,7 +39,11 @@ public class SecurityConfig {
                     request.requestMatchers(HttpMethod.GET, "/api/matching/**").hasAnyRole("MEMBER", "ADMIN","STAFF");
                     request.requestMatchers(HttpMethod.GET, "/api/emergency/**").hasAnyRole("MEMBER", "ADMIN","STAFF");
                     request.requestMatchers( "/api/article/**").permitAll();
-                    request.requestMatchers(HttpMethod.POST, "/api/donor/test-email").permitAll();
+                    request.requestMatchers(HttpMethod.POST, "/api/donor/send-email").permitAll();
+
+                    request.requestMatchers( "/api/donation/**").permitAll();
+
+                    request.requestMatchers( "/api/profile/**").permitAll();
 
 
 //                    request.requestMatchers(HttpMethod.POST,"/api/inventory/update").hasAnyRole("ADMIN", "STAFF","MEMBER");

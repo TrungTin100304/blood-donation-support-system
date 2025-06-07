@@ -50,6 +50,12 @@ public class UserEntity {
 //    @Column(name = "component_type", length = 10)
 //    private String componentType;
 
+    @Column(name = "gender", length = 10)
+    private String gender;
+
+    @Column(name = "year_of_birth")
+    private LocalDate yearOfBirth;
+
     @Column(name = "ready_time")
 
     private LocalDateTime readyTime;
@@ -57,13 +63,6 @@ public class UserEntity {
 
     @Column(name = "avatar")
     private String avatar;
-
-    @Column(name = "gender", length = 10)
-    private String gender;
-
-    @Column(name = "year_of_birth")
-    private LocalDate yearOfBirth;
-
 
     @ManyToOne
     @JoinColumn(name = "role_id") // khóa ngoại trong bảng user

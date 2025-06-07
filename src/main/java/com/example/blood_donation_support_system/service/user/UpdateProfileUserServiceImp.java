@@ -1,9 +1,10 @@
-package com.example.blood_donation_support_system.service;
+package com.example.blood_donation_support_system.service.user;
 
 import com.example.blood_donation_support_system.entity.UserEntity;
 import com.example.blood_donation_support_system.repository.UserRepository;
 import com.example.blood_donation_support_system.request.UserRequest;
 import com.example.blood_donation_support_system.response.UpdateResultResponse;
+import com.example.blood_donation_support_system.service.UploadFileService;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

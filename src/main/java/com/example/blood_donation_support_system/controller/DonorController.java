@@ -61,30 +61,9 @@ public class DonorController {
         return handleError(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    
 
-//    // Thêm API kiểm tra gửi email thử nghiệm
-//    @PostMapping("/test-email")
-//    public ResponseEntity<BaseResponse> testEmail(@RequestParam String toEmail) {
-//        try {
-//            MimeMessage message = mailSender.createMimeMessage(); // Giả sử mailSender đã được inject
-//            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-//            helper.setTo(toEmail);
-//            helper.setFrom("bloodsystem123@gmail.com"); // Sử dụng email cấu hình
-//            helper.setSubject("Email from Blood Donation System");
-//            helper.setText("This is a test email sent at " + java.time.LocalDateTime.now());
-//            mailSender.send(message);
-//            logger.info("Test email sent successfully to {}", toEmail);
-//            BaseResponse response = new BaseResponse();
-//            response.setCode(HttpStatus.OK.value());
-//            response.setMessage("Test email sent successfully to " + toEmail);
-//            return ResponseEntity.ok(response);
-//        } catch (Exception e) {
-//            logger.error("Failed to send test email to {}: {}", toEmail, e.getMessage());
-//            return handleError("Failed to send test email: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
 
-    @PostMapping("/test-email")
+    @PostMapping("/send-email")
     public ResponseEntity<BaseResponse> testEmail(
             @RequestParam String toEmail,
             @RequestHeader("Authorization") String autho,
