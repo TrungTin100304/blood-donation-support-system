@@ -66,14 +66,14 @@ public class UserProfileController {
 //        return userDto;
 //    }
 
-    private DonationHistoryDto convertToDonationDto(DonationHistoryEntity donation) {
-        DonationHistoryDto dto = new DonationHistoryDto();
-        dto.setHistoryId(donation.getHistoryId());
-        dto.setUserId(donation.getUser().getUserId());
-        dto.setDonationDate(donation.getDonationDate());
-        Integer bloodUnitId = (donation.getBloodUnitId() != null) ? donation.getBloodUnitId().getBloodUnitId() : null;
-        dto.setRecoveryStatus(donation.getRecoveryStatus());
-        dto.setRecoveryTime(donation.getRecoveryTime());
-        return dto;
-    }
+//    private DonationHistoryDto convertToDonationDto(DonationHistoryEntity donation) {
+//        DonationHistoryDto dto = new DonationHistoryDto();
+//        dto.setHistoryId(donation.getHistoryId());
+//        dto.setUserId(donation.getUser().getUserId());
+//        dto.setDonationDate(donation.getDonationDate());
+//        Integer bloodUnitId = (donation.getBloodUnitId() != null) ? donation.getBloodUnitId().getBloodUnitId() : null;
+//        dto.setRecoveryStatus(donation.getRecoveryStatus());
+//        dto.setRecoveryTime(donation.getRecoveryTime());
+//        return dto;
+//    }
 }
