@@ -13,7 +13,7 @@ public class GetUserServiceImp implements GetUserService {
     @Autowired
     private UserRepository userRepository;
 
-    private final String BASE_URL = "http://localhost:8080/upload/";
+    private final String BASE_URL = "http://localhost:8080/upload/user-avatars/";
 
     @Override
     public UserDto getUserById(Integer id) {
@@ -37,7 +37,7 @@ public class GetUserServiceImp implements GetUserService {
         userDto.setBloodType(userEntity.getBloodType());
 
         // Xử lý avatar
-        String avatarPath = userEntity.getAvatar(); // ví dụ: "./upload/hinh-nen-gai-xinh.jpg"
+        String avatarPath = userEntity.getAvatar(); // ví dụ: "./upload/user-avatars/hinh-nen-gai-xinh.jpg"
         if (avatarPath != null && !avatarPath.isEmpty()) {
             String fileName = avatarPath.substring(avatarPath.lastIndexOf("/") + 1);
             System.out.println(fileName);
