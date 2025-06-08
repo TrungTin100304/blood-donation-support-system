@@ -4,7 +4,7 @@ import com.example.blood_donation_support_system.entity.UserEntity;
 import com.example.blood_donation_support_system.repository.UserRepository;
 import com.example.blood_donation_support_system.request.UserRequest;
 import com.example.blood_donation_support_system.response.UpdateResultResponse;
-import com.example.blood_donation_support_system.service.UploadFileService;
+import com.example.blood_donation_support_system.service.uploadfile.UploadFileService;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ public class UpdateProfileUserServiceImp implements UpdateProfileUserService {
     @Autowired
     private UploadFileService uploadFileService;
 
-    @Value("${spring.upload.path}")
+    @Value("${spring.upload.path}/user-avatars")
     private String uploadPath;
 
     @Override
@@ -50,8 +50,8 @@ public class UpdateProfileUserServiceImp implements UpdateProfileUserService {
         // Xử lý lưu ảnh nếu có
         if (avatarFile != null && !avatarFile.isEmpty()) {
             try {
-                String fileName = uploadFileService.uploadFile(avatarFile);
-                String avatarPath = uploadPath + "/" + fileName;
+                String fileName = uploadFileService.uploadFile(avatarFile, uploadPath);
+                String avatarPath = uploadPath + "/"  + fileName;
                 userEntity.setAvatar(avatarPath);
             } catch (FileUploadException e) {
                 e.printStackTrace();

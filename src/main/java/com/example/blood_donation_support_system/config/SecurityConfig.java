@@ -30,6 +30,7 @@ public class SecurityConfig {
                     // giúp định nghĩa quyền truy cập cho các link
                     request.requestMatchers(HttpMethod.POST, "/api/updateProfile/update").permitAll();
                     // getUser
+                    request.requestMatchers("/upload/**").permitAll();
                     request.requestMatchers(HttpMethod.GET, "/api/profile").hasAnyRole("MEMBER", "ADMIN","STAFF");
                     request.requestMatchers("/api/login",  "/api/register").permitAll();
                     request.requestMatchers(("/api/auth/**")).permitAll();
