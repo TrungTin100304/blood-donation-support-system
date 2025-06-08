@@ -15,10 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.SecretKey;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 
 
 @Service
@@ -47,6 +50,9 @@ public class AuthServiceImp implements AuthService {
     private RoleRepository roleRepository;
     @Value("${jwt.secret}")
     private String secret;
+
+    @Value("${spring.upload.path}" + "/user-avatars")
+    private String uploadPath;
 
     @Override
     public String generateAuthorizationUri(String loginType) {
@@ -99,11 +105,15 @@ public class AuthServiceImp implements AuthService {
         userDTO.setEmail(userInfo.get("email").toString());
         //Lấy tên của người dùng
         userDTO.setName(userInfo.get("name").toString());
-        //Lấy avatar của người dùng
-        userDTO.setAvatar(userInfo.get("picture").toString());
         //Lấy google_id của người dùng
         userDTO.setSub(userInfo.get("sub").toString());
         String token = "";
+
+        // Tải avatar từ Google và lưu về máy chủ
+        String avatarUrl = userInfo.get("picture").toString();
+        String fileName = downloadImageFromUrl(avatarUrl, uploadPath);
+        userDTO.setAvatar(fileName != null ? "/upload/user-avatars/" + fileName : null);
+        System.out.println(userDTO.getAvatar());
 
         // Kiểm tra googleId có tồn tại ở database chưa
         Optional<UserEntity>  existingUserEmail =  userRepository.findByGooleId(userDTO.getSub());
@@ -125,7 +135,6 @@ public class AuthServiceImp implements AuthService {
                     .claim("googleID", userEntity.getGooleId())
                     .claim("email",userEntity.getEmail())
                     .claim("name", userEntity.getFullName())
-                    .claim("avatar", userEntity.getAvatar())
                     .claim("role", userEntity.getRoleEntity().getRoleName())
                     .setIssuedAt(now)
                     .setExpiration(expiration)
@@ -160,7 +169,6 @@ public class AuthServiceImp implements AuthService {
                     .claim("googleID", userEntity.getGooleId())
                     .claim("email",userEntity.getEmail())
                     .claim("name", userEntity.getFullName())
-                    .claim("avatar", userEntity.getAvatar())
                     .claim("role", userEntity.getRoleEntity().getRoleName())
                     .setIssuedAt(now)
                     .setExpiration(expiration)
@@ -169,5 +177,28 @@ public class AuthServiceImp implements AuthService {
         }
 
         return token;
+    }
+
+    private String downloadImageFromUrl(String imageUrl, String saveDir) {
+        try {
+            URL url = new URL(imageUrl);
+            String fileExtension = ".jpg";
+            String fileName = UUID.randomUUID().toString() + fileExtension;
+
+            Path uploadPath = Paths.get(saveDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Path filePath = uploadPath.resolve(fileName);
+            try (InputStream in = url.openStream()) {
+                Files.copy(in, filePath, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            return fileName;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
