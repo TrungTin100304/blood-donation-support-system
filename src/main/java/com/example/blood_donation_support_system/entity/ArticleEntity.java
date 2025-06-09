@@ -20,6 +20,8 @@ public class ArticleEntity {
     private LocalDateTime publishDate;
     @Column(name = "category")
     private String category;
+    @Column(name = "img_path")
+    private String imagePath;
 
     @ManyToOne
     @JoinColumn(name = "author_id")

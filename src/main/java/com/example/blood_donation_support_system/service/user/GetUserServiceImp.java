@@ -13,7 +13,7 @@ public class GetUserServiceImp implements GetUserService {
     @Autowired
     private UserRepository userRepository;
 
-    private final String BASE_URL = "http://localhost:8080/upload/user-avatars/";
+    private final String BASE_URL = "http://localhost:8080/upload/useravatars/";
 
     @Override
     public UserDto getUserById(Integer id) {

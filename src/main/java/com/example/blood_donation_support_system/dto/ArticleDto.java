@@ -16,4 +16,5 @@ public class ArticleDto {
     private String author;
     private LocalDateTime publishDate;
     private String category;
+    private String imgPath;
 }

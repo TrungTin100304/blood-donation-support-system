@@ -1,7 +1,6 @@
-package com.example.blood_donation_support_system.service;
+package com.example.blood_donation_support_system.service.article;
 
 import com.example.blood_donation_support_system.dto.ArticleDto;
-import com.example.blood_donation_support_system.entity.ArticleEntity;
 
 import java.util.List;
 
