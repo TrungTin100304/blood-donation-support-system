@@ -3,7 +3,7 @@ package com.example.blood_donation_support_system.controller;
 
 import com.example.blood_donation_support_system.dto.ArticleDto;
 import com.example.blood_donation_support_system.response.BaseResponse;
-import com.example.blood_donation_support_system.service.ArticleService;
+import com.example.blood_donation_support_system.service.article.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

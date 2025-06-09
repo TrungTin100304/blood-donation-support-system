@@ -1,4 +1,4 @@
-package com.example.blood_donation_support_system.service;
+package com.example.blood_donation_support_system.service.article;
 
 import com.example.blood_donation_support_system.dto.ArticleDto;
 import com.example.blood_donation_support_system.entity.ArticleEntity;
@@ -56,6 +56,7 @@ public class ArticleServiceImp implements ArticleService{
         articleDto.setContent(articleEntity.getContent());
         articleDto.setPublishDate(articleEntity.getPublishDate());
         articleDto.setCategory(articleEntity.getCategory());
+        articleDto.setImgPath( "http://localhost:8080"+ articleEntity.getImagePath());
 
         if (articleEntity.getUserEntity() != null) {
             articleDto.setAuthor(articleEntity.getUserEntity().getFullName());

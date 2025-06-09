@@ -20,7 +20,7 @@ public class UpdateProfileUserServiceImp implements UpdateProfileUserService {
     @Autowired
     private UploadFileService uploadFileService;
 
-    @Value("${spring.upload.path}/user-avatars")
+    @Value("${spring.upload.path}/useravatars")
     private String uploadPath;
 
     @Override

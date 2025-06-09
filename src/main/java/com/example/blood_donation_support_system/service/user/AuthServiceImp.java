@@ -51,7 +51,7 @@ public class AuthServiceImp implements AuthService {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${spring.upload.path}" + "/user-avatars")
+    @Value("${spring.upload.path}" + "/useravatars")
     private String uploadPath;
 
     @Override
@@ -112,7 +112,7 @@ public class AuthServiceImp implements AuthService {
         // Tải avatar từ Google và lưu về máy chủ
         String avatarUrl = userInfo.get("picture").toString();
         String fileName = downloadImageFromUrl(avatarUrl, uploadPath);
-        userDTO.setAvatar(fileName != null ? "/upload/user-avatars/" + fileName : null);
+        userDTO.setAvatar(fileName != null ? "./upload/useravatars/" + fileName : null);
         System.out.println(userDTO.getAvatar());
 
         // Kiểm tra googleId có tồn tại ở database chưa
@@ -186,7 +186,9 @@ public class AuthServiceImp implements AuthService {
             String fileName = UUID.randomUUID().toString() + fileExtension;
 
             Path uploadPath = Paths.get(saveDir);
+
             if (!Files.exists(uploadPath)) {
+                //tạo thư mục nếu chưa có
                 Files.createDirectories(uploadPath);
             }
 
