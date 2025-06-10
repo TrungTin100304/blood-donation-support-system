@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class UserDto {
     private String bloodType;
     private String readyTime;
     private String gender;
-    private LocalDate yearOfBirth;
+    private Date yearOfBirth;
 
 }
 

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -54,7 +55,7 @@ public class UserEntity {
     private String gender;
 
     @Column(name = "year_of_birth")
-    private LocalDate yearOfBirth;
+    private Date yearOfBirth;
 
     @Column(name = "ready_time")
 

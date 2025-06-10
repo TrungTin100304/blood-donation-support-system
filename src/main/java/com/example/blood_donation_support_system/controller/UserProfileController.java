@@ -86,13 +86,12 @@ public class UserProfileController {
         return userProfileService.deleteUserProfile(userId);
     }
 
-    // API để tìm kiếm hồ sơ người dùng theo username hoặc email
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
+    // API để tìm kiếm hồ sơ người dùng theo username
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF') or hasRole('MEMBER')")
     @GetMapping("/search")
     public ResponseEntity<List<UserDto>> searchUsers(
-            @RequestParam(required = false) String userName,
-            @RequestParam(required = false) String email) {
-        return userProfileService.searchUsers(userName, email);
+            @RequestParam String userName) {
+        return userProfileService.searchUsers(userName);
     }
 
 

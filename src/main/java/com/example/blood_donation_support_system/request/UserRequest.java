@@ -3,6 +3,7 @@ package com.example.blood_donation_support_system.request;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 public class UserRequest {
@@ -13,5 +14,5 @@ public class UserRequest {
     private String email;
     private String address;
     private String gender;
-    private LocalDate yearOfBirth;
+    private Date yearOfBirth;
 }

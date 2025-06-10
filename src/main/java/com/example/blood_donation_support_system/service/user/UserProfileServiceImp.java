@@ -3,6 +3,7 @@ package com.example.blood_donation_support_system.service.user;
 import com.example.blood_donation_support_system.dto.UserDto;
 import com.example.blood_donation_support_system.entity.RoleEntity;
 import com.example.blood_donation_support_system.entity.UserEntity;
+import com.example.blood_donation_support_system.repository.BloodUnitRepository;
 import com.example.blood_donation_support_system.repository.RoleRepository;
 import com.example.blood_donation_support_system.repository.UserRepository;
 import com.example.blood_donation_support_system.request.UserRequest;
@@ -23,6 +24,9 @@ public class UserProfileServiceImp implements UserProfileService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private BloodUnitRepository bloodUnitRepository;
 
 
     @Override
@@ -91,19 +95,20 @@ public class UserProfileServiceImp implements UserProfileService {
         if (!userOpt.isPresent()) {
             return ResponseEntity.badRequest().body("User not found");
         }
+
+        // Kiểm tra xem người dùng có bản ghi trong blood_unit không
+        if (bloodUnitRepository.existsByUserId_UserId(userId)) {
+            return ResponseEntity.badRequest().body("Cannot delete user: User has associated blood units that may be needed for emergency contact");
+        }
         userRepository.deleteById(userId);
         return ResponseEntity.ok("User deleted successfully");
     }
 
     @Override
-    public ResponseEntity<List<UserDto>> searchUsers(String userName, String email) {
-        Optional<UserEntity> users = Optional.empty();
-        if (userName != null && !userName.isEmpty()) {
-            users = userRepository.findByUserName(userName);
-        } else if (email != null && !email.isEmpty()) {
-            users = userRepository.findByEmail(email);
-        } else {
-            getAllUsers();
+    public ResponseEntity<List<UserDto>> searchUsers(String userName) {
+        List<UserEntity> users = new ArrayList<>();
+         if (userName != null && !userName.isEmpty()) {
+            users = userRepository.findByUserNameContainingIgnoreCase(userName);
         }
         List<UserDto> userDtos = users.stream()
                 .map(this::convertToDto)
