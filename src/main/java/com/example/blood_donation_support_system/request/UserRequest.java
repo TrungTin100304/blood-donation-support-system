@@ -15,4 +15,6 @@ public class UserRequest {
     private String address;
     private String gender;
     private Date yearOfBirth;
+//    private String readyTime;
+//    private String status;
 }

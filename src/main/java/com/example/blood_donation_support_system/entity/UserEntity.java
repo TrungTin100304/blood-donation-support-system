@@ -57,10 +57,18 @@ public class UserEntity {
     @Column(name = "year_of_birth")
     private Date yearOfBirth;
 
-    @Column(name = "ready_time")
+//    @Column(name = "ready_time")
+//    private LocalDateTime readyTime;
+//
+//    @Column(name = "status", length = 20, nullable = false)
+//    private String status = "ACTIVE"; // Giá trị mặc định
+//
 
+    @Column(name = "ready_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime readyTime;
 
+    @Column(name = "status", length = 20, nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'ACTIVE'")
+    private String status = "ACTIVE";
 
     @Column(name = "avatar")
     private String avatar;

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -91,17 +92,23 @@ public class UserProfileServiceImp implements UserProfileService {
 
     @Override
     public ResponseEntity<String> deleteUserProfile(int userId) {
-        Optional<UserEntity> userOpt = userRepository.findById(userId);
-        if (!userOpt.isPresent()) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
+        try {
+            Optional<UserEntity> userOpt = userRepository.findById(userId);
+            if (!userOpt.isPresent()) {
+                return ResponseEntity.badRequest().body("User not found");
+            }
 
-        // Kiểm tra xem người dùng có bản ghi trong blood_unit không
-        if (bloodUnitRepository.existsByUserId_UserId(userId)) {
-            return ResponseEntity.badRequest().body("Cannot delete user: User has associated blood units that may be needed for emergency contact");
+            UserEntity user = userOpt.get();
+//            if (bloodUnitRepository.existsByUserId_UserId(userId)) {
+//                return ResponseEntity.badRequest().body("Cannot delete user: User has associated blood units that may be needed for emergency contact");
+//            }
+
+            user.setStatus("DELETED");
+            userRepository.save(user); // Cập nhật thay vì xóa
+            return ResponseEntity.ok("User marked as deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to delete user: " + e.getMessage());
         }
-        userRepository.deleteById(userId);
-        return ResponseEntity.ok("User deleted successfully");
     }
 
     @Override
@@ -128,6 +135,8 @@ public class UserProfileServiceImp implements UserProfileService {
         userDto.setGender(userEntity.getGender());
         userDto.setYearOfBirth(userEntity.getYearOfBirth());
         userDto.setAvatar(userEntity.getAvatar());
+        userDto.setReadyTime(userEntity.getReadyTime());
+        userDto.setStatus(userEntity.getStatus());
         return userDto;
     }
 }
