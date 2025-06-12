@@ -50,6 +50,12 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
         return entities.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<BloodInventoryDto> getAllInventory() {
+        List<BloodInventoryEntity> entities = bloodInventoryRepository.findAll();
+        return entities.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
     private BloodInventoryDto convertToDto(BloodInventoryEntity entity) {
         BloodInventoryDto dto = new BloodInventoryDto();
         dto.setInventoryId(entity.getInventoryId());

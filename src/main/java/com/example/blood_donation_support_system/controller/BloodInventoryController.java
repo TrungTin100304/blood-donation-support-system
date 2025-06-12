@@ -46,4 +46,15 @@ public class BloodInventoryController {
         response.setData(bloodInventoryService.getInventoryByBloodUnitId(bloodUnitId));
         return ResponseEntity.ok(response);
     }
+
+
+    @GetMapping("/all-Inventory")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
+    public ResponseEntity<BaseResponse> getAllInventory() {
+        BaseResponse response = new BaseResponse();
+        response.setCode(200);
+        response.setMessage("Danh sách tất cả");
+        response.setData(bloodInventoryService.getAllInventory());
+        return ResponseEntity.ok(response);
+    }
 }
