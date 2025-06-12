@@ -82,7 +82,7 @@ public class UserProfileServiceImp implements UserProfileService {
             userEntity.setEmail(userRequest.getEmail());
             userEntity.setPhoneNumber(userRequest.getPhoneNumber());
             userEntity.setAddress(userRequest.getAddress());
-            userEntity.setRoleEntity(roleEntity);
+//            userEntity.setRoleEntity(roleEntity.getRoleID());
             userRepository.save(userEntity);
             return ResponseEntity.ok("User added successfully");
         } catch (Exception e) {

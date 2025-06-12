@@ -11,4 +11,5 @@ public interface BloodInventoryService {
     List<BloodInventoryDto> getInventoryByHospital(Integer hospitalId);
 
     List<BloodInventoryDto> getInventoryByBloodUnitId(Integer bloodUnitId);
+
 }
