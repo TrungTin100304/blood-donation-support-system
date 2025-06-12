@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface BloodInventoryRepository extends JpaRepository<BloodInventoryEntity, Integer> {
     List<BloodInventoryEntity> findByHospitalHospitalId(Integer hospitalId);
-    Optional<BloodInventoryEntity> findByBloodUnitId(Integer bloodUnitId);
+    Optional<BloodInventoryEntity> findByBloodUnitBloodUnitId(Integer bloodUnitId);
     List<BloodInventoryEntity> findByStatus(BloodInventoryEntity.BloodInventoryStatus status);
 
 }

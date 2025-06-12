@@ -75,7 +75,7 @@ public class UserEntity {
     private List<EmergencyEntity> emergencyEntities;
 
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     private List<BloodUnitEntity> bloodUnits;
 
 
