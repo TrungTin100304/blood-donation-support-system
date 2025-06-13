@@ -15,7 +15,7 @@ public interface UserProfileService {
 
     ResponseEntity<String> addUserProfile(UserRequest userRequest, String role);
 
-    ResponseEntity<String> deleteUserProfile(int userId);
+    ResponseEntity<String> deleteUserProfile(String  userName);
 
     ResponseEntity<List<UserDto>> searchUsers(String userName);
 }

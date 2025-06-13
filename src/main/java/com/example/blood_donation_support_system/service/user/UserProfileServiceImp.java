@@ -61,6 +61,7 @@ public class UserProfileServiceImp implements UserProfileService {
         return ResponseEntity.ok(userDto);
     }
 
+    // chua fix add
     @Override
     public ResponseEntity<String> addUserProfile(UserRequest userRequest, String role) {
         try {
@@ -91,9 +92,9 @@ public class UserProfileServiceImp implements UserProfileService {
     }
 
     @Override
-    public ResponseEntity<String> deleteUserProfile(int userId) {
+    public ResponseEntity<String> deleteUserProfile(String userName) {
         try {
-            Optional<UserEntity> userOpt = userRepository.findById(userId);
+            Optional<UserEntity> userOpt = userRepository.findByUserName(userName);
             if (!userOpt.isPresent()) {
                 return ResponseEntity.badRequest().body("User not found");
             }

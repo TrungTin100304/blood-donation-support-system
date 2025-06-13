@@ -81,9 +81,9 @@ public class UserProfileController {
 
     // API để xóa hồ sơ người dùng
     @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF') or hasRole('MEMBER')")
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteUserProfile(@PathVariable int userId) {
-        return userProfileService.deleteUserProfile(userId);
+    @DeleteMapping("/{userName}")
+    public ResponseEntity<String> deleteUserProfile(@PathVariable String userName) {
+        return userProfileService.deleteUserProfile(userName);
     }
 
     // API để tìm kiếm hồ sơ người dùng theo username
