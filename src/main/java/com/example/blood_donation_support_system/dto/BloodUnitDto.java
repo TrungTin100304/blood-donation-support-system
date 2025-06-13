@@ -1,7 +1,6 @@
 package com.example.blood_donation_support_system.dto;
 
 import com.example.blood_donation_support_system.entity.BloodInventoryEntity;
-import com.example.blood_donation_support_system.entity.BloodUnitEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,5 +23,6 @@ public class BloodUnitDto {
     private Integer inventoryId;
     private BloodInventoryEntity.BloodInventoryStatus inventoryStatus;
     private Integer hospitalId;
+    private String hospitalName;
 
 }

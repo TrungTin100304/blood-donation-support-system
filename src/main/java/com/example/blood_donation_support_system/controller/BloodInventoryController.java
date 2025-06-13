@@ -37,13 +37,14 @@ public class BloodInventoryController {
         return ResponseEntity.ok(response);
     }
 
+    // Tìm nhóm máu(BloodUnit) trong kho
     @GetMapping("/blood-unit")
-    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
-    public ResponseEntity<BaseResponse> getInventoryByBloodUnitId(@RequestParam("bloodUnitId") Integer bloodUnitId) {
+    @PreAuthorize("hasAnyRole('ADMIN' or 'STAFF' or 'MEMBER')")
+    public ResponseEntity<BaseResponse> getInventoryByBloodType(@RequestParam("bloodType") String bloodType) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setMessage("Danh sách tồn kho máu theo đơn vị máu");
-        response.setData(bloodInventoryService.getInventoryByBloodUnitId(bloodUnitId));
+        response.setData(bloodInventoryService.getInventoryByBloodType(bloodType));
         return ResponseEntity.ok(response);
     }
 

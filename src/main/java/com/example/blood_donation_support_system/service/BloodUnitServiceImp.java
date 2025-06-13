@@ -38,6 +38,7 @@ public class BloodUnitServiceImp implements BloodUnitService {
                 dto.setInventoryStatus(entity.getBloodInventory().getStatus());
                 if (entity.getBloodInventory().getHospital() != null) {
                     dto.setHospitalId(entity.getBloodInventory().getHospital().getHospitalId());
+                    dto.setHospitalName(entity.getBloodInventory().getHospital().getHospitalName());
                 }
             }
             return dto;

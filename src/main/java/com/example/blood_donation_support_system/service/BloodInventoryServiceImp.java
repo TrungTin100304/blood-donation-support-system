@@ -127,10 +127,10 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
     }
 
     @Override
-    public List<BloodInventoryDto> getInventoryByBloodUnitId(Integer bloodUnitId) {
-        BloodInventoryEntity entity = bloodInventoryRepository.findByBloodUnitBloodUnitId(bloodUnitId)
-                .orElseThrow(() -> new EntityNotFoundException("Inventory not found for blood unit ID: " + bloodUnitId));
-        return Collections.singletonList(convertToDto(entity));
+    public List<BloodInventoryDto> getInventoryByBloodType(String bloodType) {
+        List<BloodInventoryEntity> entity = bloodInventoryRepository.findByBloodUnitBloodType(bloodType);
+//                .orElseThrow(() -> new EntityNotFoundException("Inventory not found for blood unit type: " + bloodType));
+        return entity.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -141,11 +141,19 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
 
     private BloodInventoryDto convertToDto(BloodInventoryEntity entity) {
         BloodInventoryDto dto = new BloodInventoryDto();
-        dto.setInventoryId(entity.getInventoryId());
-        dto.setBloodUnitId(entity.getBloodUnit().getBloodUnitId()); // Trả về ID
-        dto.setHospitalId(entity.getHospital().getHospitalId());
         dto.setLastUpdate(entity.getLastUpdate());
         dto.setStatus(entity.getStatus());
+        if(entity.getBloodUnit() != null) {
+            BloodUnitEntity bloodUnit = entity.getBloodUnit();
+            dto.setBloodType(bloodUnit.getBloodType());
+            dto.setComponentType(bloodUnit.getComponentType());
+            dto.setQuantity(bloodUnit.getQuantity());
+            dto.setReceivedDate(bloodUnit.getReceivedDate());
+            dto.setExpiryDate(bloodUnit.getExpiryDate());
+        }
+        if(entity.getHospital() != null) {
+            dto.setHospitalName(entity.getHospital().getHospitalName());
+        }
         return dto;
     }
 }
