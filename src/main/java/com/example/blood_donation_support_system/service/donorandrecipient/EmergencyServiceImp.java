@@ -1,4 +1,4 @@
-package com.example.blood_donation_support_system.service;
+package com.example.blood_donation_support_system.service.donorandrecipient;
 
 import com.example.blood_donation_support_system.entity.EmergencyEntity;
 import com.example.blood_donation_support_system.repository.EmergencyRepository;
@@ -19,7 +19,7 @@ public class EmergencyServiceImp implements EmergencyService{
     @Override
     public EmergencyEntity registerEmergency(EmergencyRequest emergencyRequest, int userId) {
         EmergencyEntity emergencyEntity = new EmergencyEntity();
-        emergencyEntity.setRequesterId(userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId)));
+        emergencyEntity.setRequester(userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId)));
         emergencyEntity.setBloodType(emergencyRequest.getBloodType());
         emergencyEntity.setNote(emergencyRequest.getNote());
         emergencyEntity.setQuantity(emergencyRequest.getQuantity());

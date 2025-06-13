@@ -47,8 +47,11 @@ public class UserEntity {
     @Column(name = "blood_type", length = 5)
     private String bloodType;
 
-//    @Column(name = "component_type", length = 10)
-//    private String componentType;
+    @Column(name = "latitude")
+    private double latitude;
+
+    @Column(name= "longitude")
+    private double longitude;
 
     @Column(name = "gender", length = 10)
     private String gender;
@@ -64,18 +67,20 @@ public class UserEntity {
     @Column(name = "avatar")
     private String avatar;
 
+
+
     @ManyToOne
     @JoinColumn(name = "role_id") // khóa ngoại trong bảng user
     private RoleEntity roleEntity;
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private List<ArticleEntity> articleEntities;
 
-    @OneToMany(mappedBy = "requesterId")
+    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
     private List<EmergencyEntity> emergencyEntities;
 
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
     private List<BloodUnitEntity> bloodUnits;
 
 

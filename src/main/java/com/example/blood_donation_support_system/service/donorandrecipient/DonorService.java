@@ -1,4 +1,4 @@
-package com.example.blood_donation_support_system.service;
+package com.example.blood_donation_support_system.service.donorandrecipient;
 
 import com.example.blood_donation_support_system.request.RegisterDonorRequest;
 

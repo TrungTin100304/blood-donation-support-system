@@ -29,7 +29,9 @@ public class EmergencyEntity {
     @Column(name="status")
     private String status;
 
+
+
     @ManyToOne
     @JoinColumn(name="requester_id")
-    private UserEntity requesterId;
+    private UserEntity requester;
 }

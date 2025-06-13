@@ -3,7 +3,7 @@ package com.example.blood_donation_support_system.controller;
 import com.example.blood_donation_support_system.entity.EmergencyEntity;
 import com.example.blood_donation_support_system.request.EmergencyRequest;
 import com.example.blood_donation_support_system.response.BaseResponse;
-import com.example.blood_donation_support_system.service.EmergencyServiceImp;
+import com.example.blood_donation_support_system.service.donorandrecipient.EmergencyServiceImp;
 import com.example.blood_donation_support_system.utils.JwtHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

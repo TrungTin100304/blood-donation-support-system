@@ -1,19 +1,15 @@
-package com.example.blood_donation_support_system.service;
+package com.example.blood_donation_support_system.service.donorandrecipient;
 
-import com.example.blood_donation_support_system.entity.BloodInventoryEntity;
-import com.example.blood_donation_support_system.entity.BloodUnitEntity;
 import com.example.blood_donation_support_system.entity.UserEntity;
 import com.example.blood_donation_support_system.repository.BloodUnitRepository;
 import com.example.blood_donation_support_system.repository.HospitalRepository;
 import com.example.blood_donation_support_system.repository.UserRepository;
-import com.example.blood_donation_support_system.request.BloodInventoryRequest;
-import com.example.blood_donation_support_system.request.DonationHistoryRequest;
 import com.example.blood_donation_support_system.request.RegisterDonorRequest;
+import com.example.blood_donation_support_system.service.BloodInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -41,7 +37,7 @@ public class DonorServiceImp implements DonorService{
 
         if(userEntity.getBloodType() != null && userEntity.getReadyTime() != null){
             throw new IllegalArgumentException("User already has ready time");
-        }
+        }   
         List<String> valiBloodTypes = List.of("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-");
         if(!valiBloodTypes.contains(registerDonorRequest.getBloodType())){
             throw new IllegalArgumentException("Blood type is not valid");
