@@ -17,7 +17,7 @@ public class BloodInventoryController {
     @Autowired
     private BloodInventoryService bloodInventoryService;
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
     public ResponseEntity<BaseResponse> updateInventory(@Valid @RequestBody BloodInventoryRequest request) {
         BaseResponse response = new BaseResponse();

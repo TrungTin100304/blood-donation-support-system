@@ -115,6 +115,20 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
         entity.setBloodUnit(bloodUnit); // Gán BloodUnitEntity
         entity.setStatus(request.getStatus() != null ? request.getStatus() : BloodInventoryEntity.BloodInventoryStatus.In_Stock);
         entity.setLastUpdate(LocalDateTime.now());
+
+        // Cập nhật BloodUnitEntity
+        if (request.getQuantity() > 0) {
+            bloodUnit.setQuantity(request.getQuantity());
+        }
+        if (request.getReceivedDate() != null) {
+            bloodUnit.setReceivedDate(request.getReceivedDate());
+        }
+        if (request.getExpiryDate() != null) {
+            bloodUnit.setExpiryDate(request.getExpiryDate());
+        }
+        // Lưu BloodUnitEntity
+        bloodUnitRepository.save(bloodUnit);
+
         entity = bloodInventoryRepository.save(entity);
 
         return convertToDto(entity);

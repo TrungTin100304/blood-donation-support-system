@@ -28,42 +28,42 @@
 //}
 
 
-package com.example.blood_donation_support_system.entity;
+    package com.example.blood_donation_support_system.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
+    import jakarta.persistence.*;
+    import lombok.Data;
 
 
-import java.time.LocalDate;
+    import java.time.LocalDate;
 
-@Data
-@Entity
-@Table(name = "blood_unit")
-public class BloodUnitEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "blood_unit_id")
-    private Integer bloodUnitId;
+    @Data
+    @Entity
+    @Table(name = "blood_unit")
+    public class BloodUnitEntity {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "blood_unit_id")
+        private Integer bloodUnitId;
 
-    @Column(name = "blood_type", nullable = false, length = 3)
-    private String bloodType;
+        @Column(name = "blood_type", nullable = false, length = 3)
+        private String bloodType;
 
-    @Column(name = "component_type", length = 20) // Cho phép NULL như DB
-    private String componentType;
+        @Column(name = "component_type", length = 20) // Cho phép NULL như DB
+        private String componentType;
 
-    @Column(name = "quantity", nullable = false)
-    private double quantity; // Thêm quantity
+        @Column(name = "quantity", nullable = false)
+        private double quantity; // Thêm quantity
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "user_id")
+        private UserEntity user;
 
-    @Column(name = "received_date")
-    private LocalDate receivedDate;
+        @Column(name = "received_date")
+        private LocalDate receivedDate;
 
-    @Column(name = "expiry_date")
-    private LocalDate expiryDate; // Thêm expiry_date
+        @Column(name = "expiry_date")
+        private LocalDate expiryDate; // Thêm expiry_date
 
-    @OneToOne(mappedBy = "bloodUnit", cascade = CascadeType.ALL)
-    private BloodInventoryEntity bloodInventory; // Đổi tên biến
+        @OneToOne(mappedBy = "bloodUnit", cascade = CascadeType.ALL)
+        private BloodInventoryEntity bloodInventory; // Đổi tên biến
 }
