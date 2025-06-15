@@ -29,11 +29,11 @@ public class BloodInventoryController {
 
     @GetMapping("/hospital")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
-    public ResponseEntity<BaseResponse> getInventoryByHospital(@RequestParam("hospitalId") Integer hospitalId) {
+    public ResponseEntity<BaseResponse> getInventoryByHospital(@RequestParam("hospitalName") String hospitalName) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setMessage("Danh sách tồn kho máu theo bệnh viện");
-        response.setData(bloodInventoryService.getInventoryByHospital(hospitalId));
+        response.setData(bloodInventoryService.getInventoryByHospitalName(hospitalName));
         return ResponseEntity.ok(response);
     }
 

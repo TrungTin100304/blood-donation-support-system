@@ -141,6 +141,14 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
     }
 
     @Override
+    public List<BloodInventoryDto> getInventoryByHospitalName(String hospitalName) {
+//        HospitalEntity hospital = hospitalRepository.findByHospitalName(hospitalName)
+//                .orElseThrow(() -> new EntityNotFoundException("Hospital not found"));
+        List<BloodInventoryEntity> entities = bloodInventoryRepository.findByHospitalHospitalNameContainingIgnoreCase(hospitalName);
+        return entities.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
     public List<BloodInventoryDto> getInventoryByBloodType(String bloodType) {
         List<BloodInventoryEntity> entity = bloodInventoryRepository.findByBloodUnitBloodType(bloodType);
 //                .orElseThrow(() -> new EntityNotFoundException("Inventory not found for blood unit type: " + bloodType));

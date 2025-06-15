@@ -10,6 +10,8 @@ public interface BloodInventoryService {
 
     List<BloodInventoryDto> getInventoryByHospital(Integer hospitalId);
 
+    List<BloodInventoryDto> getInventoryByHospitalName(String hospitalName);
+
     List<BloodInventoryDto> getInventoryByBloodType(String bloodType);
 
 
