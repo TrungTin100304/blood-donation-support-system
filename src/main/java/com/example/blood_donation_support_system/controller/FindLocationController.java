@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/search")
 public class FindLocationController {
-    private static final double radiusKm = 2;
+    private static final double radiusKm = 10;
 
     @Autowired
     private FindLocationService findLocationService;

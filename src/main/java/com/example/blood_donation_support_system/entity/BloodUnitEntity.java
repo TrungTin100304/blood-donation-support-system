@@ -3,6 +3,9 @@ package com.example.blood_donation_support_system.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 @Data
 @Entity
 @Table(name = "blood_unit")
@@ -18,6 +21,15 @@ public class BloodUnitEntity {
 
     @Column(name = "component_type", nullable = false, length = 20)
     private String componentType;
+
+    @Column(name="quantity")
+    private BigDecimal quantity;
+
+    @Column(name="status")
+    private String status;
+
+    @Column(name = "received_date")
+    private LocalDate receviedDate;
 
     @ManyToOne
     @JoinColumn(name= "user_id")

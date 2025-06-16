@@ -1,6 +1,8 @@
 package com.example.blood_donation_support_system.service.donorandrecipient;
 
+import com.example.blood_donation_support_system.entity.BloodUnitEntity;
 import com.example.blood_donation_support_system.entity.UserEntity;
+import com.example.blood_donation_support_system.exception.LocationException;
 import com.example.blood_donation_support_system.repository.BloodUnitRepository;
 import com.example.blood_donation_support_system.repository.HospitalRepository;
 import com.example.blood_donation_support_system.repository.UserRepository;
@@ -43,8 +45,18 @@ public class DonorServiceImp implements DonorService{
             throw new IllegalArgumentException("Blood type is not valid");
         }
 
+        // ✅ Cập nhật latitude và longitude nếu có
+        if (registerDonorRequest.getLatitude() != 0 && registerDonorRequest.getLongitude() != 0) {
+            userEntity.setLatitude(registerDonorRequest.getLatitude());
+            userEntity.setLongitude(registerDonorRequest.getLongitude());
+        }else{
+            throw new LocationException("Latitude and Longitude must not be null");
+        }
+
         userEntity.setBloodType(registerDonorRequest.getBloodType());
         userEntity.setReadyTime(registerDonorRequest.getReadyTime());
+
+
         userRepository.save(userEntity);
 
 

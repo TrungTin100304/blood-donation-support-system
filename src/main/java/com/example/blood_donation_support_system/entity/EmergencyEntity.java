@@ -18,8 +18,6 @@ public class EmergencyEntity {
     private String componentType;
     @Column(name="quantity")
     private double quantity;
-    @Column(name="hospital_name")
-    private String hospitalName;
     @Column(name="note")
     private String note;
     @Column(name="needed_time")
@@ -34,4 +32,8 @@ public class EmergencyEntity {
     @ManyToOne
     @JoinColumn(name="requester_id")
     private UserEntity requester;
+
+    @ManyToOne
+    @JoinColumn(name= "hospital_id")
+    private HospitalEntity hospital;
 }
