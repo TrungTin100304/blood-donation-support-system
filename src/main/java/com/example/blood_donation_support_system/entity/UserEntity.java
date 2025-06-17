@@ -48,8 +48,8 @@ public class UserEntity {
     @Column(name = "blood_type", length = 5)
     private String bloodType;
 
-//    @Column(name = "component_type", length = 10)
-//    private String componentType;
+    @Column(name = "component_type", length = 10)
+    private String componentType;
 
     @Column(name = "gender", length = 10)
     private String gender;

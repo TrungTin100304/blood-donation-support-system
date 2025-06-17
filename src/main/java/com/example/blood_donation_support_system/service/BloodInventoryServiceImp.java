@@ -115,11 +115,8 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
         entity.setBloodUnit(bloodUnit); // Gán BloodUnitEntity
         entity.setStatus(request.getStatus() != null ? request.getStatus() : BloodInventoryEntity.BloodInventoryStatus.In_Stock);
         entity.setLastUpdate(LocalDateTime.now());
+        entity.setQuantity(request.getQuantity());
 
-        // Cập nhật BloodUnitEntity
-        if (request.getQuantity() > 0) {
-            bloodUnit.setQuantity(request.getQuantity());
-        }
         if (request.getReceivedDate() != null) {
             bloodUnit.setReceivedDate(request.getReceivedDate());
         }
@@ -165,11 +162,11 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
         BloodInventoryDto dto = new BloodInventoryDto();
         dto.setLastUpdate(entity.getLastUpdate());
         dto.setStatus(entity.getStatus());
+        dto.setQuantity(entity.getQuantity());
         if(entity.getBloodUnit() != null) {
             BloodUnitEntity bloodUnit = entity.getBloodUnit();
             dto.setBloodType(bloodUnit.getBloodType());
             dto.setComponentType(bloodUnit.getComponentType());
-            dto.setQuantity(bloodUnit.getQuantity());
             dto.setReceivedDate(bloodUnit.getReceivedDate());
             dto.setExpiryDate(bloodUnit.getExpiryDate());
         }

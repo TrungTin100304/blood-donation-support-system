@@ -7,7 +7,7 @@ spring:
     password: ${MYSQL_ROOT_PASSWORD:admin123}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
   security:
     oauth2:

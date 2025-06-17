@@ -71,6 +71,9 @@ public class BloodInventoryEntity {
     @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime lastUpdate;
 
+    @Column(name = "quantity", nullable = false)
+    private int quantity; // Thêm quantity
+
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'IN_STOCK'")

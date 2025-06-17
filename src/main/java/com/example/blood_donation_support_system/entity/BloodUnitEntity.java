@@ -52,8 +52,7 @@
         @Column(name = "component_type", length = 20) // Cho phép NULL như DB
         private String componentType;
 
-        @Column(name = "quantity", nullable = false)
-        private double quantity; // Thêm quantity
+
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "user_id")
