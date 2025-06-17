@@ -35,8 +35,9 @@
 
 
     import java.time.LocalDate;
+    import java.time.LocalDateTime;
 
-    @Data
+@Data
     @Entity
     @Table(name = "blood_unit")
     public class BloodUnitEntity {
@@ -59,10 +60,10 @@
         private UserEntity user;
 
         @Column(name = "received_date")
-        private LocalDate receivedDate;
+        private LocalDateTime receivedDate;
 
         @Column(name = "expiry_date")
-        private LocalDate expiryDate; // Thêm expiry_date
+        private LocalDateTime expiryDate; // Thêm expiry_date
 
         @OneToOne(mappedBy = "bloodUnit", cascade = CascadeType.ALL)
         private BloodInventoryEntity bloodInventory; // Đổi tên biến

@@ -4,6 +4,7 @@ import com.example.blood_donation_support_system.entity.BloodInventoryEntity;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class BloodInventoryRequest {
@@ -11,7 +12,7 @@ public class BloodInventoryRequest {
     private Integer bloodUnitId;
     private BloodInventoryEntity.BloodInventoryStatus status;
     private double quantity; // Thêm từ BloodUnitEntity
-    private LocalDate receivedDate; // Thêm từ BloodUnitEntity
-    private LocalDate expiryDate; // Thêm từ BloodUnitEntity
+    private LocalDateTime receivedDate; // Thêm từ BloodUnitEntity
+    private LocalDateTime expiryDate; // Thêm từ BloodUnitEntity
 
 }

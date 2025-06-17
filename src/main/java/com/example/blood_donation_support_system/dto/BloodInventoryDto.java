@@ -20,8 +20,8 @@ public class BloodInventoryDto {
 private String bloodType; // Thay bloodUnitId
     private String componentType; // Thay bloodUnitId
     private double quantity; // Thay bloodUnitId
-    private LocalDate receivedDate; // Thay bloodUnitId
-    private LocalDate expiryDate; // Thay bloodUnitId
+    private LocalDateTime receivedDate; // Thay bloodUnitId
+    private LocalDateTime expiryDate; // Thay bloodUnitId
     private String hospitalName; // Thay hospitalId
     private LocalDateTime lastUpdate; // Giữ lại
     private BloodInventoryEntity.BloodInventoryStatus status; // Thay inventoryId

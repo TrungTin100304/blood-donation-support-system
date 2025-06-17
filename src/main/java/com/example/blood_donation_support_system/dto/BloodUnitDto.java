@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -16,8 +17,8 @@ public class BloodUnitDto {
     private String bloodType;
     private String componentType;
     private double quantity;
-    private LocalDate receivedDate;
-    private LocalDate expiryDate;
+    private LocalDateTime receivedDate;
+    private LocalDateTime expiryDate;
     private Integer userId;
     private String userName;
     private Integer inventoryId;
