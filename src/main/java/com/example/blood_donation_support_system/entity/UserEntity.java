@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -54,12 +55,20 @@ public class UserEntity {
     private String gender;
 
     @Column(name = "year_of_birth")
-    private LocalDate yearOfBirth;
+    private Date yearOfBirth;
 
-    @Column(name = "ready_time")
+//    @Column(name = "ready_time")
+//    private LocalDateTime readyTime;
+//
+//    @Column(name = "status", length = 20, nullable = false)
+//    private String status = "ACTIVE"; // Giá trị mặc định
+//
 
+    @Column(name = "ready_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime readyTime;
 
+    @Column(name = "status", length = 20, nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'ACTIVE'")
+    private String status = "ACTIVE";
 
     @Column(name = "avatar")
     private String avatar;

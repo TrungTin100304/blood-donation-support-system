@@ -1,12 +1,10 @@
 package com.example.blood_donation_support_system.repository;
 
 import com.example.blood_donation_support_system.entity.UserEntity;
-import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +14,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     boolean existsByUserName(String UserName);
     Optional<UserEntity> findByEmail(String email);
     Optional<UserEntity> findByUserName(String userName);
+    List<UserEntity> findByUserNameContainingIgnoreCase(String userName);
     List<UserEntity> findByBloodTypeIn(List<String> bloodTypes);
     Optional<UserEntity> findByGooleId(String gooleId);
     Optional<UserEntity> findByUserId(int userId);
