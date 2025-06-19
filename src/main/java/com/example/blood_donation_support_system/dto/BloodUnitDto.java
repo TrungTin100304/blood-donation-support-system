@@ -16,13 +16,15 @@ public class BloodUnitDto {
     private Integer bloodUnitId;
     private String bloodType;
     private String componentType;
+    private int quantity;
     private LocalDateTime receivedDate;
     private LocalDateTime expiryDate;
     private Integer userId;
     private String userName;
     private Integer inventoryId;
     private BloodInventoryEntity.BloodInventoryStatus inventoryStatus;
+    private String statusUnit;
     private Integer hospitalId;
-    private String hospitalName;
+    private String name;
 
 }

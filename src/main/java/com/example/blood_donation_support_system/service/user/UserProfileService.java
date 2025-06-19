@@ -13,7 +13,7 @@ public interface UserProfileService {
 
     ResponseEntity<UserDto> getCurrentUserProfile(String userName);
 
-    ResponseEntity<String> addUserProfile(UserRequest userRequest, String role);
+//    ResponseEntity<String> addUserProfile(UserRequest userRequest, String role);
 
     ResponseEntity<String> deleteUserProfile(String  userName);
 

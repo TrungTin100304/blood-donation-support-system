@@ -22,8 +22,9 @@ private String bloodType; // Thay bloodUnitId
     private int quantity; // Thay bloodUnitId
     private LocalDateTime receivedDate; // Thay bloodUnitId
     private LocalDateTime expiryDate; // Thay bloodUnitId
-    private String hospitalName; // Thay hospitalId
+    private String name; // Thay hospitalId
     private LocalDateTime lastUpdate; // Giữ lại
+    private String statusUnit;
     private BloodInventoryEntity.BloodInventoryStatus status; // Thay inventoryId
 
 }

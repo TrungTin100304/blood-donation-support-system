@@ -1,5 +1,6 @@
 package com.example.blood_donation_support_system.controller;
 
+import com.example.blood_donation_support_system.dto.BloodQuantityByTypeDTO;
 import com.example.blood_donation_support_system.request.BloodInventoryRequest;
 import com.example.blood_donation_support_system.response.BaseResponse;
 import com.example.blood_donation_support_system.service.BloodInventoryService;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventory")
@@ -29,11 +32,11 @@ public class BloodInventoryController {
 
     @GetMapping("/hospital")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
-    public ResponseEntity<BaseResponse> getInventoryByHospital(@RequestParam("hospitalName") String hospitalName) {
+    public ResponseEntity<BaseResponse> getInventoryByHospital(@RequestParam("name") String name) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setMessage("Danh sách tồn kho máu theo bệnh viện");
-        response.setData(bloodInventoryService.getInventoryByHospitalName(hospitalName));
+        response.setData(bloodInventoryService.getInventoryByHospitalName(name));
         return ResponseEntity.ok(response);
     }
 
@@ -58,4 +61,15 @@ public class BloodInventoryController {
         response.setData(bloodInventoryService.getAllInventory());
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/blood-quantity-by-type")
+    public ResponseEntity<BaseResponse> getBloodQuantityByType() {
+//        List<BloodQuantityByTypeDTO> result = bloodInventoryService.getBloodQuantityByType();
+//        return ResponseEntity.ok(result);
+        BaseResponse response = new BaseResponse();
+        response.setCode(200);
+        response.setMessage("Danh sách tất cả máu trong kho theo nhóm");
+        response.setData(bloodInventoryService.getBloodQuantityByType());
+        return ResponseEntity.ok(response);
+    }
+
 }

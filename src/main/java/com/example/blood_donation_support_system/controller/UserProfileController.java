@@ -69,14 +69,14 @@ public class UserProfileController {
         return userProfileService.getCurrentUserProfile(userName);
     }
 
-    // API để thêm mới hồ sơ người dùng
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF') or hasRole('MEMBER')")
-    @PostMapping("/add")
-    public ResponseEntity<String> addUserProfile(
-            @RequestBody UserRequest userRequest,
-            @RequestParam String role) {
-        return userProfileService.addUserProfile(userRequest, role);
-    }
+//    // API để thêm mới hồ sơ người dùng
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF') or hasRole('MEMBER')")
+//    @PostMapping("/add")
+//    public ResponseEntity<String> addUserProfile(
+//            @RequestBody UserRequest userRequest,
+//            @RequestParam String role) {
+//        return userProfileService.addUserProfile(userRequest, role);
+//    }
 
 
     // API để xóa hồ sơ người dùng

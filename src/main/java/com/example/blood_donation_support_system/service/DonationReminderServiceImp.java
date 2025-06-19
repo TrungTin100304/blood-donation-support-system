@@ -1,10 +1,8 @@
 package com.example.blood_donation_support_system.service;
 
 import com.example.blood_donation_support_system.dto.UserDto;
-import com.example.blood_donation_support_system.entity.BloodInventoryEntity;
-import com.example.blood_donation_support_system.entity.BloodUnitEntity;
-import com.example.blood_donation_support_system.entity.DonationHistoryEntity;
-import com.example.blood_donation_support_system.entity.UserEntity;
+import com.example.blood_donation_support_system.entity.*;
+import com.example.blood_donation_support_system.repository.BloodInventoryRepository;
 import com.example.blood_donation_support_system.repository.BloodUnitRepository;
 import com.example.blood_donation_support_system.repository.DonationHistoryRepository;
 import com.example.blood_donation_support_system.repository.UserRepository;
@@ -50,6 +48,7 @@ public class DonationReminderServiceImp implements DonationReminderService {
     @Autowired
     private BloodUnitRepository bloodUnitRepository;
 
+
     private static final long RECOVERY_DAYS = 56;
     private static final int PAGE_SIZE = 100;
 
@@ -60,6 +59,9 @@ public class DonationReminderServiceImp implements DonationReminderService {
 //        if (!checkEligibility(request.getUserId() , request.getDonationDate())) {
 //            throw new IllegalArgumentException("User is not eligible...");
 //        }
+
+        HospitalEntity hospitalEntity = new HospitalEntity();
+        BloodInventoryEntity bloodInventoryEntity = new BloodInventoryEntity();
         // Tạo BloodUnitEntity
         BloodUnitEntity bloodUnit = new BloodUnitEntity();
         bloodUnit.setBloodType(user.getBloodType());
@@ -83,43 +85,15 @@ public class DonationReminderServiceImp implements DonationReminderService {
         BloodInventoryRequest inventoryRequest = new BloodInventoryRequest();
         inventoryRequest.setHospitalId(1); // Bệnh viện mặc định, cần điều chỉnh
         inventoryRequest.setBloodUnitId(bloodUnit.getBloodUnitId());
-        inventoryRequest.setQuantity(request.getQuantity());
-        inventoryRequest.setStatus(BloodInventoryEntity.BloodInventoryStatus.In_Stock);
+//        inventoryRequest.setQuantity(bloodInventoryEntity.getQuantity() + 1);
+        inventoryRequest.setStatus(BloodInventoryEntity.BloodInventoryStatus.IN_STOCK);
         inventoryRequest.setReceivedDate(request.getDonationDate());
         inventoryRequest.setExpiryDate(request.getDonationDate().plusDays(42));
         bloodInventoryService.updateBloodInventory(inventoryRequest);
 
         return donation;
     }
-//    public DonationHistoryEntity recordDonation(DonationHistoryRequest request) {
-//        UserEntity user = userRepository.findById(request.getUserId())
-//                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + request.getUserId()));
-//        LocalDateTime donationDate = request.getDonationDate();
-//        if (!checkEligibility(request.getUserId(), donationDate)) {
-//            throw new IllegalArgumentException("User is not eligible to donate yet...");
-//        }
-//        DonationHistoryEntity donation = new DonationHistoryEntity();
-//        donation.setUser(user);
-//        donation.setDonationDate(request.getDonationDate());
-//        Integer bloodUnitId = request.getBloodUnit().getBloodUnitId();
-//        if (bloodUnitId == null) {
-//            // Tạo mới BloodUnitEntity nếu chưa có
-//            BloodUnitEntity bloodUnit = new BloodUnitEntity();
-//            bloodUnit.setBloodType(user.getBloodType());
-//            bloodUnit.setReceivedDate(donationDate);
-//            bloodUnit.setExpiryDate(donationDate.plusDays(42)); // Ví dụ 42 ngày cho RBC
-//            bloodUnit.setUser(user);
-//            bloodUnit = bloodUnitRepository.save(bloodUnit);
-//            donation.setBloodUnit(bloodUnit); // Sử dụng quan hệ đối tượng
-//        } else {
-//            BloodUnitEntity bloodUnit = bloodUnitRepository.findById(bloodUnitId)
-//                    .orElseThrow(() -> new IllegalArgumentException("Blood unit not found with id: " + bloodUnitId));
-//            donation.setBloodUnit(bloodUnit);
-//        }
-//        donation.setRecoveryTime((int) RECOVERY_DAYS);
-//        donation.setRecoveryStatus("RECOVERING");
-//        return donationHistoryRepository.save(donation);
-//    }
+
 
     @Override
     public boolean checkEligibility(Integer userId, LocalDateTime donationDate) {

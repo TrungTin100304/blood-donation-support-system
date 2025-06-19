@@ -61,35 +61,35 @@ public class UserProfileServiceImp implements UserProfileService {
         return ResponseEntity.ok(userDto);
     }
 
-    // chua fix add
-    @Override
-    public ResponseEntity<String> addUserProfile(UserRequest userRequest, String role) {
-        try {
-            if (userRepository.findByUserName(userRequest.getUserName()) != null) {
-                return ResponseEntity.badRequest().body("Username already exists");
-            }
-
-
-            Optional<RoleEntity> roleEntityOpt = roleRepository.findByRoleName(role);
-            if (!roleEntityOpt.isPresent()) {
-                return ResponseEntity.badRequest().body("Role not found");
-            }
-
-            RoleEntity roleEntity = roleEntityOpt.get();
-            UserEntity userEntity = new UserEntity();
-            userEntity.setUserName(userRequest.getUserName()); // Sử dụng email làm username tạm thời
-            userEntity.setPassword(userRequest.getPassword()); // Sử dụng phoneNumber làm password tạm thời
-            userEntity.setFullName(userRequest.getFullName()); // Sử dụng address làm fullName tạm thời
-            userEntity.setEmail(userRequest.getEmail());
-            userEntity.setPhoneNumber(userRequest.getPhoneNumber());
-            userEntity.setAddress(userRequest.getAddress());
-//            userEntity.setRoleEntity(roleEntity.getRoleID());
-            userRepository.save(userEntity);
-            return ResponseEntity.ok("User added successfully");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to add user: " + e.getMessage());
-        }
-    }
+//    // chua fix add
+//    @Override
+//    public ResponseEntity<String> addUserProfile(UserRequest userRequest, String role) {
+//        try {
+//            if (userRepository.findByUserName(userRequest.getUserName()) != null) {
+//                return ResponseEntity.badRequest().body("Username already exists");
+//            }
+//
+//
+//            Optional<RoleEntity> roleEntityOpt = roleRepository.findByRoleName(role);
+//            if (!roleEntityOpt.isPresent()) {
+//                return ResponseEntity.badRequest().body("Role not found");
+//            }
+//
+//            RoleEntity roleEntity = roleEntityOpt.get();
+//            UserEntity userEntity = new UserEntity();
+//            userEntity.setUserName(userRequest.getUserName()); // Sử dụng email làm username tạm thời
+//            userEntity.setPassword(userRequest.getPassword()); // Sử dụng phoneNumber làm password tạm thời
+//            userEntity.setFullName(userRequest.getFullName()); // Sử dụng address làm fullName tạm thời
+//            userEntity.setEmail(userRequest.getEmail());
+//            userEntity.setPhoneNumber(userRequest.getPhoneNumber());
+//            userEntity.setAddress(userRequest.getAddress());
+////            userEntity.setRoleEntity(roleEntity.getRoleID());
+//            userRepository.save(userEntity);
+//            return ResponseEntity.ok("User added successfully");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("Failed to add user: " + e.getMessage());
+//        }
+//    }
 
     @Override
     public ResponseEntity<String> deleteUserProfile(String userName) {

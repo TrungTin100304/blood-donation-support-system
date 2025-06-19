@@ -52,6 +52,12 @@
         @Column(name = "component_type", length = 20) // Cho phép NULL như DB
         private String componentType;
 
+    @Column(name = "quantity", nullable = false)
+    private int quantity; // Thêm quantity
+
+
+    @Column(name = "status", nullable = false)
+    private String statusUnit;
 
 
         @ManyToOne(fetch = FetchType.LAZY)

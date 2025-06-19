@@ -72,10 +72,12 @@
 package com.example.blood_donation_support_system.service;
 
 import com.example.blood_donation_support_system.dto.BloodInventoryDto;
+import com.example.blood_donation_support_system.dto.BloodQuantityByTypeDTO;
 import com.example.blood_donation_support_system.entity.BloodInventoryEntity;
 import com.example.blood_donation_support_system.entity.BloodUnitEntity;
 import com.example.blood_donation_support_system.entity.HospitalEntity;
 import com.example.blood_donation_support_system.repository.BloodInventoryRepository;
+import com.example.blood_donation_support_system.repository.BloodQuantityByTypeRepository;
 import com.example.blood_donation_support_system.repository.BloodUnitRepository;
 import com.example.blood_donation_support_system.repository.HospitalRepository;
 import com.example.blood_donation_support_system.request.BloodInventoryRequest;
@@ -86,6 +88,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -97,25 +100,39 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
     @Autowired
     private BloodUnitRepository bloodUnitRepository; // Thêm repository
 
+
+
     @Override
     public BloodInventoryDto updateBloodInventory(BloodInventoryRequest request) {
-        // Lấy HospitalEntity
         HospitalEntity hospital = hospitalRepository.findById(request.getHospitalId())
                 .orElseThrow(() -> new EntityNotFoundException("Hospital not found with ID: " + request.getHospitalId()));
 
-        // Lấy BloodUnitEntity
         BloodUnitEntity bloodUnit = bloodUnitRepository.findById(request.getBloodUnitId())
                 .orElseThrow(() -> new EntityNotFoundException("Blood unit not found with ID: " + request.getBloodUnitId()));
 
-        // Tìm hoặc tạo mới BloodInventoryEntity
-        BloodInventoryEntity entity = bloodInventoryRepository.findByBloodUnitBloodUnitId(request.getBloodUnitId())
-                .orElse(new BloodInventoryEntity());
+        BloodInventoryEntity entity;
+        Optional<BloodInventoryEntity> optionalEntity = bloodInventoryRepository.findByBloodUnitBloodUnitId(request.getBloodUnitId());
 
-        entity.setHospital(hospital);
-        entity.setBloodUnit(bloodUnit); // Gán BloodUnitEntity
-        entity.setStatus(request.getStatus() != null ? request.getStatus() : BloodInventoryEntity.BloodInventoryStatus.In_Stock);
-        entity.setLastUpdate(LocalDateTime.now());
-        entity.setQuantity(request.getQuantity());
+        if (optionalEntity.isPresent()) {
+            entity = optionalEntity.get();
+//            entity.setQuantity(request.getQuantity()); // cập nhật số lượng
+        } else {
+            entity = new BloodInventoryEntity();
+            entity.setBloodUnit(bloodUnit);
+            entity.setHospital(hospital);
+//            entity.setQuantity(request.getQuantity()); // tạo mới phải set
+            entity.setStatus(request.getStatus() != null ? request.getStatus() : BloodInventoryEntity.BloodInventoryStatus.IN_STOCK);
+            entity.setLastUpdate(LocalDateTime.now());
+        }
+
+        // Chuyển đổi chuỗi sang enum
+        if (request.getStatus() != null) {
+            try {
+                entity.setStatus(BloodInventoryEntity.BloodInventoryStatus.valueOf(String.valueOf(request.getStatus())));
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid status value: " + request.getStatus() + ". Allowed values are IN_STOCK, USED, EXPIRED");
+            }
+        }
 
         if (request.getReceivedDate() != null) {
             bloodUnit.setReceivedDate(request.getReceivedDate());
@@ -123,13 +140,13 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
         if (request.getExpiryDate() != null) {
             bloodUnit.setExpiryDate(request.getExpiryDate());
         }
-        // Lưu BloodUnitEntity
-        bloodUnitRepository.save(bloodUnit);
 
-        entity = bloodInventoryRepository.save(entity);
+        bloodUnitRepository.save(bloodUnit);
+        bloodInventoryRepository.save(entity);
 
         return convertToDto(entity);
     }
+
 
     @Override
     public List<BloodInventoryDto> getInventoryByHospital(Integer hospitalId) {
@@ -138,10 +155,10 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
     }
 
     @Override
-    public List<BloodInventoryDto> getInventoryByHospitalName(String hospitalName) {
+    public List<BloodInventoryDto> getInventoryByHospitalName(String name) {
 //        HospitalEntity hospital = hospitalRepository.findByHospitalName(hospitalName)
 //                .orElseThrow(() -> new EntityNotFoundException("Hospital not found"));
-        List<BloodInventoryEntity> entities = bloodInventoryRepository.findByHospitalHospitalNameContainingIgnoreCase(hospitalName);
+        List<BloodInventoryEntity> entities = bloodInventoryRepository.findByHospitalNameContainingIgnoreCase(name);
         return entities.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
@@ -158,20 +175,33 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
         return entities.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<BloodQuantityByTypeDTO> getBloodQuantityByType() {
+        List<BloodQuantityByTypeRepository> projections = bloodInventoryRepository.findBloodQuantityByType();
+        return projections.stream()
+                .map(proj -> new BloodQuantityByTypeDTO(
+                        proj.getBloodType(),
+                        proj.getTotalQuantity() != null ? proj.getTotalQuantity() : 0
+                ))
+                .collect(Collectors.toList());
+    }
+
     private BloodInventoryDto convertToDto(BloodInventoryEntity entity) {
         BloodInventoryDto dto = new BloodInventoryDto();
         dto.setLastUpdate(entity.getLastUpdate());
         dto.setStatus(entity.getStatus());
-        dto.setQuantity(entity.getQuantity());
+//        dto.setQuantity(entity.getQuantity());
         if(entity.getBloodUnit() != null) {
             BloodUnitEntity bloodUnit = entity.getBloodUnit();
+            dto.setQuantity(bloodUnit.getQuantity());
             dto.setBloodType(bloodUnit.getBloodType());
             dto.setComponentType(bloodUnit.getComponentType());
             dto.setReceivedDate(bloodUnit.getReceivedDate());
+            dto.setStatusUnit(bloodUnit.getStatusUnit());
             dto.setExpiryDate(bloodUnit.getExpiryDate());
         }
         if(entity.getHospital() != null) {
-            dto.setHospitalName(entity.getHospital().getHospitalName());
+            dto.setName(entity.getHospital().getName());
         }
         return dto;
     }

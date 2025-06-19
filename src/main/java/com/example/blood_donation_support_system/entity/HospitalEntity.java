@@ -14,8 +14,8 @@ public class HospitalEntity {
     @Column(name = "hospital_id")
     private Integer hospitalId;
 
-    @Column(name = "hospital_name", nullable = false)
-    private String hospitalName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "address")
     private String address;

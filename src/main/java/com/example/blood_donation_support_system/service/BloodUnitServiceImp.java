@@ -26,7 +26,8 @@ public class BloodUnitServiceImp implements BloodUnitService {
             dto.setBloodUnitId(entity.getBloodUnitId());
             dto.setBloodType(entity.getBloodType());
             dto.setComponentType(entity.getComponentType());
-
+            dto.setStatusUnit(entity.getStatusUnit());
+            dto.setQuantity(entity.getQuantity());
             dto.setReceivedDate(entity.getReceivedDate());
             dto.setExpiryDate(entity.getExpiryDate());
             if (entity.getUser() != null) {
@@ -38,7 +39,7 @@ public class BloodUnitServiceImp implements BloodUnitService {
                 dto.setInventoryStatus(entity.getBloodInventory().getStatus());
                 if (entity.getBloodInventory().getHospital() != null) {
                     dto.setHospitalId(entity.getBloodInventory().getHospital().getHospitalId());
-                    dto.setHospitalName(entity.getBloodInventory().getHospital().getHospitalName());
+                    dto.setName(entity.getBloodInventory().getHospital().getName());
                 }
             }
             return dto;
