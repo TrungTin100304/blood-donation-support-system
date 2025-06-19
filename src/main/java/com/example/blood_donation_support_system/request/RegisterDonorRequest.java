@@ -15,4 +15,7 @@ public class RegisterDonorRequest {
     private LocalDateTime readyTime;
     private Integer hospitalId;
     private String componentType;
+    private double latitude;
+    private double longitude;
+    private String note;
 }

@@ -6,8 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Data
 @AllArgsConstructor
@@ -22,7 +23,8 @@ public class UserDto {
     private String bloodType;
     private LocalDateTime readyTime;
     private String gender;
-    private Date yearOfBirth;
+    private LocalDate yearOfBirth;
+    private int userId;
     private String status;
 
 }

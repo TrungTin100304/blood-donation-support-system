@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BloodInventoryDto {
+    private Integer inventoryId;
+    private Integer bloodUnitId;
+    private Integer hospitalId;
 //    private Integer inventoryId;
 //    private Integer bloodUnitId;
 //    private Integer hospitalId;

@@ -48,44 +48,53 @@ public class UserEntity {
     @Column(name = "blood_type", length = 5)
     private String bloodType;
 
-    @Column(name = "component_type", length = 10)
-    private String componentType;
+    @Column(name = "latitude")
+    private double latitude;
+
+    @Column(name= "longitude")
+    private double longitude;
 
     @Column(name = "gender", length = 10)
     private String gender;
 
     @Column(name = "year_of_birth")
-    private Date yearOfBirth;
+    private LocalDate yearOfBirth;
 
-//    @Column(name = "ready_time")
-//    private LocalDateTime readyTime;
-//
-//    @Column(name = "status", length = 20, nullable = false)
-//    private String status = "ACTIVE"; // Giá trị mặc định
-//
+    @Column(name = "ready_time")
 
-    @Column(name = "ready_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime readyTime;
 
-    @Column(name = "status", length = 20, nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'ACTIVE'")
-    private String status = "ACTIVE";
 
     @Column(name = "avatar")
     private String avatar;
+
+    @Column(name = "note", columnDefinition = "TEXT")
+    private String note;
+
+
 
     @ManyToOne
     @JoinColumn(name = "role_id") // khóa ngoại trong bảng user
     private RoleEntity roleEntity;
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private List<ArticleEntity> articleEntities;
 
-    @OneToMany(mappedBy = "requesterId")
+    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
     private List<EmergencyEntity> emergencyEntities;
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
     private List<BloodUnitEntity> bloodUnits;
 
 
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    private List<DonationRequestEntity> donationRequestEntities;
+
+
+    @OneToMany(mappedBy = "donor", cascade = CascadeType.ALL)
+    private List<AppointmentEntity> donatedAppointments;
+
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
+    private List<AppointmentEntity> receivedAppointmentEntities;
 }

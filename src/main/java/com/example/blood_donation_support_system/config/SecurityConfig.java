@@ -27,6 +27,9 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> {
+                    //FindLoaction
+                    request.requestMatchers(HttpMethod.GET, "/api/search/**").permitAll();
+
                     // giúp định nghĩa quyền truy cập cho các link
                     request.requestMatchers(HttpMethod.POST, "/api/updateProfile/update").permitAll();
                     // getUser
@@ -38,7 +41,9 @@ public class SecurityConfig {
                     request.requestMatchers(HttpMethod.POST, "/api/donor/register").hasAnyRole("MEMBER", "ADMIN","STAFF");
 
                     request.requestMatchers(HttpMethod.GET, "/api/matching/**").hasAnyRole("MEMBER", "ADMIN","STAFF");
-                    request.requestMatchers(HttpMethod.GET, "/api/emergency/**").hasAnyRole("MEMBER", "ADMIN","STAFF");
+
+                    request.requestMatchers(HttpMethod.POST, "/api/emergency-requests").hasAnyRole("ADMIN","STAFF");
+
                     request.requestMatchers( "/api/article/**").permitAll();
                     request.requestMatchers(HttpMethod.POST, "/api/donor/send-email").permitAll();
 
@@ -47,6 +52,7 @@ public class SecurityConfig {
                     request.requestMatchers( "/api/profile/**").permitAll();
                     request.requestMatchers( "/api/blood-units/**").permitAll();
 
+                    request.requestMatchers(HttpMethod.GET, "/api/search/**").permitAll();
 
 //                    request.requestMatchers(HttpMethod.POST,"/api/inventory/update").hasAnyRole("ADMIN", "STAFF","MEMBER");
 //                    request.requestMatchers(HttpMethod.GET,"/api/inventory/**").hasAnyRole("ADMIN", "STAFF", "MEMBER");

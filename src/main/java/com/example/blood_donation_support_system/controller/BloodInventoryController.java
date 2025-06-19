@@ -1,7 +1,9 @@
 package com.example.blood_donation_support_system.controller;
 
+import com.example.blood_donation_support_system.dto.SimpleBloodInventoryDto;
 import com.example.blood_donation_support_system.dto.BloodQuantityByTypeDTO;
 import com.example.blood_donation_support_system.request.BloodInventoryRequest;
+import com.example.blood_donation_support_system.request.BloodUnitRequest;
 import com.example.blood_donation_support_system.response.BaseResponse;
 import com.example.blood_donation_support_system.service.BloodInventoryService;
 import jakarta.validation.Valid;
@@ -71,5 +73,4 @@ public class BloodInventoryController {
         response.setData(bloodInventoryService.getBloodQuantityByType());
         return ResponseEntity.ok(response);
     }
-
 }

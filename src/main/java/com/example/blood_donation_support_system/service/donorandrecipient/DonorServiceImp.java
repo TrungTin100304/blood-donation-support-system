@@ -1,25 +1,30 @@
-package com.example.blood_donation_support_system.service;
+package com.example.blood_donation_support_system.service.donorandrecipient;
 
-import com.example.blood_donation_support_system.entity.BloodInventoryEntity;
 import com.example.blood_donation_support_system.entity.BloodUnitEntity;
 import com.example.blood_donation_support_system.entity.UserEntity;
+import com.example.blood_donation_support_system.exception.LocationException;
 import com.example.blood_donation_support_system.repository.BloodUnitRepository;
 import com.example.blood_donation_support_system.repository.HospitalRepository;
 import com.example.blood_donation_support_system.repository.UserRepository;
-import com.example.blood_donation_support_system.request.BloodInventoryRequest;
-import com.example.blood_donation_support_system.request.DonationHistoryRequest;
 import com.example.blood_donation_support_system.request.RegisterDonorRequest;
+<<<<<<< HEAD:src/main/java/com/example/blood_donation_support_system/service/DonorServiceImp.java
 import com.example.blood_donation_support_system.utils.JwtHelper;
 import jakarta.mail.internet.MimeMessage;
+=======
+import com.example.blood_donation_support_system.service.BloodInventoryService;
+>>>>>>> df895a124e782ee60e24d01c3b3c9af88c789c75:src/main/java/com/example/blood_donation_support_system/service/donorandrecipient/DonorServiceImp.java
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 
+<<<<<<< HEAD:src/main/java/com/example/blood_donation_support_system/service/DonorServiceImp.java
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+=======
+>>>>>>> df895a124e782ee60e24d01c3b3c9af88c789c75:src/main/java/com/example/blood_donation_support_system/service/donorandrecipient/DonorServiceImp.java
 import java.util.List;
 
 
@@ -53,14 +58,26 @@ public class DonorServiceImp implements DonorService{
 
         if(userEntity.getBloodType() != null && userEntity.getReadyTime() != null){
             throw new IllegalArgumentException("User already has ready time");
-        }
+        }   
         List<String> valiBloodTypes = List.of("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-");
         if(!valiBloodTypes.contains(registerDonorRequest.getBloodType())){
             throw new IllegalArgumentException("Blood type is not valid");
         }
 
+        // ✅ Cập nhật latitude và longitude nếu có
+        if (registerDonorRequest.getLatitude() != 0 && registerDonorRequest.getLongitude() != 0) {
+            userEntity.setLatitude(registerDonorRequest.getLatitude());
+            userEntity.setLongitude(registerDonorRequest.getLongitude());
+        }else{
+            throw new LocationException("Latitude and Longitude must not be null");
+        }
+
+
         userEntity.setBloodType(registerDonorRequest.getBloodType());
         userEntity.setReadyTime(registerDonorRequest.getReadyTime());
+        userEntity.setNote(registerDonorRequest.getNote());
+
+
         userRepository.save(userEntity);
 
 
