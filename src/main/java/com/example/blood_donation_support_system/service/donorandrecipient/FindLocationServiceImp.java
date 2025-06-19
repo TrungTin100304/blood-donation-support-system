@@ -7,15 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class FindLocationServiceImp implements FindLocationService {
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public List<UserDto> findNearByDonors(double lat, double lng, double radiusKm) {
-        List<UserEntity> users = userRepository.findNearbyDonors(lat, lng, radiusKm);
+    public List<UserDto> findNearByDonors(double lat, double lng, double radiusKm, String bloodType) {
+        List<String> compatibleBloodType = getCompatibleBloodTypesForWholeBlood(bloodType);
+
+        List<UserEntity> users = userRepository.findNearbyDonors(lat, lng, radiusKm, compatibleBloodType);
         List<UserDto> userDtos = new ArrayList<>();
         for (UserEntity user : users) {
             UserDto userDto = converToDto(user);
@@ -24,13 +29,26 @@ public class FindLocationServiceImp implements FindLocationService {
         return userDtos;
     }
 
-    @Override
-    public List<UserEntity> findNearbyRecipients(double lat, double lng, double radiusKm) {
-        return userRepository.findNearbyRecipients(lat, lng, radiusKm);
+    private List<String> getCompatibleBloodTypesForWholeBlood(String bloodType){
+        Map<String, List<String>> map = new HashMap<>();
+        map.put("A+", List.of("A+", "A-", "O+", "O-"));
+        map.put("A-", List.of("A-", "O-"));
+        map.put("B+", List.of("B+", "B-", "O+", "O-"));
+        map.put("B-", List.of("B-", "O-"));
+        map.put("AB+", List.of("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"));
+        map.put("AB-", List.of("A-", "B-", "AB-", "O-"));
+        map.put("O+", List.of("O+", "O-"));
+        map.put("O-", List.of("O-"));
+        map.put("", List.of(""));
+        return map.getOrDefault(bloodType, new ArrayList<>());
+
     }
+
+
 
     private UserDto converToDto(UserEntity userEntity) {
         UserDto userDto = new UserDto();
+        userDto.setUserId(userEntity.getUserId());
         userDto.setName(userEntity.getFullName());
         userDto.setPhoneNumber(userEntity.getPhoneNumber());
         userDto.setEmail(userEntity.getEmail());

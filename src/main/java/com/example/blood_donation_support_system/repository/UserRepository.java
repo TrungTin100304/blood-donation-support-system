@@ -28,44 +28,49 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     // Người hiến máu
     @Query(value = """
-                SELECT u.*,\s
-                (6371 * acos(
-                cos(radians(:lat)) * cos(radians(u.latitude)) *
-                cos(radians(u.longitude) - radians(:lng)) +
-                sin(radians(:lat)) * sin(radians(u.latitude))
-                )) AS distance
-                FROM user u
-                JOIN donation_request dr ON u.user_id = dr.user_id
-                WHERE u.latitude IS NOT NULL\s
-                AND u.longitude IS NOT NULL
-                AND	u.ready_time IS NOT NULL
-                AND dr.status = 'Pending'
-                HAVING distance <= :maxDistance
-                ORDER BY distance
-            """, nativeQuery = true)
+    SELECT * FROM (
+        SELECT u.*,
+        (6371 * acos(
+            cos(radians(:lat)) * cos(radians(u.latitude)) *
+            cos(radians(u.longitude) - radians(:lng)) +
+            sin(radians(:lat)) * sin(radians(u.latitude))
+        )) AS distance
+        FROM user u
+        JOIN role r ON u.role_id = r.role_id
+        WHERE u.latitude IS NOT NULL
+          AND u.longitude IS NOT NULL
+          AND u.ready_time IS NOT NULL
+          AND r.role_name = 'ROLE_MEMBER'
+          AND u.blood_type IN (:bloodType)
+    ) AS subquery
+    WHERE subquery.distance <= :maxDistance
+    ORDER BY subquery.distance
+    """, nativeQuery = true)
     List<UserEntity> findNearbyDonors(
             @Param("lat") double lat,
             @Param("lng") double lng,
-            @Param("maxDistance") double maxDistance
+            @Param("maxDistance") double maxDistance,
+            @Param("bloodType") List<String> bloodType
     );
 
-    // Người cần máu
-    @Query(value = """
-            SELECT u.*,
-                       (6371 * acos(
-                           cos(radians(:lat)) * cos(radians(u.latitude)) *
-                           cos(radians(u.longitude) - radians(:lng)) +
-                           sin(radians(:lat)) * sin(radians(u.latitude))
-                       )) AS distance
-                FROM user u
-                JOIN emergency_request er ON u.user_id  = er.requester_id
-                WHERE u.latitude IS NOT NULL AND u.longitude IS NOT NULL
-                HAVING distance <= :maxDistance
-                ORDER BY distance
-        """, nativeQuery = true)
-    List<UserEntity> findNearbyRecipients(
-            @Param("lat") double lat,
-            @Param("lng") double lng,
-            @Param("maxDistance") double maxDistance
-    );
+
+//    // Người cần máu
+//    @Query(value = """
+//            SELECT u.*,
+//                       (6371 * acos(
+//                           cos(radians(:lat)) * cos(radians(u.latitude)) *
+//                           cos(radians(u.longitude) - radians(:lng)) +
+//                           sin(radians(:lat)) * sin(radians(u.latitude))
+//                       )) AS distance
+//                FROM user u
+//                JOIN emergency_request er ON u.user_id  = er.requester_id
+//                WHERE u.latitude IS NOT NULL AND u.longitude IS NOT NULL
+//                HAVING distance <= :maxDistance
+//                ORDER BY distance
+//        """, nativeQuery = true)
+//    List<UserEntity> findNearbyRecipients(
+//            @Param("lat") double lat,
+//            @Param("lng") double lng,
+//            @Param("maxDistance") double maxDistance
+//    );
 }

@@ -23,7 +23,7 @@ public class BloodUnitEntity {
     private String componentType;
 
     @Column(name="quantity")
-    private BigDecimal quantity;
+    private Integer quantity;
 
     @Column(name="status")
     private String status;

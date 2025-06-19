@@ -1,7 +1,0 @@
-package com.example.blood_donation_support_system.service;
-
-import com.example.blood_donation_support_system.request.EmergencyRequest;
-
-public interface EmergencyService {
-    void handleRequest(EmergencyRequest request);
-}

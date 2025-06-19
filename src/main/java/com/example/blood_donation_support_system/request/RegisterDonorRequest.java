@@ -17,4 +17,5 @@ public class RegisterDonorRequest {
     private String componentType;
     private double latitude;
     private double longitude;
+    private String note;
 }

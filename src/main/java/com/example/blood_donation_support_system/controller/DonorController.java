@@ -122,11 +122,5 @@ public class DonorController {
             return handleError("Failed to send test email: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
-
-
-
 }
 

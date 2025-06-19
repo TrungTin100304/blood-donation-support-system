@@ -4,4 +4,5 @@ public class BloodUnitNotFoundException extends RuntimeException {
     public BloodUnitNotFoundException(String message) {
         super(message);
     }
+
 }

@@ -53,8 +53,10 @@ public class DonorServiceImp implements DonorService{
             throw new LocationException("Latitude and Longitude must not be null");
         }
 
+
         userEntity.setBloodType(registerDonorRequest.getBloodType());
         userEntity.setReadyTime(registerDonorRequest.getReadyTime());
+        userEntity.setNote(registerDonorRequest.getNote());
 
 
         userRepository.save(userEntity);

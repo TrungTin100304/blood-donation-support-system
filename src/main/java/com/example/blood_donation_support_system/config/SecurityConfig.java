@@ -42,7 +42,7 @@ public class SecurityConfig {
 
                     request.requestMatchers(HttpMethod.GET, "/api/matching/**").hasAnyRole("MEMBER", "ADMIN","STAFF");
 
-                    request.requestMatchers(HttpMethod.POST, "/api/emergency-requests").permitAll();
+                    request.requestMatchers(HttpMethod.POST, "/api/emergency-requests").hasAnyRole("ADMIN","STAFF");
 
                     request.requestMatchers( "/api/article/**").permitAll();
                     request.requestMatchers(HttpMethod.POST, "/api/donor/send-email").permitAll();
@@ -51,6 +51,7 @@ public class SecurityConfig {
 
                     request.requestMatchers( "/api/profile/**").permitAll();
 
+                    request.requestMatchers(HttpMethod.GET, "/api/search/**").permitAll();
 
 //                    request.requestMatchers(HttpMethod.POST,"/api/inventory/update").hasAnyRole("ADMIN", "STAFF","MEMBER");
 //                    request.requestMatchers(HttpMethod.GET,"/api/inventory/**").hasAnyRole("ADMIN", "STAFF", "MEMBER");

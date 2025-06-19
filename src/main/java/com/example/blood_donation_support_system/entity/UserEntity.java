@@ -67,6 +67,9 @@ public class UserEntity {
     @Column(name = "avatar")
     private String avatar;
 
+    @Column(name = "note", columnDefinition = "TEXT")
+    private String note;
+
 
 
     @ManyToOne
@@ -84,4 +87,13 @@ public class UserEntity {
     private List<BloodUnitEntity> bloodUnits;
 
 
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    private List<DonationRequestEntity> donationRequestEntities;
+
+
+    @OneToMany(mappedBy = "donor", cascade = CascadeType.ALL)
+    private List<AppointmentEntity> donatedAppointments;
+
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
+    private List<AppointmentEntity> receivedAppointmentEntities;
 }

@@ -9,7 +9,8 @@ public class EmergencyRequest {
     private Integer hospitalId;
     private String bloodType;
     private String componentType;
-    private Double quantity;
+    private Integer quantity;
     private String note;
     private LocalDateTime neededTime;
+    private LocalDateTime createdTime;
 }

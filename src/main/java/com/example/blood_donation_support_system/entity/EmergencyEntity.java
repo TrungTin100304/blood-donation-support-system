@@ -17,7 +17,7 @@ public class EmergencyEntity {
     @Column(name="component_type")
     private String componentType;
     @Column(name="quantity")
-    private double quantity;
+    private Integer quantity;
     @Column(name="note")
     private String note;
     @Column(name="needed_time")

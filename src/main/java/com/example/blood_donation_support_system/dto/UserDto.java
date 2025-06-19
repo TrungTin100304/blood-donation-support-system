@@ -22,6 +22,7 @@ public class UserDto {
     private LocalDateTime readyTime;
     private String gender;
     private LocalDate yearOfBirth;
+    private int userId;
 
 }
 
