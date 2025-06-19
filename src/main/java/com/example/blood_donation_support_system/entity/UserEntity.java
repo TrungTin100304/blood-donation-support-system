@@ -48,11 +48,13 @@ public class UserEntity {
     @Column(name = "blood_type", length = 5)
     private String bloodType;
 
+
     @Column(name = "latitude")
     private double latitude;
 
     @Column(name= "longitude")
     private double longitude;
+
 
     @Column(name = "gender", length = 10)
     private String gender;

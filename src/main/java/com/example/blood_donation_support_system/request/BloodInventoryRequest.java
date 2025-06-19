@@ -11,7 +11,7 @@ public class BloodInventoryRequest {
     private Integer hospitalId;
     private Integer bloodUnitId;
     private BloodInventoryEntity.BloodInventoryStatus status;
-    private int quantity; // Thêm từ BloodUnitEntity
+    private double quantity; // Thêm từ BloodUnitEntity
     private LocalDateTime receivedDate; // Thêm từ BloodUnitEntity
     private LocalDateTime expiryDate; // Thêm từ BloodUnitEntity
 
