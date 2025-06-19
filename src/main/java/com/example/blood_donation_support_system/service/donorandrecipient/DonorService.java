@@ -6,5 +6,5 @@ import java.time.LocalDate;
 
 public interface DonorService {
     void registerDonor(int userId, RegisterDonorRequest registerDonorRequest);
-    void sendDonationReminderEmail(String authHeader, String toEmail, LocalDate lastDonationDate);
+//    void sendDonationReminderEmail(String authHeader, String toEmail, LocalDate lastDonationDate);
 }

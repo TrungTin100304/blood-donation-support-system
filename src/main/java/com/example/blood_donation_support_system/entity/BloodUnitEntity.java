@@ -32,7 +32,14 @@ public class BloodUnitEntity {
     @Column(name = "received_date")
     private LocalDate receviedDate;
 
+    @Column(name = "expiry_date")
+    private LocalDate expiryDate;
+
     @ManyToOne
     @JoinColumn(name= "user_id")
     private UserEntity userId;
+
+    @OneToOne(mappedBy = "bloodUnit", fetch = FetchType.LAZY)
+    private BloodInventoryEntity bloodInventory;
+
 }

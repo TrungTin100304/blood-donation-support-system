@@ -81,9 +81,9 @@ public class UserProfileController {
 
     // API để xóa hồ sơ người dùng
     @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF') or hasRole('MEMBER')")
-    @DeleteMapping("/{userName}")
-    public ResponseEntity<String> deleteUserProfile(@PathVariable String userName) {
-        return userProfileService.deleteUserProfile(userName);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteUserProfile(@PathVariable Integer userId) {
+        return userProfileService.deleteUserProfile(userId);
     }
 
     // API để tìm kiếm hồ sơ người dùng theo username
@@ -94,42 +94,4 @@ public class UserProfileController {
         return userProfileService.searchUsers(userName);
     }
 
-
-//    // API để xem danh sách tất cả người dùng
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
-//    @GetMapping("/all")
-//    public ResponseEntity<List<UserDto>> getAllUsers() {
-//        List<UserEntity> users = userRepository.findAll();
-//        List<UserDto> userDtos = users.stream()
-//                .map(this::convertToDto)
-//                .collect(Collectors.toList());
-//        return ResponseEntity.ok(userDtos);
-//    }
-//
-
-
-
-//    private UserDto convertToDto(UserEntity userEntity) {
-//        UserDto userDto = new UserDto();
-//        userDto.setName(userEntity.getFullName());
-//        userDto.setEmail(userEntity.getEmail());
-//        userDto.setPhoneNumber(userEntity.getPhoneNumber());
-//        userDto.setAddress(userEntity.getAddress());
-//        userDto.setBloodType(userEntity.getBloodType());
-//        userDto.setGender(userEntity.getGender());
-//        userDto.setYearOfBirth(userEntity.getYearOfBirth());
-//        userDto.setAvatar(userEntity.getAvatar());
-//        return userDto;
-//    }
-
-//    private DonationHistoryDto convertToDonationDto(DonationHistoryEntity donation) {
-//        DonationHistoryDto dto = new DonationHistoryDto();
-//        dto.setHistoryId(donation.getHistoryId());
-//        dto.setUserId(donation.getUser().getUserId());
-//        dto.setDonationDate(donation.getDonationDate());
-//        Integer bloodUnitId = (donation.getBloodUnitId() != null) ? donation.getBloodUnitId().getBloodUnitId() : null;
-//        dto.setRecoveryStatus(donation.getRecoveryStatus());
-//        dto.setRecoveryTime(donation.getRecoveryTime());
-//        return dto;
-//    }
 }

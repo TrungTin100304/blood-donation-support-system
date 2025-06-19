@@ -19,7 +19,7 @@ public interface BloodInventoryService {
     List<BloodInventoryDto> getAllInventory();
 
     List<BloodQuantityByTypeDTO> getBloodQuantityByType();
-    List<BloodInventoryDto> getInventoryByBloodUnitId(Integer bloodUnitId);
+//    List<BloodInventoryDto> getInventoryByBloodUnitId(Integer bloodUnitId);
 
 //    List<SimpleBloodInventoryDto> findAvailableBloodUnit(String bloodType, String componentType);
 //

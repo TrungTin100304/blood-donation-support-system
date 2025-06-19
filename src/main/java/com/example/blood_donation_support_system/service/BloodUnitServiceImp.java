@@ -27,18 +27,19 @@ public class BloodUnitServiceImp implements BloodUnitService {
             dto.setBloodType(entity.getBloodType());
             dto.setComponentType(entity.getComponentType());
             dto.setQuantity(entity.getQuantity());
-            dto.setReceivedDate(entity.getReceivedDate());
+            dto.setReceivedDate(entity.getReceviedDate());
             dto.setExpiryDate(entity.getExpiryDate());
-            if (entity.getUser() != null) {
-                dto.setUserId(entity.getUser().getUserId());
-                dto.setUserName(entity.getUser().getUserName());
+            dto.setStatusUnit(entity.getStatus());
+            if (entity.getUserId() != null) {
+                dto.setUserId(entity.getUserId().getUserId());
+                dto.setUserName(entity.getUserId().getUserName());
             }
             if (entity.getBloodInventory() != null) {
                 dto.setInventoryId(entity.getBloodInventory().getInventoryId());
                 dto.setInventoryStatus(entity.getBloodInventory().getStatus());
                 if (entity.getBloodInventory().getHospital() != null) {
                     dto.setHospitalId(entity.getBloodInventory().getHospital().getHospitalId());
-                    dto.setHospitalName(entity.getBloodInventory().getHospital().getHospitalName());
+                    dto.setName(entity.getBloodInventory().getHospital().getName());
                 }
             }
             return dto;

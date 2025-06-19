@@ -17,8 +17,8 @@ public class BloodUnitDto {
     private String bloodType;
     private String componentType;
     private int quantity;
-    private LocalDateTime receivedDate;
-    private LocalDateTime expiryDate;
+    private LocalDate receivedDate;
+    private LocalDate expiryDate;
     private Integer userId;
     private String userName;
     private Integer inventoryId;

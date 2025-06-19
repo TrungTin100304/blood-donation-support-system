@@ -50,10 +50,10 @@ public class UserEntity {
 
 
     @Column(name = "latitude")
-    private double latitude;
+    private Double latitude;
 
     @Column(name= "longitude")
-    private double longitude;
+    private Double longitude;
 
 
     @Column(name = "gender", length = 10)
@@ -73,7 +73,8 @@ public class UserEntity {
     @Column(name = "note", columnDefinition = "TEXT")
     private String note;
 
-
+    @Column(name = "status", nullable = false)
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "role_id") // khóa ngoại trong bảng user

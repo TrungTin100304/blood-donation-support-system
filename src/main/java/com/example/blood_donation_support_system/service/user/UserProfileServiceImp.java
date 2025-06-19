@@ -92,9 +92,9 @@ public class UserProfileServiceImp implements UserProfileService {
 //    }
 
     @Override
-    public ResponseEntity<String> deleteUserProfile(String userName) {
+    public ResponseEntity<String> deleteUserProfile(Integer userId) {
         try {
-            Optional<UserEntity> userOpt = userRepository.findByUserName(userName);
+            Optional<UserEntity> userOpt = userRepository.findByUserId(userId);
             if (!userOpt.isPresent()) {
                 return ResponseEntity.badRequest().body("User not found");
             }
@@ -128,6 +128,7 @@ public class UserProfileServiceImp implements UserProfileService {
 
     private UserDto convertToDto(UserEntity userEntity) {
         UserDto userDto = new UserDto();
+        userDto.setUserId(userEntity.getUserId());
         userDto.setName(userEntity.getFullName());
         userDto.setEmail(userEntity.getEmail());
         userDto.setPhoneNumber(userEntity.getPhoneNumber());

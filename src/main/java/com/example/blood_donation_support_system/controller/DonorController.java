@@ -2,6 +2,7 @@ package com.example.blood_donation_support_system.controller;
 
 import com.example.blood_donation_support_system.request.RegisterDonorRequest;
 import com.example.blood_donation_support_system.response.BaseResponse;
+import com.example.blood_donation_support_system.service.EmailService;
 import com.example.blood_donation_support_system.service.donorandrecipient.DonorService;
 import com.example.blood_donation_support_system.utils.JwtHelper;
 import jakarta.mail.internet.MimeMessage;
@@ -25,8 +26,9 @@ public class DonorController {
     private DonorService donorService;
     @Autowired
     private JwtHelper jwtHelper;
+
     @Autowired
-    private JavaMailSender mailSender;
+    private EmailService emailService;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerDonor(@RequestHeader("Authorization") String authHeader,
@@ -70,7 +72,7 @@ public class DonorController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayHienMauGanNhat) {
 
         try {
-            donorService.sendDonationReminderEmail(autho, toEmail, ngayHienMauGanNhat);
+            emailService.sendDonationReminder(autho, toEmail, ngayHienMauGanNhat);
             BaseResponse response = new BaseResponse();
             response.setCode(HttpStatus.OK.value());
             response.setMessage("Email nhắc hiến máu đã được gửi thành công tới " + toEmail);
