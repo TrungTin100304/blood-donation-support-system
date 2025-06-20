@@ -2,6 +2,7 @@ package com.example.blood_donation_support_system.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -48,10 +49,10 @@ public class UserEntity {
     private String bloodType;
 
     @Column(name = "latitude")
-    private double latitude;
+    private Double latitude;
 
     @Column(name= "longitude")
-    private double longitude;
+    private Double longitude;
 
     @Column(name = "gender", length = 10)
     private String gender;
@@ -70,6 +71,11 @@ public class UserEntity {
     @Column(name = "note", columnDefinition = "TEXT")
     private String note;
 
+
+
+    @Column(name="status", nullable = false, length = 10)
+    @ColumnDefault("'ACTIVE'")
+    private String status;
 
 
     @ManyToOne

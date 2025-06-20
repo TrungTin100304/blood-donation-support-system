@@ -34,4 +34,9 @@ public class BloodUnitEntity {
     @ManyToOne
     @JoinColumn(name= "user_id")
     private UserEntity userId;
+
+    @OneToOne(mappedBy = "bloodUnit", fetch = FetchType.LAZY)
+    private BloodInventoryEntity bloodInventory;
+
+
 }

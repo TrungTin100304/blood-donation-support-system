@@ -57,5 +57,13 @@ public class CentralException {
         return ResponseEntity.status(404).body(response);
     }
 
+    @ExceptionHandler({AppointmentIdNotFoundException.class})
+    public ResponseEntity<?> appointmentIdNotFound(Exception e) {
+        BaseResponse response = new BaseResponse();
+        response.setCode(404);
+        response.setMessage(e.getMessage());
+        return ResponseEntity.status(404).body(response);
+    }
+
 
 }

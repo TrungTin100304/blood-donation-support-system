@@ -35,6 +35,7 @@ public class GetUserServiceImp implements GetUserService {
         userDto.setPhoneNumber(userEntity.getPhoneNumber());
         userDto.setAddress(userEntity.getAddress());
         userDto.setBloodType(userEntity.getBloodType());
+        userDto.setUserId(userEntity.getUserId());
 
         // Xử lý avatar
         String avatarPath = userEntity.getAvatar(); // ví dụ: "./upload/user-avatars/hinh-nen-gai-xinh.jpg"

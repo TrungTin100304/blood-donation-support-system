@@ -1,4 +1,5 @@
 package com.example.blood_donation_support_system.controller;
+import com.example.blood_donation_support_system.request.AppointmentRequest;
 import com.example.blood_donation_support_system.request.EmergencyRequest;
 import com.example.blood_donation_support_system.response.BaseResponse;
 import com.example.blood_donation_support_system.service.emergencyservice.EmergencyService;
@@ -41,6 +42,16 @@ public class EmergencyController {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setMessage("Đã tạo yêu cầu hiến máu thay thế và đặt lịch hẹn thành công.");
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<?> updateStatus(@PathVariable Integer id ,@RequestBody AppointmentRequest appointmentRequest) {
+        appointmentRequest.setAppointmentId(id);
+        emergencyService.updateAppointmentStatus(appointmentRequest);
+        BaseResponse response = new BaseResponse();
+        response.setCode(200);
+        response.setMessage("Status updated successfully.");
         return ResponseEntity.ok(response);
     }
 }

@@ -44,6 +44,7 @@ public class RegisterServiceImp implements RegisterService {
             user.setRoleEntity(roles) ;
             user.setFullName(userRequest.getFullName());
             user.setLoginProvider("local");
+            user.setStatus("ACTIVE");
 
             // Lưu vào database
             userRepository.save(user);

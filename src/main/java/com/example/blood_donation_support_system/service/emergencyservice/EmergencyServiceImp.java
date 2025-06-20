@@ -6,12 +6,14 @@ import com.example.blood_donation_support_system.exception.BloodUnitQuantity;
 import com.example.blood_donation_support_system.exception.HospitalNotFoundException;
 import com.example.blood_donation_support_system.exception.UserNotFoundException;
 import com.example.blood_donation_support_system.repository.*;
+import com.example.blood_donation_support_system.request.AppointmentRequest;
 import com.example.blood_donation_support_system.request.EmergencyRequest;
 import com.example.blood_donation_support_system.service.EmailService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -39,6 +41,9 @@ public class EmergencyServiceImp implements EmergencyService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private BloodUnitRepository bloodUnitRepository;
 
     @Override
     @Transactional
@@ -98,7 +103,7 @@ public class EmergencyServiceImp implements EmergencyService {
         donationRequestEntity.setRequiredComponentType(request.getComponentType());
         donationRequestEntity.setRequiredQuantity(request.getQuantity());
         donationRequestEntity.setStatus("Pending");
-        donationRequestEntity.setRequestDate(LocalDateTime.now());
+        donationRequestEntity.setRequestDate(request.getNeededTime().plusDays(1));
         donationRequestRepository.save(donationRequestEntity);
 
         //Tạo lịch hẹn
@@ -108,11 +113,11 @@ public class EmergencyServiceImp implements EmergencyService {
         UserEntity receiver = userRepository.findById(receiptId).orElseThrow(() -> new UserNotFoundException("User not found"));
         AppointmentEntity appointmentEntity = new AppointmentEntity();
         appointmentEntity.setDonor(donor);
-        appointmentEntity.setAppointmentDate(LocalDateTime.now().plusDays(1));
+        appointmentEntity.setAppointmentDate(request.getNeededTime().plusDays(1));
         appointmentEntity.setLocation(hospitalId.getAddress());
         appointmentEntity.setRecipient(receiver);
         appointmentEntity.setStatus("Confirmed");
-        emailService.sendAppointmentEmail(donor, receiver, hospitalId, LocalDateTime.now().plusDays(1));
+        emailService.sendAppointmentEmail(donor, receiver, hospitalId, request.getNeededTime().plusDays(1));
         appointmentRepository.save(appointmentEntity);
 
         //Cập nhật trạng thái yêu cầu khẩn cấp
@@ -123,12 +128,71 @@ public class EmergencyServiceImp implements EmergencyService {
         emergencyEntity.setBloodType(donor.getBloodType());
         emergencyEntity.setHospital(hospitalId);
         emergencyEntity.setQuantity(request.getQuantity());
-        emergencyEntity.setNeededTime(request.getNeededTime());
+        emergencyEntity.setNeededTime(request.getNeededTime().plusDays(1));
         emergencyEntity.setNote(request.getNote());
-        emergencyEntity.setCreatedAt(LocalDateTime.now());
+        emergencyEntity.setCreatedAt(request.getNeededTime());
         emergencyRepository.save(emergencyEntity);
     }
 
+    @Override
+    @Transactional
+    public void updateAppointmentStatus(AppointmentRequest appointmentRequest) {
+        AppointmentEntity appointmentEntity = appointmentRepository.findById(appointmentRequest.getAppointmentId()).orElseThrow(() -> new BloodUnitNotFoundException("Appointment not found"));
+
+             appointmentEntity.setStatus(appointmentRequest.getStatus());
+             appointmentRepository.save(appointmentEntity);
+
+             //Nếu không phải completed thì xử lý logic khác
+        if("Canceled".equals(appointmentRequest.getStatus())){
+            //
+            return;
+        }
+
+        UserEntity donor = appointmentEntity.getDonor();
+        UserEntity receiver = appointmentEntity.getRecipient();
+
+        //Tìm yeu cầu khẩn cấp gần người nhận
+        EmergencyEntity emergency = emergencyRepository
+                .findTopByRequesterOrderByCreatedAtDesc(receiver)
+                .orElseThrow(() -> new RuntimeException("Emergency request not found"));
+        emergency.setStatus("Pending");
+        emergencyRepository.save(emergency);
+
+        //Tim donation_request
+        DonationRequestEntity donationRequestEntity = donationRequestRepository.findByUserEntityOrderByRequestDateDesc(donor).orElseThrow(() -> new UserNotFoundException("User not found"));
+        donationRequestEntity.setStatus("Completed");
+        donationRequestEntity.setCompletedDate(LocalDateTime.now());
+        donationRequestRepository.save(donationRequestEntity);
+
+        //Tạo đơn vị máu mới
+        BloodUnitEntity bloodUnit = new BloodUnitEntity();
+        bloodUnit.setBloodType(donor.getBloodType());
+        bloodUnit.setComponentType(emergency.getComponentType());
+        bloodUnit.setQuantity(emergency.getQuantity());
+        bloodUnit.setStatus("Available");
+        bloodUnit.setUserId(donor);
+        bloodUnit.setReceviedDate(LocalDate.now());
+        bloodUnit = bloodUnitRepository.save(bloodUnit);
+
+        //Đưa đơn vị máu vào kho
+        BloodInventoryEntity bloodInventory = new BloodInventoryEntity();
+        bloodInventory.setBloodUnit(bloodUnit);
+        bloodInventory.setHospital(emergency.getHospital());
+        bloodInventory.setLastUpdate(LocalDateTime.now());
+        bloodInventory.setStatus(BloodInventoryEntity.BloodInventoryStatus.In_Stock);
+        bloodInventoryRepository.save(bloodInventory);
+
+        //Lưu lịch sử hiến máu
+        DonationHistoryEntity donationHistoryEntity = new DonationHistoryEntity();
+        donationHistoryEntity.setUser(donor);
+        donationHistoryEntity.setBloodUnitId(bloodUnit);
+        donationHistoryEntity.setDonationDate(donationRequestEntity.getRequestDate());
+        donationHistoryEntity.setRecoveryTime(LocalDate.now().plusDays(7));
+        donationHistoryEntity.setCreatedAt(LocalDateTime.now());
+        donationHistoryEntity.setRecoveryStatus("RECOVERING");
+        donationHistoryEntity.setCreatedAt(LocalDateTime.now());
+        donationHistoryRepository.save(donationHistoryEntity);
+    }
 
 
 }
