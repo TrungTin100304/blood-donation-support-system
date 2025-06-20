@@ -17,9 +17,7 @@ public class EmergencyEntity {
     @Column(name="component_type")
     private String componentType;
     @Column(name="quantity")
-    private double quantity;
-    @Column(name="hospital_name")
-    private String hospitalName;
+    private Integer quantity;
     @Column(name="note")
     private String note;
     @Column(name="needed_time")
@@ -29,7 +27,13 @@ public class EmergencyEntity {
     @Column(name="status")
     private String status;
 
+
+
     @ManyToOne
     @JoinColumn(name="requester_id")
-    private UserEntity requesterId;
+    private UserEntity requester;
+
+    @ManyToOne
+    @JoinColumn(name= "hospital_id")
+    private HospitalEntity hospital;
 }

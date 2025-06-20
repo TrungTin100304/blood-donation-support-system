@@ -15,4 +15,6 @@ public interface DonationHistoryRepository extends JpaRepository<DonationHistory
     Page<DonationHistoryEntity> findByRecoveryStatus(String recoveryStatus, Pageable pageable);
     @Query("SELECT COUNT(dh) FROM DonationHistoryEntity dh WHERE dh.recoveryStatus = :status")
     long countByRecoveryStatus(String status);
+
+    List<DonationHistoryEntity> findByRecoveryStatus(String status);
 }

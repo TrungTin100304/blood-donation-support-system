@@ -23,5 +23,9 @@ public class HospitalEntity {
     @OneToMany(mappedBy = "hospital") // "hospital" là tên field trong BloodInventoryEntity
     private List<BloodInventoryEntity> bloodInventories;
 
-    // Getters, setters (tự động bởi @Data)
+
+    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL)
+    private List<EmergencyEntity> emergencies;
+
+
 }

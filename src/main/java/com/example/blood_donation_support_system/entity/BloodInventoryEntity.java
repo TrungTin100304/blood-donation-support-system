@@ -16,8 +16,9 @@ public class BloodInventoryEntity {
     @Column(name = "inventory_id")
     private Integer inventoryId;
 
-    @Column(name = "blood_unit_id", unique = true)
-    private Integer bloodUnitId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "blood_unit_id", referencedColumnName = "blood_unit_id", nullable = false, unique = true)
+    private BloodUnitEntity bloodUnit;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hospital_id", referencedColumnName = "hospital_id", nullable = false)

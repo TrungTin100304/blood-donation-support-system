@@ -5,15 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BloodInventoryDto {
+public class SimpleBloodInventoryDto {
     private Integer inventoryId;
-    private Integer bloodUnitId;
-    private Integer hospitalId;
-    private LocalDateTime lastUpdate;
-    private Integer status;
+    private String bloodType;
+    private String componentType;
+    private String hospitalName;
+    private String hospitalAddress;
+    private String status;
 }

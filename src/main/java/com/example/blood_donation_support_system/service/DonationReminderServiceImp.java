@@ -56,7 +56,7 @@ public class DonationReminderServiceImp implements DonationReminderService {
         donation.setUser(user);
         donation.setDonationDate(request.getDonationDate());
         donation.setBloodUnitId(request.getBloodUnit());
-        donation.setRecoveryTime((int) RECOVERY_DAYS);
+        donation.setRecoveryTime(LocalDate.now().plusDays(RECOVERY_DAYS));
         donation.setRecoveryStatus("RECOVERING");
         return donationHistoryRepository.save(donation);
     }

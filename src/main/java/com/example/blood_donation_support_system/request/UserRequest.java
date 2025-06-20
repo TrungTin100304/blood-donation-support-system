@@ -14,4 +14,7 @@ public class UserRequest {
     private String address;
     private String gender;
     private LocalDate yearOfBirth;
+    private String bloodType;
+    private double latitude;
+    private double longitude;
 }
