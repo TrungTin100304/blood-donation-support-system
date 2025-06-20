@@ -163,17 +163,19 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
         return entities.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
+
     @Override
-    public List<BloodQuantityByTypeDTO> getBloodQuantityByType() {
-        List<BloodQuantityByTypeRepository> total = bloodInventoryRepository.findBloodQuantityByType();
+    public List<BloodQuantityByTypeDTO> getBloodQuantityByType(Integer hospitalId) {
+        List<BloodQuantityByTypeRepository> total = bloodInventoryRepository.findBloodQuantityByType(hospitalId);
         return total.stream()
                 .map(proj -> new BloodQuantityByTypeDTO(
+                        proj.getName(),
                         proj.getBloodType(),
-                        proj.getTotalQuantity()
+                        proj.getTotalQuantity() != null ? proj.getTotalQuantity() : 0
+
                 ))
                 .collect(Collectors.toList());
     }
-
 
 
     private BloodInventoryDto convertToDto(BloodInventoryEntity entity) {

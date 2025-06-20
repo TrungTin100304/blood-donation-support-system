@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BloodQuantityByTypeDTO {
-//    private String name;
+    private String name;
     private String bloodType;
     private Integer totalQuantity;
 

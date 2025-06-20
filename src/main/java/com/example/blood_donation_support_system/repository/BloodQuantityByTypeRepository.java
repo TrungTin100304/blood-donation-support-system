@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BloodQuantityByTypeRepository  {
     String getBloodType();
     Integer getTotalQuantity();
-//    String getHospitalName();
+    String getName();
 }

@@ -64,13 +64,13 @@ public class BloodInventoryController {
         return ResponseEntity.ok(response);
     }
     @GetMapping("/blood-quantity-by-type")
-    public ResponseEntity<BaseResponse> getBloodQuantityByType() {
+    public ResponseEntity<BaseResponse> getBloodQuantityByType(@RequestParam("hospitalId") int hospitalId) {
 //        List<BloodQuantityByTypeDTO> result = bloodInventoryService.getBloodQuantityByType();
 //        return ResponseEntity.ok(result);
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setMessage("Danh sách tất cả máu trong kho theo nhóm");
-        response.setData(bloodInventoryService.getBloodQuantityByType());
+        response.setData(bloodInventoryService.getBloodQuantityByType(hospitalId));
         return ResponseEntity.ok(response);
     }
 }
