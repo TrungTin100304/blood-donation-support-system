@@ -4,6 +4,7 @@ import com.example.blood_donation_support_system.dto.DonationHistoryDto;
 import com.example.blood_donation_support_system.dto.UserDto;
 import com.example.blood_donation_support_system.entity.DonationHistoryEntity;
 import com.example.blood_donation_support_system.request.UserRequest;
+import com.example.blood_donation_support_system.service.user.DonationHistoryService;
 import com.example.blood_donation_support_system.service.user.GetUserService;
 import com.example.blood_donation_support_system.service.user.UserProfileService;
 import com.example.blood_donation_support_system.utils.JwtHelper;
@@ -25,7 +26,8 @@ public class UserProfileController {
     @Autowired
     private UserProfileService userProfileService;
 
-
+    @Autowired
+    private DonationHistoryService donationHistoryService;
 
     @Autowired
     JwtHelper jwtHelper;
@@ -92,6 +94,13 @@ public class UserProfileController {
     public ResponseEntity<List<UserDto>> searchUsers(
             @RequestParam String userName) {
         return userProfileService.searchUsers(userName);
+    }
+
+
+    @GetMapping("/history/{userId}")
+    public ResponseEntity<List<DonationHistoryDto>> getDonationHistory(@PathVariable int userId) {
+        List<DonationHistoryDto> histories = donationHistoryService.getDonationHistoryByUserId(userId);
+        return ResponseEntity.ok(histories);
     }
 
 }

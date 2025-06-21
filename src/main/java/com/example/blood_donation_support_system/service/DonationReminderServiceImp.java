@@ -277,8 +277,10 @@
 package com.example.blood_donation_support_system.service;
 
 import com.example.blood_donation_support_system.dto.UserDto;
+import com.example.blood_donation_support_system.entity.BloodUnitEntity;
 import com.example.blood_donation_support_system.entity.DonationHistoryEntity;
 import com.example.blood_donation_support_system.entity.UserEntity;
+import com.example.blood_donation_support_system.repository.BloodUnitRepository;
 import com.example.blood_donation_support_system.repository.DonationHistoryRepository;
 import com.example.blood_donation_support_system.repository.UserRepository;
 import com.example.blood_donation_support_system.request.DonationHistoryRequest;
@@ -311,6 +313,9 @@ public class DonationReminderServiceImp implements DonationReminderService {
     private DonationHistoryRepository donationHistoryRepository;
 
     @Autowired
+    private BloodUnitRepository bloodUnitRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -331,7 +336,7 @@ public class DonationReminderServiceImp implements DonationReminderService {
         DonationHistoryEntity donation = new DonationHistoryEntity();
         donation.setUser(user);
         donation.setDonationDate(request.getDonationDate());
-        donation.setBloodUnit(request.getBloodUnit());
+        donation.setBloodUnit(request.getBloodUnit()); // chưa lấy được ID, cần fix
         donation.setRecoveryTime(request.getDonationDate().plusDays(RECOVERY_DAYS)); // Đặt ngày phục hồi
         donation.setRecoveryStatus("RECOVERING");
 

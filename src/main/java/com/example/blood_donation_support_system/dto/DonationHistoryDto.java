@@ -16,6 +16,7 @@ public class DonationHistoryDto {
     private int userId;
     private LocalDate donationDate;
     private Integer bloodUnitId;
+    private String bloodType;
     private String recoveryStatus;
     private LocalDate recoveryTime;
 }
