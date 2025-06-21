@@ -18,7 +18,7 @@ public interface BloodInventoryRepository extends JpaRepository<BloodInventoryEn
     List<BloodInventoryEntity> findByStatus(BloodInventoryEntity.BloodInventoryStatus status);
 
 
-    Optional<BloodInventoryEntity> findFirstByStatusAndHospital_HospitalIdAndBloodUnit_BloodTypeAndBloodUnit_ComponentType(BloodInventoryEntity.BloodInventoryStatus status, Integer hospital_hospitalId, String bloodUnit_bloodType, String bloodUnit_componentType);
+    List<BloodInventoryEntity> findByStatusAndHospital_HospitalIdAndBloodUnit_BloodTypeAndBloodUnit_ComponentType(BloodInventoryEntity.BloodInventoryStatus status, Integer hospital_hospitalId, String bloodUnit_bloodType, String bloodUnit_componentType);
 
 
 //    @Query("""
