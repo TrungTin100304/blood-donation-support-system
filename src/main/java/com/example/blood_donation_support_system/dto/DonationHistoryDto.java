@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -13,8 +14,8 @@ import java.time.LocalDateTime;
 public class DonationHistoryDto {
     private int historyId;
     private int userId;
-    private LocalDateTime donationDate;
+    private LocalDate donationDate;
     private Integer bloodUnitId;
     private String recoveryStatus;
-    private Integer recoveryTime;
+    private LocalDate recoveryTime;
 }

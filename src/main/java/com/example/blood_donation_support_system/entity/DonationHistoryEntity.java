@@ -3,6 +3,7 @@ package com.example.blood_donation_support_system.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -20,14 +21,14 @@ public class DonationHistoryEntity {
     private UserEntity user;
 
     @Column(name = "donation_date", nullable = false)
-    private LocalDateTime donationDate;
+    private LocalDate donationDate;
 
     @ManyToOne
     @JoinColumn(name = "blood_unit_id", referencedColumnName = "blood_unit_id")
     private BloodUnitEntity bloodUnit;
 
     @Column(name = "recovery_time")
-    private Integer recoveryTime;
+    private LocalDate recoveryTime;
 
     @Column(name = "recovery_status", nullable = false, length = 20)
     private String recoveryStatus = "RECOVERING";
