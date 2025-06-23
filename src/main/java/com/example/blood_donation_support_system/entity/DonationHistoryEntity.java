@@ -21,14 +21,14 @@ public class DonationHistoryEntity {
     private UserEntity user;
 
     @Column(name = "donation_date", nullable = false)
-    private LocalDate donationDate;
+    private LocalDateTime donationDate;
 
     @ManyToOne
     @JoinColumn(name = "blood_unit_id", referencedColumnName = "blood_unit_id")
     private BloodUnitEntity bloodUnit;
 
     @Column(name = "recovery_time")
-    private LocalDate recoveryTime;
+    private LocalDateTime recoveryTime;
 
     @Column(name = "recovery_status", nullable = false, length = 20)
     private String recoveryStatus = "RECOVERING";

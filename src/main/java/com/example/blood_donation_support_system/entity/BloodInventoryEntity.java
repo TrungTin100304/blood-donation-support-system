@@ -33,7 +33,7 @@ public class BloodInventoryEntity {
     private BloodInventoryStatus status;
 
     public enum BloodInventoryStatus {
-        IN_STOCK, USED, EXPIRED // Khớp với DB
+        IN_STOCK, USED,EXPIRED; // Khớp với DB
     }
 
     // Getters, setters (tự động bởi @Data)

@@ -64,7 +64,7 @@ public class BloodInventoryController {
         return ResponseEntity.ok(response);
     }
     @GetMapping("/blood-quantity-by-type")
-    public ResponseEntity<BaseResponse> getBloodQuantityByType(@RequestParam("hospitalId") int hospitalId) {
+    public ResponseEntity<BaseResponse> getBloodQuantityByType(@RequestParam(value = "hospitalId", required = false) int hospitalId) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setMessage("Danh sách tất cả máu trong kho theo nhóm");

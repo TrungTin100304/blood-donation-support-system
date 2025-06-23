@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class DonationHistoryRequest {
     private Integer userId;
-    private LocalDate donationDate;
+    private LocalDateTime donationDate;
     private BloodUnitEntity bloodUnit;
     private int bloodUnitId;
 }

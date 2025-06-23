@@ -60,47 +60,15 @@ public class EmergencyServiceImp implements EmergencyService {
         emergencyEntity.setStatus("Pending");
         emergencyRepository.save(emergencyEntity);
         //B2: Tìm máu phù hợp trong kho
-<<<<<<< HEAD
-        Optional<BloodInventoryEntity> optionalBloodInventory = bloodInventoryRepository.findFirstByStatusAndHospital_HospitalIdAndBloodUnit_BloodTypeAndBloodUnit_ComponentType(BloodInventoryEntity.BloodInventoryStatus.IN_STOCK, request.getHospitalId(), request.getBloodType(), request.getComponentType());
-        if(optionalBloodInventory.isPresent()){
-            BloodInventoryEntity inventory = optionalBloodInventory.get();
-=======
-        List<BloodInventoryEntity> inventoryEntities = bloodInventoryRepository.findByStatusAndHospital_HospitalIdAndBloodUnit_BloodTypeAndBloodUnit_ComponentType(BloodInventoryEntity.BloodInventoryStatus.In_Stock, request.getHospitalId(), request.getBloodType(), request.getComponentType());
->>>>>>> develop
+        List<BloodInventoryEntity> inventoryEntities = bloodInventoryRepository.findByStatusAndHospital_HospitalIdAndBloodUnit_BloodTypeAndBloodUnit_ComponentType(BloodInventoryEntity.BloodInventoryStatus.IN_STOCK, request.getHospitalId(), request.getBloodType(), request.getComponentType());
 
         //Kiểm tra số lượng máu trong kho có đủ không
         int totalAvailable = inventoryEntities.stream().mapToInt(
                 inv -> inv.getBloodUnit().getQuantity()).sum();
 
-<<<<<<< HEAD
-            //B3 cập nhật BloodUnit.status = 'Used'
-            BloodUnitEntity bloodUnit =  inventory.getBloodUnit();
-            int currentQuantity = bloodUnit.getQuantity();
-            if(currentQuantity >= request.getQuantity()){
-                bloodUnit.setQuantity(currentQuantity - request.getQuantity());
-                if(bloodUnit.getQuantity() <= 0){
-                    bloodUnit.setStatus("Used");
-                    //cập nhật BloodInventoryStatus = Used
-                    inventory.setStatus(BloodInventoryEntity.BloodInventoryStatus.USED);
-                }
-            }else{
-               throw new BloodUnitQuantity("Máu trong kho đã hết");
-            }
-
-            bloodInventoryRepository.save(inventory);
-
-
-            //B5: Cập nhật emergency_request.data = "Complete"
-            emergencyEntity.setStatus("Completed");
-            emergencyRepository.save(emergencyEntity);
-        }else{
-            // Không có máu => không xử lý ở đây (trường hợp này xử lý ở flow khác)
-            throw new BloodUnitNotFoundException("Không có đơn vị máu phù hợp trong kho.");
-=======
         System.out.println("Total available: " + totalAvailable);
         if(request.getQuantity() > totalAvailable) {
             throw new BloodUnitQuantity("Không đủ số lượng  máu trong kho");
->>>>>>> develop
         }
 
         int remainingQuantity = request.getQuantity();
@@ -113,7 +81,7 @@ public class EmergencyServiceImp implements EmergencyService {
                 if (bloodUnit.getQuantity() <= 0) {
                     bloodUnit.setQuantity(0);
                     bloodUnit.setStatus("Used");
-                    inventoryEntity.setStatus(BloodInventoryEntity.BloodInventoryStatus.Used);
+                    inventoryEntity.setStatus(BloodInventoryEntity.BloodInventoryStatus.USED);
                 }
                 bloodUnitRepository.save(bloodUnit);
                 bloodInventoryRepository.save(inventoryEntity);
@@ -124,7 +92,7 @@ public class EmergencyServiceImp implements EmergencyService {
                 remainingQuantity -= available;
                 bloodUnit.setQuantity(0);
                 bloodUnit.setStatus("Used");
-                inventoryEntity.setStatus(BloodInventoryEntity.BloodInventoryStatus.Used);
+                inventoryEntity.setStatus(BloodInventoryEntity.BloodInventoryStatus.USED);
                 bloodUnitRepository.save(bloodUnit);
                 bloodInventoryRepository.save(inventoryEntity);
             }
@@ -224,15 +192,15 @@ public class EmergencyServiceImp implements EmergencyService {
         bloodInventory.setBloodUnit(bloodUnit);
         bloodInventory.setHospital(emergency.getHospital());
         bloodInventory.setLastUpdate(LocalDateTime.now());
-        bloodInventory.setStatus(BloodInventoryEntity.BloodInventoryStatus.In_Stock);
+        bloodInventory.setStatus(BloodInventoryEntity.BloodInventoryStatus.IN_STOCK);
         bloodInventoryRepository.save(bloodInventory);
 
         //Lưu lịch sử hiến máu
         DonationHistoryEntity donationHistoryEntity = new DonationHistoryEntity();
         donationHistoryEntity.setUser(donor);
-        donationHistoryEntity.setBloodUnitId(bloodUnit);
+        donationHistoryEntity.setBloodUnit(bloodUnit);
         donationHistoryEntity.setDonationDate(donationRequestEntity.getRequestDate());
-        donationHistoryEntity.setRecoveryTime(LocalDate.now().plusDays(7));
+        donationHistoryEntity.setRecoveryTime(LocalDateTime.now().plusDays(7));
         donationHistoryEntity.setCreatedAt(LocalDateTime.now());
         donationHistoryEntity.setRecoveryStatus("RECOVERING");
         donationHistoryEntity.setCreatedAt(LocalDateTime.now());

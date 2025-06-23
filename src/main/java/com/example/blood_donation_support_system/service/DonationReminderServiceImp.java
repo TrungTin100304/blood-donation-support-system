@@ -40,51 +40,51 @@ public class DonationReminderServiceImp implements DonationReminderService {
     @Autowired
     private JavaMailSender mailSender;
 
-    private static final int RECOVERY_DAYS = 56; // Số ngày phục hồi
+//    private static final int RECOVERY_DAYS = 56; // Số ngày phục hồi
     private static final int PAGE_SIZE = 100;
-
-    @Override
-    public DonationHistoryEntity recordDonation(DonationHistoryRequest request) {
-        UserEntity user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + request.getUserId()));
-
-//        BloodUnitEntity unit = bloodUnitRepository.findById(request.getBloodUnitId()).orElseThrow(() -> new IllegalArgumentException("BloodUnit not found with id: " + request.getBloodUnitId()));
-
-        if (!checkEligibility(request.getUserId(), request.getDonationDate())) {
-            throw new IllegalArgumentException("User is not eligible to donate yet. Please wait until recovery period is over.");
-        }
-
-
-
-        DonationHistoryEntity donation = new DonationHistoryEntity();
-        donation.setUser(user);
-        donation.setDonationDate(request.getDonationDate());
-//        donation.setBloodUnit(request.getBloodUnit().getBloodUnitId()); // chưa lấy được ID, cần fix
-        donation.setRecoveryTime(request.getDonationDate().plusDays(RECOVERY_DAYS)); // Đặt ngày phục hồi
-        donation.setRecoveryStatus("RECOVERING");
-
-        return donationHistoryRepository.save(donation);
-    }
-
-    @Override
-    public boolean checkEligibility(Integer userId, LocalDate donationDate) {
-        List<DonationHistoryEntity> donations = donationHistoryRepository.findByUserUserIdOrderByDonationDateDesc(userId);
-        if (donations.isEmpty()) {
-            return true; // Chưa có lịch sử hiến, nên được phép hiến
-        }
-
-        DonationHistoryEntity latestDonation = donations.get(0);
-        LocalDate lastDonationDate = latestDonation.getDonationDate().toLocalDate();
-        LocalDate now = LocalDate.now();
-
-        if (now.isAfter(recoveryDate) || now.isEqual(recoveryDate)) {
-            latestDonation.setRecoveryStatus("ELIGIBLE");
-            donationHistoryRepository.save(latestDonation);
-            return true;
-        }
-
-        return false;
-    }
+//
+//    @Override
+//    public DonationHistoryEntity recordDonation(DonationHistoryRequest request) {
+//        UserEntity user = userRepository.findById(request.getUserId())
+//                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + request.getUserId()));
+//
+////        BloodUnitEntity unit = bloodUnitRepository.findById(request.getBloodUnitId()).orElseThrow(() -> new IllegalArgumentException("BloodUnit not found with id: " + request.getBloodUnitId()));
+//
+//        if (!checkEligibility(request.getUserId(), request.getDonationDate())) {
+//            throw new IllegalArgumentException("User is not eligible to donate yet. Please wait until recovery period is over.");
+//        }
+//
+//
+//
+//        DonationHistoryEntity donation = new DonationHistoryEntity();
+//        donation.setUser(user);
+//        donation.setDonationDate(request.getDonationDate());
+////        donation.setBloodUnit(request.getBloodUnit().getBloodUnitId()); // chưa lấy được ID, cần fix
+//        donation.setRecoveryTime(request.getDonationDate().plusDays(RECOVERY_DAYS)); // Đặt ngày phục hồi
+//        donation.setRecoveryStatus("RECOVERING");
+//
+//        return donationHistoryRepository.save(donation);
+//    }
+//
+//    @Override
+//    public boolean checkEligibility(Integer userId, LocalDate donationDate) {
+//        List<DonationHistoryEntity> donations = donationHistoryRepository.findByUserUserIdOrderByDonationDateDesc(userId);
+//        if (donations.isEmpty()) {
+//            return true; // Chưa có lịch sử hiến, nên được phép hiến
+//        }
+//
+//        DonationHistoryEntity latestDonation = donations.get(0);
+//        LocalDate lastDonationDate = latestDonation.getDonationDate().toLocalDate();
+//        LocalDate now = LocalDate.now();
+//
+//        if (now.isAfter(recoveryDate) || now.isEqual(recoveryDate)) {
+//            latestDonation.setRecoveryStatus("ELIGIBLE");
+//            donationHistoryRepository.save(latestDonation);
+//            return true;
+//        }
+//
+//        return false;
+//    }
 
     @Override
     public List<UserDto> getEligibleDonors() {

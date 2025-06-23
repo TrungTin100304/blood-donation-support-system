@@ -84,6 +84,7 @@ import com.example.blood_donation_support_system.request.BloodInventoryRequest;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -165,7 +166,7 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
 
 
     @Override
-    public List<BloodQuantityByTypeDTO> getBloodQuantityByType(Integer hospitalId) {
+    public List<BloodQuantityByTypeDTO> getBloodQuantityByType(@RequestParam("hospitalId") Integer hospitalId ) {
         List<BloodQuantityByTypeRepository> total = bloodInventoryRepository.findBloodQuantityByType(hospitalId);
         return total.stream()
                 .map(proj -> new BloodQuantityByTypeDTO(
