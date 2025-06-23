@@ -11,4 +11,5 @@ public class DonationHistoryRequest {
     private Integer userId;
     private LocalDate donationDate;
     private BloodUnitEntity bloodUnit;
+    private int bloodUnitId;
 }

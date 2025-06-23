@@ -72,7 +72,8 @@ public class DonorController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayHienMauGanNhat) {
 
         try {
-            emailService.sendDonationReminder(autho, toEmail, ngayHienMauGanNhat);
+            String fullName = jwtHelper.getFullName(autho);
+            emailService.sendDonationReminder(fullName, toEmail, ngayHienMauGanNhat);
             BaseResponse response = new BaseResponse();
             response.setCode(HttpStatus.OK.value());
             response.setMessage("Email nhắc hiến máu đã được gửi thành công tới " + toEmail);

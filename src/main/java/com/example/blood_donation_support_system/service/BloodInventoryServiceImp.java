@@ -171,7 +171,9 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
                 .map(proj -> new BloodQuantityByTypeDTO(
                         proj.getName(),
                         proj.getBloodType(),
+                        proj.getComponentType(),
                         proj.getTotalQuantity() != null ? proj.getTotalQuantity() : 0
+
 
                 ))
                 .collect(Collectors.toList());

@@ -42,13 +42,13 @@ public interface BloodInventoryRepository extends JpaRepository<BloodInventoryEn
 //    );
 
 
-    @Query("SELECT bu.bloodType AS bloodType, COALESCE(SUM(bu.quantity), 0.0) AS totalQuantity, h.name AS hospitalName " +
+    @Query("SELECT bu.bloodType AS bloodType, bu.componentType AS componentType, COALESCE(SUM(bu.quantity), 1.0) AS totalQuantity, h.name AS name " +
             "FROM BloodUnitEntity bu " +
             "LEFT JOIN BloodInventoryEntity bi ON bu.bloodUnitId = bi.bloodUnit.bloodUnitId " +
             "LEFT JOIN HospitalEntity h ON bi.hospital.hospitalId = h.hospitalId " +
             "WHERE (bi.status = 'IN_STOCK' OR bi.status IS NULL) " +
             "AND (:hospitalId IS NULL OR bi.hospital.hospitalId = :hospitalId) " +
-            "GROUP BY bu.bloodType, h.name " +
-            "ORDER BY bu.bloodType")
+            "GROUP BY bu.bloodType, bu.componentType, h.name " +
+            "ORDER BY bu.componentType ASC, bu.bloodType ASC")
     List<BloodQuantityByTypeRepository> findBloodQuantityByType(@Param("hospitalId") Integer hospitalId);
 }

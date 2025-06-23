@@ -329,14 +329,18 @@ public class DonationReminderServiceImp implements DonationReminderService {
         UserEntity user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + request.getUserId()));
 
+//        BloodUnitEntity unit = bloodUnitRepository.findById(request.getBloodUnitId()).orElseThrow(() -> new IllegalArgumentException("BloodUnit not found with id: " + request.getBloodUnitId()));
+
         if (!checkEligibility(request.getUserId(), request.getDonationDate())) {
             throw new IllegalArgumentException("User is not eligible to donate yet. Please wait until recovery period is over.");
         }
 
+
+
         DonationHistoryEntity donation = new DonationHistoryEntity();
         donation.setUser(user);
         donation.setDonationDate(request.getDonationDate());
-        donation.setBloodUnit(request.getBloodUnit()); // chưa lấy được ID, cần fix
+//        donation.setBloodUnit(request.getBloodUnit().getBloodUnitId()); // chưa lấy được ID, cần fix
         donation.setRecoveryTime(request.getDonationDate().plusDays(RECOVERY_DAYS)); // Đặt ngày phục hồi
         donation.setRecoveryStatus("RECOVERING");
 

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class BloodQuantityByTypeDTO {
     private String name;
     private String bloodType;
+    private String componentType;
     private Integer totalQuantity;
 
 

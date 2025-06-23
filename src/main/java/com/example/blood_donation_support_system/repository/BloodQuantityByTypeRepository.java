@@ -7,4 +7,5 @@ public interface BloodQuantityByTypeRepository  {
     String getBloodType();
     Integer getTotalQuantity();
     String getName();
+    String getComponentType();
 }
