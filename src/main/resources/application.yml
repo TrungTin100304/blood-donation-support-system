@@ -2,21 +2,21 @@ spring:
   application:
     name: blood_system
   datasource:
-    url: jdbc:mysql://${MYSQL_URL:localhost}:${MYSQL_PORT:3307}/${MYSQL_DATABASE:blood_system}
+    url: jdbc:mysql://${MYSQL_URL:localhost}:${MYSQL_PORT:3308}/${MYSQL_DATABASE:blood_system}
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_ROOT_PASSWORD:admin123}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: "${GOOGLE_CLIENT_ID:xxxxxxxxxxxxxxxxx}"
-            client-secret: "${GOOGLE_CLIENT_SECRET:xxxxxxxxxxxxxx}"
-            redirect-uri: "${GOOGLE_REDIRECT_URI:http://localhost:3000/auth}"
+            client-id: "${GOOGLE_CLIENT_ID:1061123444145-ga7gecn3snrnrvkg79fvp759n5iq8ibd.apps.googleusercontent.com}"
+            client-secret: "${GOOGLE_CLIENT_SECRET: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}"
+            redirect-uri: "${GOOGLE_REDIRECT_URI:http://localhost:3000/auth/social/callback/google}"
             auth-uri: "https://accounts.google.com/o/oauth2/v2/auth"
             token-uri: "https://www.googleapis.com/oauth2/v3/token"
             user-info-uri: "https://www.googleapis.com/oauth2/v3/userinfo"

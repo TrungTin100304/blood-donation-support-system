@@ -3,7 +3,7 @@ package com.example.blood_donation_support_system.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -25,7 +25,6 @@ public class BloodUnitEntity {
     @Column(name="quantity")
     private Integer quantity;
 
-
     @Column(name="status")
     private String status;
 
@@ -41,5 +40,6 @@ public class BloodUnitEntity {
 
     @OneToOne(mappedBy = "bloodUnit", fetch = FetchType.LAZY)
     private BloodInventoryEntity bloodInventory;
+
 
 }

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface DonationReminderService {
-    DonationHistoryEntity recordDonation(DonationHistoryRequest request);
-    boolean checkEligibility(Integer userId, LocalDate donationDate);
+//    DonationHistoryEntity recordDonation(DonationHistoryRequest request);
+//    boolean checkEligibility(Integer userId, LocalDate donationDate);
     List<UserDto> getEligibleDonors();
 }
