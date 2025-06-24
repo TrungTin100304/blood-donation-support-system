@@ -21,9 +21,9 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
-    public void sendDonationReminder(String toEmail, String fullName, LocalDate ngayHienGanNhat) {
+    public void sendDonationReminder(String toEmail, String fullName, LocalDateTime ngayHienGanNhat) {
         try {
-            LocalDate ngayTiepTheo = ngayHienGanNhat.plusMonths(2);
+            LocalDateTime ngayTiepTheo = ngayHienGanNhat.plusMonths(2);
 
             String subject = "Email từ Hệ thống Hiến máu";
             String body = String.format("""

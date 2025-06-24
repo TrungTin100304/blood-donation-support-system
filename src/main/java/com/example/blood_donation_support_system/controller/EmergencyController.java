@@ -19,8 +19,11 @@ public class EmergencyController {
     private JwtHelper jwtHelper;
 
     @PostMapping
-    public ResponseEntity<?> submitRequest(@RequestBody EmergencyRequest emergencyRequest) {
-        emergencyService.handleRequest(emergencyRequest);
+    public ResponseEntity<?> submitRequest(@RequestBody EmergencyRequest emergencyRequest,
+                                           @RequestHeader("Authorization") String author) {
+
+        Integer requesterId = jwtHelper.getUserId(author);
+        emergencyService.handleRequest(emergencyRequest, requesterId);
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setMessage("Yêu cầu đã được xử lý thành công (có sẵn máu trong kho)");
@@ -53,5 +56,10 @@ public class EmergencyController {
         response.setCode(200);
         response.setMessage("Status updated successfully.");
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<?> getAllEmergency() {
+        return ResponseEntity.ok( emergencyService.getAllEmergencies());
     }
 }

@@ -29,7 +29,7 @@ public class BloodUnitEntity {
     private String status;
 
     @Column(name = "received_date")
-    private LocalDate receviedDate;
+    private LocalDate receivedDate;
 
     @ManyToOne
     @JoinColumn(name= "user_id")

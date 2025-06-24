@@ -25,10 +25,10 @@ public class DonationHistoryEntity {
 
     @ManyToOne
     @JoinColumn(name = "blood_unit_id", nullable = false)
-    private BloodUnitEntity bloodUnitId;
+    private BloodUnitEntity bloodUnit;
 
     @Column(name = "recovery_time")
-    private LocalDate recoveryTime;
+    private LocalDateTime recoveryTime;
 
     @Column(name = "recovery_status", nullable = false, length = 20)
     private String recoveryStatus = "RECOVERING";
