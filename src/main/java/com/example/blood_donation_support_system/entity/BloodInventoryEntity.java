@@ -30,11 +30,11 @@ public class BloodInventoryEntity {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)  //Lưu tên của enum trong DB
-    @ColumnDefault("'In Stock'") //Thiết lập giá trị mặc định trong DB
+    @ColumnDefault("'IN_STOCK'") //Thiết lập giá trị mặc định trong DB
     private BloodInventoryStatus status; //Enum quản lý trạng thái máu
 
     public enum BloodInventoryStatus {
-        In_Stock, Used, Expired // Thay đổi tên enum để khớp với cơ sở dữ liệu
+        IN_STOCK, USED, EXPIRED // Thay đổi tên enum để khớp với cơ sở dữ liệu
     }
 
     // Getters, setters (tự động bởi @Data)

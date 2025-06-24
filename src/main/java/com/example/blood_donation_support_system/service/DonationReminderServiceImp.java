@@ -55,8 +55,8 @@ public class DonationReminderServiceImp implements DonationReminderService {
         DonationHistoryEntity donation = new DonationHistoryEntity();
         donation.setUser(user);
         donation.setDonationDate(request.getDonationDate());
-        donation.setBloodUnitId(request.getBloodUnit());
-        donation.setRecoveryTime(LocalDate.now().plusDays(RECOVERY_DAYS));
+        donation.setBloodUnit(request.getBloodUnit());
+        donation.setRecoveryTime(LocalDateTime.now().plusDays(RECOVERY_DAYS));
         donation.setRecoveryStatus("RECOVERING");
         return donationHistoryRepository.save(donation);
     }

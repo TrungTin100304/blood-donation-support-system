@@ -41,7 +41,7 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
                 .orElse(new BloodInventoryEntity());
         entity.setHospital(hospital);
         entity.setBloodUnit(bloodUnit);
-        entity.setStatus(request.getStatus() != null ? request.getStatus() : BloodInventoryEntity.BloodInventoryStatus.In_Stock);
+        entity.setStatus(request.getStatus() != null ? request.getStatus() : BloodInventoryEntity.BloodInventoryStatus.IN_STOCK);
         entity.setLastUpdate(LocalDateTime.now());
         entity = bloodInventoryRepository.save(entity);
 

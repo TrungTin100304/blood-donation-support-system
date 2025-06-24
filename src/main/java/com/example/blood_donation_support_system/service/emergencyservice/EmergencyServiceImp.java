@@ -1,5 +1,6 @@
 package com.example.blood_donation_support_system.service.emergencyservice;
 
+import com.example.blood_donation_support_system.dto.EmergencyDto;
 import com.example.blood_donation_support_system.entity.*;
 import com.example.blood_donation_support_system.exception.BloodUnitNotFoundException;
 import com.example.blood_donation_support_system.exception.BloodUnitQuantity;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,19 +50,24 @@ public class EmergencyServiceImp implements EmergencyService {
 
     @Override
     @Transactional
-    public void handleRequest(EmergencyRequest request) {
+    public void handleRequest(EmergencyRequest request, Integer requesterId) {
         //B1: Lưu yêu cầu vào emergency_request
         HospitalEntity hospitalId = hospitalRepository.findById(request.getHospitalId()).orElse(null);
+        UserEntity receiver = userRepository.findById(requesterId).orElseThrow(() -> new UserNotFoundException("User not found with id: " + requesterId));
+
         EmergencyEntity emergencyEntity = new EmergencyEntity();
         emergencyEntity.setBloodType(request.getBloodType());
+        emergencyEntity.setRequester(receiver);
+        emergencyEntity.setNote(request.getNote());
         emergencyEntity.setComponentType(request.getComponentType());
         emergencyEntity.setHospital(hospitalId);
         emergencyEntity.setQuantity(request.getQuantity());
+        emergencyEntity.setCreatedAt(LocalDateTime.now());
         emergencyEntity.setNeededTime(request.getNeededTime());
         emergencyEntity.setStatus("Pending");
         emergencyRepository.save(emergencyEntity);
         //B2: Tìm máu phù hợp trong kho
-        List<BloodInventoryEntity> inventoryEntities = bloodInventoryRepository.findByStatusAndHospital_HospitalIdAndBloodUnit_BloodTypeAndBloodUnit_ComponentType(BloodInventoryEntity.BloodInventoryStatus.In_Stock, request.getHospitalId(), request.getBloodType(), request.getComponentType());
+        List<BloodInventoryEntity> inventoryEntities = bloodInventoryRepository.findByStatusAndHospital_HospitalIdAndBloodUnit_BloodTypeAndBloodUnit_ComponentType(BloodInventoryEntity.BloodInventoryStatus.IN_STOCK, request.getHospitalId(), request.getBloodType(), request.getComponentType());
 
         //Kiểm tra số lượng máu trong kho có đủ không
         int totalAvailable = inventoryEntities.stream().mapToInt(
@@ -81,7 +88,7 @@ public class EmergencyServiceImp implements EmergencyService {
                 if (bloodUnit.getQuantity() <= 0) {
                     bloodUnit.setQuantity(0);
                     bloodUnit.setStatus("Used");
-                    inventoryEntity.setStatus(BloodInventoryEntity.BloodInventoryStatus.Used);
+                    inventoryEntity.setStatus(BloodInventoryEntity.BloodInventoryStatus.USED);
                 }
                 bloodUnitRepository.save(bloodUnit);
                 bloodInventoryRepository.save(inventoryEntity);
@@ -92,7 +99,7 @@ public class EmergencyServiceImp implements EmergencyService {
                 remainingQuantity -= available;
                 bloodUnit.setQuantity(0);
                 bloodUnit.setStatus("Used");
-                inventoryEntity.setStatus(BloodInventoryEntity.BloodInventoryStatus.Used);
+                inventoryEntity.setStatus(BloodInventoryEntity.BloodInventoryStatus.USED);
                 bloodUnitRepository.save(bloodUnit);
                 bloodInventoryRepository.save(inventoryEntity);
             }
@@ -184,7 +191,7 @@ public class EmergencyServiceImp implements EmergencyService {
         bloodUnit.setQuantity(emergency.getQuantity());
         bloodUnit.setStatus("Available");
         bloodUnit.setUserId(donor);
-        bloodUnit.setReceviedDate(LocalDate.now());
+        bloodUnit.setReceivedDate(LocalDate.now());
         bloodUnit = bloodUnitRepository.save(bloodUnit);
 
         //Đưa đơn vị máu vào kho
@@ -192,20 +199,45 @@ public class EmergencyServiceImp implements EmergencyService {
         bloodInventory.setBloodUnit(bloodUnit);
         bloodInventory.setHospital(emergency.getHospital());
         bloodInventory.setLastUpdate(LocalDateTime.now());
-        bloodInventory.setStatus(BloodInventoryEntity.BloodInventoryStatus.In_Stock);
+        bloodInventory.setStatus(BloodInventoryEntity.BloodInventoryStatus.IN_STOCK);
         bloodInventoryRepository.save(bloodInventory);
 
         //Lưu lịch sử hiến máu
         DonationHistoryEntity donationHistoryEntity = new DonationHistoryEntity();
         donationHistoryEntity.setUser(donor);
-        donationHistoryEntity.setBloodUnitId(bloodUnit);
+        donationHistoryEntity.setBloodUnit(bloodUnit);
         donationHistoryEntity.setDonationDate(donationRequestEntity.getRequestDate());
-        donationHistoryEntity.setRecoveryTime(LocalDate.now().plusDays(7));
+        donationHistoryEntity.setRecoveryTime(LocalDateTime.now().plusDays(7));
         donationHistoryEntity.setCreatedAt(LocalDateTime.now());
         donationHistoryEntity.setRecoveryStatus("RECOVERING");
         donationHistoryEntity.setCreatedAt(LocalDateTime.now());
         donationHistoryRepository.save(donationHistoryEntity);
     }
 
+    @Override
+    public List<EmergencyDto> getAllEmergencies() {
+        List<EmergencyEntity> emergencyEntity = emergencyRepository.findAll();
+        List<EmergencyDto> emergencyDto = new ArrayList<>();
+        for (EmergencyEntity item : emergencyEntity) {
+            emergencyDto.add(convertEmergencyEntityToDto(item));
+        }
+        return emergencyDto;
+    }
+
+
+    private EmergencyDto convertEmergencyEntityToDto (EmergencyEntity emergencyEntity) {
+        EmergencyDto emergencyDto = new EmergencyDto();
+        emergencyDto.setEmergencyId(emergencyEntity.getRequestId());
+        emergencyDto.setReceiver(emergencyEntity.getRequester().getFullName());
+        emergencyDto.setBloodType(emergencyEntity.getBloodType());
+        emergencyDto.setComponentType(emergencyEntity.getComponentType());
+        emergencyDto.setQuantity(emergencyEntity.getQuantity());
+        emergencyDto.setNote(emergencyEntity.getNote());
+        emergencyDto.setNeedTime(emergencyEntity.getNeededTime());
+        emergencyDto.setCreateAt(emergencyEntity.getCreatedAt());
+        emergencyDto.setStatus(emergencyEntity.getStatus());
+        emergencyDto.setHospitalName(emergencyEntity.getHospital().getName());
+        return emergencyDto;
+    }
 
 }
