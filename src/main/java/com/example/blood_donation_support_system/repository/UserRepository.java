@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,4 +73,15 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 //            @Param("lng") double lng,
 //            @Param("maxDistance") double maxDistance
 //    );
+
+
+
+//    // Đếm số người dùng mới trong tháng hiện tại
+//    long countByCreatedAtAfter(LocalDateTime startOfMonth);
+
+    // Đếm tổng số người hiến máu (vai trò ROLE_MEMBER)
+    long countByRole_RoleName(String roleName);
+
+    // Đếm số người dùng chưa có lịch sử hiến máu
+    long countByUserIdNotIn(List<Integer> userIdsWithDonationHistory);
 }

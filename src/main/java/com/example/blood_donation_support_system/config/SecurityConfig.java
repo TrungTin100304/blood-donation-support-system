@@ -59,6 +59,9 @@ public class SecurityConfig {
 //                    request.requestMatchers(HttpMethod.GET,"/api/inventory/**").hasAnyRole("ADMIN", "STAFF", "MEMBER");
                     request.requestMatchers( "/api/inventory/**").permitAll();
                     request.anyRequest().authenticated();
+
+                       // dashboard
+                    request.requestMatchers("/api/dashboard/**").hasAnyRole("ADMIN");
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .build();
