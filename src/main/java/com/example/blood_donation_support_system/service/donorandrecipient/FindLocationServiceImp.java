@@ -18,13 +18,13 @@ public class FindLocationServiceImp implements FindLocationService {
     private UserRepository userRepository;
 
     @Override
-    public List<UserDto> findNearByDonors(double lat, double lng, double radiusKm, String bloodType , Integer userId) {
+    public List<UserDto> findNearByDonors(double lat, double lng, double radiusKm , Integer userId) {
         UserEntity userEntity = userRepository.findByUserId(userId).orElseThrow(() -> new UserIdNotFoundException("User Id not found"));
         userEntity.setLatitude(lat);
         userEntity.setLongitude(lng);
         userRepository.save(userEntity);
-        List<String> compatibleBloodType = getCompatibleBloodTypesForWholeBlood(bloodType);
-        List<UserEntity> users = userRepository.findNearbyDonors(lat, lng, radiusKm, compatibleBloodType);
+//        List<String> compatibleBloodType = getCompatibleBloodTypesForWholeBlood(bloodType);
+        List<UserEntity> users = userRepository.findNearbyDonors(lat, lng, radiusKm);
         List<UserDto> userDtos = new ArrayList<>();
         for (UserEntity user : users) {
             if(user.getUserId() == userId) {continue;}

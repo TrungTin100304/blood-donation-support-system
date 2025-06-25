@@ -41,7 +41,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
           AND u.longitude IS NOT NULL
           AND u.ready_time IS NOT NULL
           AND r.role_name = 'ROLE_MEMBER'
-          AND u.blood_type IN (:bloodType)
     ) AS subquery
     WHERE subquery.distance <= :maxDistance
     ORDER BY subquery.distance
@@ -49,9 +48,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     List<UserEntity> findNearbyDonors(
             @Param("lat") double lat,
             @Param("lng") double lng,
-            @Param("maxDistance") double maxDistance,
-            @Param("bloodType") List<String> bloodType
+            @Param("maxDistance") double maxDistance
     );
+
 
 
 //    // Người cần máu

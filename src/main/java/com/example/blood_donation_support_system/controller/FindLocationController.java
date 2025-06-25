@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/search")
 public class FindLocationController {
-    private static final double radiusKm = 5;
+    private static final double radiusKm = 2;
 
     @Autowired
     private FindLocationService findLocationService;
@@ -35,7 +35,7 @@ public class FindLocationController {
                     .body("Bạn chưa cập nhật vị trí. Vui lòng cập nhật để tìm kiếm người hiến máu gần bạn.");
         }
         Integer userId = jwtHelper.getUserId(author);
-        List<UserDto> result = findLocationService.findNearByDonors(userRequest.getLatitude(), userRequest.getLongitude(), radiusKm, userRequest.getBloodType(), userId);
+        List<UserDto> result = findLocationService.findNearByDonors(userRequest.getLatitude(), userRequest.getLongitude(), radiusKm, userId);
         return ResponseEntity.ok(result);
     }
 }
