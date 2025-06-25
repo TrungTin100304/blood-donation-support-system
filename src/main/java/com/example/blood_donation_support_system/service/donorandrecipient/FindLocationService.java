@@ -6,5 +6,5 @@ import com.example.blood_donation_support_system.entity.UserEntity;
 import java.util.List;
 
 public interface FindLocationService {
-    List<UserDto> findNearByDonors(double lat, double lng, double radiusKm, String bloodType, Integer userId);
+    List<UserDto> findNearByDonors(double lat, double lng, double radiusKm, Integer userId);
 }

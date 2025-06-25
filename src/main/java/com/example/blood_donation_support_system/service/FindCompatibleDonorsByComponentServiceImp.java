@@ -18,59 +18,59 @@ public class FindCompatibleDonorsByComponentServiceImp implements FindCompatible
     private UserRepository userRepository;
 
     @Override
-    public List<UserDto> findCompatibleTypesByComponent(String recipentBloodType, String component) {
+    public List<String> findCompatibleTypesByComponent(String recipentBloodType, String component) {
         recipentBloodType = recipentBloodType.trim().toUpperCase();
         component = component.trim().toUpperCase();
 
-        List<String> compatibleTypes = getCompatibleTypesByComponent(recipentBloodType, component);
-        List<UserEntity> userEntities = userRepository.findByBloodTypeIn(compatibleTypes);
-        List<UserDto>  listUserDtos = new ArrayList<>();
-        for(UserEntity userEntity : userEntities){
-            UserDto userDto = this.convertToDto(userEntity);
-            listUserDtos.add(userDto);
-        }
-        return listUserDtos;
-        //return userEntities.stream()
-        //        .map(this::convertToDto)
-        //        .collect(Collectors.toList());
-        //return userEntities.stream()
+        return getCompatibleTypesByComponent(recipentBloodType, component);
 
     }
 
     private List<String> getCompatibleTypesByComponent(String recipient, String component) {
-        Map<String, List<String>> map = new HashMap<>();
+        Map<String, List<String>> compatibilityMap = new HashMap<>();
 
-        if (component.equals("RBC") || component.equals("WHOLE")) {
-            map.put("O-", List.of("O-"));
-            map.put("O+", List.of("O-", "O+"));
-            map.put("A-", List.of("O-", "A-"));
-            map.put("A+", List.of("O-", "O+", "A-", "A+"));
-            map.put("B-", List.of("O-", "B-"));
-            map.put("B+", List.of("O-", "O+", "B-", "B+"));
-            map.put("AB-", List.of("O-", "A-", "B-", "AB-"));
-            map.put("AB+", List.of("O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"));
-        } else if (component.equals("PLASMA") || component.equals("PLATELET")) {
-            map.put("O-", List.of("O-", "A-", "B-", "AB-"));
-            map.put("O+", List.of("O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"));
-            map.put("A-", List.of("A-", "AB-"));
-            map.put("A+", List.of("A-", "A+", "AB-", "AB+"));
-            map.put("B-", List.of("B-", "AB-"));
-            map.put("B+", List.of("B-", "B+", "AB-", "AB+"));
-            map.put("AB-", List.of("AB-"));
-            map.put("AB+", List.of("AB-", "AB+"));
+        switch (component) {
+            case "WHOLE":
+            case "RBC": // Hồng cầu
+                compatibilityMap.put("O-", List.of("O-"));
+                compatibilityMap.put("O+", List.of("O-", "O+"));
+                compatibilityMap.put("A-", List.of("O-", "A-"));
+                compatibilityMap.put("A+", List.of("O-", "O+", "A-", "A+"));
+                compatibilityMap.put("B-", List.of("O-", "B-"));
+                compatibilityMap.put("B+", List.of("O-", "O+", "B-", "B+"));
+                compatibilityMap.put("AB-", List.of("O-", "A-", "B-", "AB-"));
+                compatibilityMap.put("AB+", List.of("O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"));
+                break;
+
+            case "PLASMA": // Huyết Tương
+                // Ngược ABO, Rh vẫn cần tương thích
+                compatibilityMap.put("O-", List.of("O-"));
+                compatibilityMap.put("O+", List.of("O-", "O+"));
+                compatibilityMap.put("A-", List.of("O-", "A-"));
+                compatibilityMap.put("A+", List.of("O-", "O+", "A-", "A+"));
+                compatibilityMap.put("B-", List.of("O-", "B-"));
+                compatibilityMap.put("B+", List.of("O-", "O+", "B-", "B+"));
+                compatibilityMap.put("AB-", List.of("O-", "A-", "B-", "AB-"));
+                compatibilityMap.put("AB+", List.of("O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"));
+                break;
+
+            case "PLATELET": // Tiểu cầu
+                // Linh hoạt, ưu tiên cùng nhóm, chấp nhận tương thích mở rộng nếu xét nghiệm chéo cho phép
+                compatibilityMap.put("O-", List.of("O-"));
+                compatibilityMap.put("O+", List.of("O-", "O+"));
+                compatibilityMap.put("A-", List.of("O-", "A-"));
+                compatibilityMap.put("A+", List.of("O-", "O+", "A-", "A+"));
+                compatibilityMap.put("B-", List.of("O-", "B-"));
+                compatibilityMap.put("B+", List.of("O-", "O+", "B-", "B+"));
+                compatibilityMap.put("AB-", List.of("O-", "A-", "B-", "AB-"));
+                compatibilityMap.put("AB+", List.of("O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"));
+                break;
+
+            default:
+                return new ArrayList<>();
         }
 
-        return map.getOrDefault(recipient, new ArrayList<>());
-
+        return compatibilityMap.getOrDefault(recipient, new ArrayList<>());
     }
 
-    private UserDto convertToDto(UserEntity userEntity) {
-        UserDto userDto = new UserDto();
-        userDto.setName(userEntity.getFullName());
-        userDto.setEmail(userEntity.getEmail());
-        userDto.setPhoneNumber(userEntity.getPhoneNumber());
-        userDto.setAddress(userEntity.getAddress());
-        userDto.setBloodType(userEntity.getBloodType());
-        return userDto;
-    }
 }

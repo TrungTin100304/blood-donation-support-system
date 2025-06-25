@@ -23,7 +23,7 @@ public class RecoveryStatusScheduler {
     @Scheduled(cron = "0 * * * * ?") // Chạy mỗi ngày lúc 00:00
     public void updateRecoveryStatus() {
         List<DonationHistoryEntity> recoveringList =
-                donationHistoryRepository.findByRecoveryStatus("RECOVERING");
+                donationHistoryRepository.findByRecoveryStatus("Recovering");
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -35,7 +35,7 @@ public class RecoveryStatusScheduler {
                 LocalDateTime ngayHienGanNhat = history.getCreatedAt();
                 //String toEmail, String fullName, LocalDate ngayHienGanNhat
                 emailService.sendDonationReminder(email, fullName, ngayHienGanNhat);
-                history.setRecoveryStatus("RECOVERED");
+                history.setRecoveryStatus("Recovered");
             }
         }
 

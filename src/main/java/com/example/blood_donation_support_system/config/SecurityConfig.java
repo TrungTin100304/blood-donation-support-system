@@ -40,7 +40,7 @@ public class SecurityConfig {
                     request.requestMatchers(HttpMethod.POST, "/api/register/admin", "/api/register/staff").hasRole("ADMIN");
                     request.requestMatchers(HttpMethod.POST, "/api/donor/register").hasAnyRole("MEMBER", "ADMIN","STAFF");
 
-                    request.requestMatchers(HttpMethod.GET, "/api/matching/**").hasAnyRole("MEMBER", "ADMIN","STAFF");
+                    request.requestMatchers(HttpMethod.GET, "/api/matching/**").hasAnyRole( "ADMIN","STAFF");
 
 
                     request.requestMatchers("/api/emergency-requests/**").hasAnyRole("ADMIN","STAFF");
