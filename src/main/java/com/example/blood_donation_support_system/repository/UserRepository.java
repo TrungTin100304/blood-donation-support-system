@@ -51,25 +51,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
             @Param("maxDistance") double maxDistance
     );
 
+    @Query("SELECT u FROM UserEntity u WHERE u.roleEntity.roleName = 'ROLE_MEMBER' AND u.status = 'ACTIVE' AND u.readyTime IS NOT NULL")
+    List<UserEntity> findAllDonors();
 
-
-//    // Người cần máu
-//    @Query(value = """
-//            SELECT u.*,
-//                       (6371 * acos(
-//                           cos(radians(:lat)) * cos(radians(u.latitude)) *
-//                           cos(radians(u.longitude) - radians(:lng)) +
-//                           sin(radians(:lat)) * sin(radians(u.latitude))
-//                       )) AS distance
-//                FROM user u
-//                JOIN emergency_request er ON u.user_id  = er.requester_id
-//                WHERE u.latitude IS NOT NULL AND u.longitude IS NOT NULL
-//                HAVING distance <= :maxDistance
-//                ORDER BY distance
-//        """, nativeQuery = true)
-//    List<UserEntity> findNearbyRecipients(
-//            @Param("lat") double lat,
-//            @Param("lng") double lng,
-//            @Param("maxDistance") double maxDistance
-//    );
 }

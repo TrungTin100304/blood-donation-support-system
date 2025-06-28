@@ -3,6 +3,7 @@ package com.example.blood_donation_support_system.controller;
 import com.example.blood_donation_support_system.request.RegisterDonorRequest;
 import com.example.blood_donation_support_system.response.BaseResponse;
 import com.example.blood_donation_support_system.service.donorandrecipient.DonorService;
+import com.example.blood_donation_support_system.service.user.GetUserService;
 import com.example.blood_donation_support_system.utils.JwtHelper;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
@@ -26,6 +27,9 @@ public class DonorController {
     @Autowired
     private JwtHelper jwtHelper;
 
+    @Autowired
+    private GetUserService getUserService;
+
 
     @PostMapping("/register")
     public ResponseEntity<?> registerDonor(@RequestHeader("Authorization") String authHeader,
@@ -41,26 +45,10 @@ public class DonorController {
         return ResponseEntity.ok(baseResponse);
     }
 
-
-    // Thêm logging để theo dõi hành động
-    private static final Logger logger = LoggerFactory.getLogger(DonorController.class);
-
-    // Thêm phương thức xử lý lỗi bổ sung
-    private ResponseEntity<BaseResponse> handleError(String message, HttpStatus status) {
-        logger.error("Error occurred: {}", message);
-        BaseResponse errorResponse = new BaseResponse();
-        errorResponse.setCode(status.value());
-        errorResponse.setMessage(message);
-        return ResponseEntity.status(status).body(errorResponse);
+    @GetMapping("")
+    public ResponseEntity<?> getAllDonors(){
+        return ResponseEntity.ok(getUserService.getAllDonors());
     }
-
-    // Thêm kiểm tra Authorization header trước khi xử lý
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<BaseResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return handleError(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-
 
 }
 
