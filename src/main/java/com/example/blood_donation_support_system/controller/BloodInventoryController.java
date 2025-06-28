@@ -1,6 +1,7 @@
 package com.example.blood_donation_support_system.controller;
 
 import com.example.blood_donation_support_system.dto.SimpleBloodInventoryDto;
+import com.example.blood_donation_support_system.dto.BloodQuantityByTypeDTO;
 import com.example.blood_donation_support_system.request.BloodInventoryRequest;
 import com.example.blood_donation_support_system.request.BloodUnitRequest;
 import com.example.blood_donation_support_system.response.BaseResponse;
@@ -21,7 +22,7 @@ public class BloodInventoryController {
     @Autowired
     private BloodInventoryService bloodInventoryService;
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
     public ResponseEntity<BaseResponse> updateInventory(@Valid @RequestBody BloodInventoryRequest request) {
         BaseResponse response = new BaseResponse();
@@ -33,44 +34,41 @@ public class BloodInventoryController {
 
     @GetMapping("/hospital")
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
-    public ResponseEntity<BaseResponse> getInventoryByHospital(@RequestParam("hospitalId") Integer hospitalId) {
+    public ResponseEntity<BaseResponse> getInventoryByHospital(@RequestParam("name") String name) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setMessage("Danh sách tồn kho máu theo bệnh viện");
-        response.setData(bloodInventoryService.getInventoryByHospital(hospitalId));
+        response.setData(bloodInventoryService.getInventoryByHospitalName(name));
         return ResponseEntity.ok(response);
     }
 
+    // Tìm nhóm máu(BloodUnit) trong kho
     @GetMapping("/blood-unit")
-    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
-    public ResponseEntity<BaseResponse> getInventoryByBloodUnitId(@RequestParam("bloodUnitId") Integer bloodUnitId) {
+    @PreAuthorize("hasAnyRole('ADMIN' or 'STAFF' or 'MEMBER')")
+    public ResponseEntity<BaseResponse> getInventoryByBloodType(@RequestParam("bloodType") String bloodType) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setMessage("Danh sách tồn kho máu theo đơn vị máu");
-        response.setData(bloodInventoryService.getInventoryByBloodUnitId(bloodUnitId));
+        response.setData(bloodInventoryService.getInventoryByBloodType(bloodType));
         return ResponseEntity.ok(response);
     }
-//
-//    @GetMapping("/search")
-//    public ResponseEntity<List<SimpleBloodInventoryDto>> searchAvailableUnits(
-//            @RequestBody BloodUnitRequest bloodUnitRequest) {
-//        List<SimpleBloodInventoryDto> results = bloodInventoryService.findAvailableBloodUnit(bloodUnitRequest.getBloodType(), bloodUnitRequest.getComponentType());
-//        return ResponseEntity.ok(results);
-//    }
-//
-//    @PutMapping("/blood-inventory/{id}/status")
-//    public ResponseEntity<?> updateStatus(@PathVariable Integer id, @RequestBody BloodInventoryRequest bloodInventoryRequest) {
-//        boolean updateIsSucceed = bloodInventoryService.markInventoryUsed(id, bloodInventoryRequest);
-//        if (updateIsSucceed) {
-//            BaseResponse response = new BaseResponse();
-//            response.setCode(200);
-//            response.setMessage("update successful");
-//            return ResponseEntity.ok(response);
-//        }else {
-//            BaseResponse response = new BaseResponse();
-//            response.setCode(500);
-//            response.setMessage("update failed");
-//            return ResponseEntity.ok(response);
-//        }
-//    }
+
+
+    @GetMapping("/all-Inventory")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
+    public ResponseEntity<BaseResponse> getAllInventory() {
+        BaseResponse response = new BaseResponse();
+        response.setCode(200);
+        response.setMessage("Danh sách tất cả");
+        response.setData(bloodInventoryService.getAllInventory());
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/blood-quantity-by-type")
+    public ResponseEntity<BaseResponse> getBloodQuantityByType(@RequestParam(value = "hospitalId", required = false) int hospitalId) {
+        BaseResponse response = new BaseResponse();
+        response.setCode(200);
+        response.setMessage("Danh sách tất cả máu trong kho theo nhóm");
+        response.setData(bloodInventoryService.getBloodQuantityByType(hospitalId));
+        return ResponseEntity.ok(response);
+    }
 }

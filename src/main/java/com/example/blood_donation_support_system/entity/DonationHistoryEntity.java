@@ -24,7 +24,7 @@ public class DonationHistoryEntity {
     private LocalDateTime donationDate;
 
     @ManyToOne
-    @JoinColumn(name = "blood_unit_id", nullable = false)
+    @JoinColumn(name = "blood_unit_id", referencedColumnName = "blood_unit_id")
     private BloodUnitEntity bloodUnit;
 
     @Column(name = "recovery_time")

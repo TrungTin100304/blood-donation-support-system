@@ -4,10 +4,11 @@ import com.example.blood_donation_support_system.dto.UserDto;
 import com.example.blood_donation_support_system.entity.DonationHistoryEntity;
 import com.example.blood_donation_support_system.request.DonationHistoryRequest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface DonationReminderService {
-    DonationHistoryEntity recordDonation(DonationHistoryRequest request);
-    boolean checkEligibility(Integer userId);
+//    DonationHistoryEntity recordDonation(DonationHistoryRequest request);
+//    boolean checkEligibility(Integer userId, LocalDate donationDate);
     List<UserDto> getEligibleDonors();
 }

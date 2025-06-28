@@ -51,6 +51,7 @@ public class SecurityConfig {
                     request.requestMatchers( "/api/donation/**").permitAll();
 
                     request.requestMatchers( "/api/profile/**").permitAll();
+                    request.requestMatchers( "/api/blood-units/**").permitAll();
 
                     request.requestMatchers(HttpMethod.POST, "/api/search/**").hasAnyRole("ADMIN","STAFF");
 
