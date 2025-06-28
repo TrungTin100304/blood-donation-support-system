@@ -56,6 +56,9 @@ public class SecurityConfig {
 
                     request.requestMatchers("/api/hospitals").hasAnyRole("ADMIN","STAFF");
 
+                    request.requestMatchers(HttpMethod.GET,"/api/donor").hasAnyRole("ADMIN","STAFF");
+                    request.requestMatchers(HttpMethod.GET, "/api/appointment").hasAnyRole("ADMIN","STAFF");
+
 //                    request.requestMatchers(HttpMethod.POST,"/api/inventory/update").hasAnyRole("ADMIN", "STAFF","MEMBER");
 //                    request.requestMatchers(HttpMethod.GET,"/api/inventory/**").hasAnyRole("ADMIN", "STAFF", "MEMBER");
                     request.requestMatchers( "/api/inventory/**").permitAll();

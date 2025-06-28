@@ -1,11 +1,13 @@
 package com.example.blood_donation_support_system.service.user;
 
+import com.example.blood_donation_support_system.dto.DonorDto;
 import com.example.blood_donation_support_system.dto.UserDto;
 import com.example.blood_donation_support_system.entity.UserEntity;
 import com.example.blood_donation_support_system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +25,26 @@ public class GetUserServiceImp implements GetUserService {
         } else {
             throw new RuntimeException("User with ID " + id + " not found");
         }
+    }
+
+    @Override
+    public List<DonorDto> getAllDonors() {
+        List<UserEntity> donors = userRepository.findAllDonors();
+        List<DonorDto> donorDtos = donors.stream()
+                .map(this::convertUserEntityToUserDto)
+                .toList();
+        return donorDtos;
+
+    }
+
+    public DonorDto convertUserEntityToUserDto(UserEntity userEntity) {
+        DonorDto donorDto = new DonorDto();
+        donorDto.setDonorId(userEntity.getUserId());
+        donorDto.setName(userEntity.getFullName());
+        donorDto.setBloodType(userEntity.getBloodType());
+        donorDto.setGender(userEntity.getGender());
+        donorDto.setReadyTime(userEntity.getReadyTime());
+        return donorDto;
     }
 
     public UserDto convertUserToUserDto(UserEntity userEntity) {

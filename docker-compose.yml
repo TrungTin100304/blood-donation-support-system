@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  myhome:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: blood_system
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin123
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - blood
+
+  blood:
+    build: .
+    container_name: blood
+    environment:
+      MYSQL_URL: myhome
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: blood_system
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: admin123
+    ports:
+      - "8080:8080"
+    depends_on:
+      - myhome
+    networks:
+      - blood
+
+volumes:
+  mysql-data:
+
+networks:
+  blood:
+    driver: bridge
