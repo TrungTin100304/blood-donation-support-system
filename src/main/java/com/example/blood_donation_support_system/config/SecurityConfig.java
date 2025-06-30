@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> {
                     //FindLoaction
-                    request.requestMatchers(HttpMethod.GET, "/api/search/**").permitAll();
+                    request.requestMatchers(HttpMethod.GET, "/api/search/**").hasAnyRole("ADMIN","STAFF");
 
                     // giúp định nghĩa quyền truy cập cho các link
                     request.requestMatchers(HttpMethod.POST, "/api/updateProfile/update").permitAll();

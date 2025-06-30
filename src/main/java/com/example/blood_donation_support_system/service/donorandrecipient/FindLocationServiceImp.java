@@ -7,10 +7,9 @@ import com.example.blood_donation_support_system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+
 
 @Service
 public class FindLocationServiceImp implements FindLocationService {
@@ -23,7 +22,6 @@ public class FindLocationServiceImp implements FindLocationService {
         userEntity.setLatitude(lat);
         userEntity.setLongitude(lng);
         userRepository.save(userEntity);
-//        List<String> compatibleBloodType = getCompatibleBloodTypesForWholeBlood(bloodType);
         List<UserEntity> users = userRepository.findNearbyDonors(lat, lng, radiusKm);
         List<UserDto> userDtos = new ArrayList<>();
         for (UserEntity user : users) {
@@ -34,21 +32,20 @@ public class FindLocationServiceImp implements FindLocationService {
         return userDtos;
     }
 
-    private List<String> getCompatibleBloodTypesForWholeBlood(String bloodType){
-        Map<String, List<String>> map = new HashMap<>();
-        map.put("A+", List.of("A+", "A-", "O+", "O-"));
-        map.put("A-", List.of("A-", "O-"));
-        map.put("B+", List.of("B+", "B-", "O+", "O-"));
-        map.put("B-", List.of("B-", "O-"));
-        map.put("AB+", List.of("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"));
-        map.put("AB-", List.of("A-", "B-", "AB-", "O-"));
-        map.put("O+", List.of("O+", "O-"));
-        map.put("O-", List.of("O-"));
-        map.put("", List.of(""));
-        return map.getOrDefault(bloodType, new ArrayList<>());
-
+    @Override
+    public List<UserDto> findUsersNearByHospital( double radiusKm, Long hospitalId) {
+        List<UserEntity> userEntities = userRepository.findActiveUsersNearHospital( hospitalId, radiusKm);
+        if(userEntities.isEmpty()) {
+            System.out.println("No users found near hospital");
+            return Collections.emptyList();
+        }
+        List<UserDto> userDtos = new ArrayList<>();
+        for (UserEntity userEntity : userEntities) {
+            UserDto userDto = convertToDto(userEntity);
+            userDtos.add(userDto);
+        }
+        return userDtos;
     }
-
 
 
     private UserDto convertToDto(UserEntity userEntity) {

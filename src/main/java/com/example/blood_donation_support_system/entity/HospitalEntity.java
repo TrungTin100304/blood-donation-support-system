@@ -20,6 +20,12 @@ public class HospitalEntity {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name= "longitude")
+    private Double longitude;
+
     @OneToMany(mappedBy = "hospital") // "hospital" là tên field trong BloodInventoryEntity
     private List<BloodInventoryEntity> bloodInventories;
 

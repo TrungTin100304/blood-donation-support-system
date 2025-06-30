@@ -53,4 +53,28 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query("SELECT u FROM UserEntity u WHERE u.roleEntity.roleName = 'ROLE_MEMBER' AND u.status = 'ACTIVE' AND u.readyTime IS NOT NULL")
     List<UserEntity> findAllDonors();
 
+    // tìm kiếm khoảng cách giữa bệnh viện và hospital
+    @Query(value = """
+    SELECT u.*
+    FROM user u
+    JOIN hospital h ON h.hospital_id = :hospitalId
+    WHERE u.latitude IS NOT NULL AND u.longitude IS NOT NULL
+      AND h.latitude IS NOT NULL AND h.longitude IS NOT NULL
+      AND u.status = 'ACTIVE'
+      AND (
+          6371 * ACOS(
+              COS(RADIANS(u.latitude)) * COS(RADIANS(h.latitude)) *
+              COS(RADIANS(h.longitude) - RADIANS(u.longitude)) +
+              SIN(RADIANS(u.latitude)) * SIN(RADIANS(h.latitude))
+          )
+      ) <= :maxDistanceKm
+    ORDER BY (
+        6371 * ACOS(
+            COS(RADIANS(u.latitude)) * COS(RADIANS(h.latitude)) *
+            COS(RADIANS(h.longitude) - RADIANS(u.longitude)) +
+            SIN(RADIANS(u.latitude)) * SIN(RADIANS(h.latitude))
+        )
+    )
+""", nativeQuery = true)
+    List<UserEntity> findActiveUsersNearHospital(@Param("hospitalId") Long hospitalId, @Param("maxDistanceKm") Double maxDistanceKm);
 }

@@ -38,4 +38,13 @@ public class FindLocationController {
         List<UserDto> result = findLocationService.findNearByDonors(userRequest.getLatitude(), userRequest.getLongitude(), radiusKm, userId);
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/hospital-nearby")
+    public ResponseEntity<?> getUserNearByHospital(@RequestParam Long hospitalId){
+        List<UserDto> result = findLocationService.findUsersNearByHospital(radiusKm, hospitalId);
+        if(result.isEmpty()){
+            return ResponseEntity.ok("Không tìm thấy người dùng nào trong bán kính" + radiusKm + "km");
+        }
+        return ResponseEntity.ok(result);
+    }
 }
