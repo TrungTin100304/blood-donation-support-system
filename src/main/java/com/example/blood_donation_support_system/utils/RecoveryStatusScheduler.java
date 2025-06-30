@@ -32,7 +32,7 @@ public class RecoveryStatusScheduler {
 
                 String email = history.getUser().getEmail();
                 String fullName = history.getUser().getFullName();
-                LocalDateTime ngayHienGanNhat = history.getCreatedAt();
+                LocalDate ngayHienGanNhat = history.getCreatedAt().toLocalDate();
                 //String toEmail, String fullName, LocalDate ngayHienGanNhat
                 emailService.sendDonationReminder(email, fullName, ngayHienGanNhat);
                 history.setRecoveryStatus("Recovered");

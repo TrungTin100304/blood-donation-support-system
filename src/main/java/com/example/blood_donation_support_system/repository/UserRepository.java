@@ -1,13 +1,11 @@
 package com.example.blood_donation_support_system.repository;
 
 import com.example.blood_donation_support_system.entity.UserEntity;
-import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +15,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     boolean existsByUserName(String UserName);
     Optional<UserEntity> findByEmail(String email);
     Optional<UserEntity> findByUserName(String userName);
+    List<UserEntity> findByUserNameContainingIgnoreCase(String userName);
     List<UserEntity> findByBloodTypeIn(List<String> bloodTypes);
     Optional<UserEntity> findByGooleId(String gooleId);
     Optional<UserEntity> findByUserId(int userId);
@@ -54,4 +53,28 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query("SELECT u FROM UserEntity u WHERE u.roleEntity.roleName = 'ROLE_MEMBER' AND u.status = 'ACTIVE' AND u.readyTime IS NOT NULL")
     List<UserEntity> findAllDonors();
 
+    // tìm kiếm khoảng cách giữa bệnh viện và hospital
+    @Query(value = """
+    SELECT u.*
+    FROM user u
+    JOIN hospital h ON h.hospital_id = :hospitalId
+    WHERE u.latitude IS NOT NULL AND u.longitude IS NOT NULL
+      AND h.latitude IS NOT NULL AND h.longitude IS NOT NULL
+      AND u.status = 'ACTIVE'
+      AND (
+          6371 * ACOS(
+              COS(RADIANS(u.latitude)) * COS(RADIANS(h.latitude)) *
+              COS(RADIANS(h.longitude) - RADIANS(u.longitude)) +
+              SIN(RADIANS(u.latitude)) * SIN(RADIANS(h.latitude))
+          )
+      ) <= :maxDistanceKm
+    ORDER BY (
+        6371 * ACOS(
+            COS(RADIANS(u.latitude)) * COS(RADIANS(h.latitude)) *
+            COS(RADIANS(h.longitude) - RADIANS(u.longitude)) +
+            SIN(RADIANS(u.latitude)) * SIN(RADIANS(h.latitude))
+        )
+    )
+""", nativeQuery = true)
+    List<UserEntity> findActiveUsersNearHospital(@Param("hospitalId") Long hospitalId, @Param("maxDistanceKm") Double maxDistanceKm);
 }

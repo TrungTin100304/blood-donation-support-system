@@ -10,5 +10,9 @@ public interface EmergencyService {
     void handleRequest(EmergencyRequest request, Integer requesterId);
     void handleNoAvailableBlood(EmergencyRequest request, Integer donorId, Integer receiptId);
     void updateAppointmentStatus( AppointmentRequest appointmentRequest);
+
     List<EmergencyDto> getAllEmergencies();
 }
+
+
+

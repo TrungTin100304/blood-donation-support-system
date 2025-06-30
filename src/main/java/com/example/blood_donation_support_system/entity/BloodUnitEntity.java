@@ -31,6 +31,9 @@ public class BloodUnitEntity {
     @Column(name = "received_date")
     private LocalDate receivedDate;
 
+    @Column(name = "expiry_date")
+    private LocalDate expiryDate;
+
     @ManyToOne
     @JoinColumn(name= "user_id")
     private UserEntity userId;

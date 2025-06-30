@@ -136,7 +136,7 @@ public class EmergencyServiceImp implements EmergencyService {
         appointmentEntity.setLocation(hospitalId.getAddress());
         appointmentEntity.setRecipient(receiver);
         appointmentEntity.setStatus("Confirmed");
-        emailService.sendAppointmentEmail(donor, receiver, hospitalId, donor.getReadyTime());
+        emailService.sendAppointmentEmail(donor, receiver, hospitalId, LocalDateTime.now());
         appointmentRepository.save(appointmentEntity);
 
         //Cập nhật trạng thái yêu cầu khẩn cấp

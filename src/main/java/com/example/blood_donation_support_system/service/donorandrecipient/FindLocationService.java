@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface FindLocationService {
     List<UserDto> findNearByDonors(double lat, double lng, double radiusKm, Integer userId);
+    List<UserDto> findUsersNearByHospital(double radiusKm, Long hospitalId);
 }

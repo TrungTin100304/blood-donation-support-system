@@ -7,32 +7,30 @@ import com.example.blood_donation_support_system.repository.BloodUnitRepository;
 import com.example.blood_donation_support_system.repository.HospitalRepository;
 import com.example.blood_donation_support_system.repository.UserRepository;
 import com.example.blood_donation_support_system.request.RegisterDonorRequest;
+
+import com.example.blood_donation_support_system.utils.JwtHelper;
+import jakarta.mail.internet.MimeMessage;
+
 import com.example.blood_donation_support_system.service.BloodInventoryService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
 
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+
 import java.util.List;
 
 
 @Service
-public class DonorServiceImp implements DonorService{
+public class DonorServiceImp implements DonorService {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private DonationReminderService donationReminderService;
-
-    @Autowired
-    private BloodInventoryService bloodInventoryService;
-
-    @Autowired
-    private BloodUnitRepository bloodUnitRepository;
-
-    @Autowired
-    private HospitalRepository hospitalRepository;
 
     @Override
     public void registerDonor(int userId, RegisterDonorRequest registerDonorRequest) {
@@ -40,8 +38,13 @@ public class DonorServiceImp implements DonorService{
                 orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
 
 
+
+        if (userEntity.getBloodType() != null && userEntity.getReadyTime() != null) {
+            throw new IllegalArgumentException("User already has ready time");
+        }
+
         List<String> valiBloodTypes = List.of("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-");
-        if(!valiBloodTypes.contains(registerDonorRequest.getBloodType())){
+        if (!valiBloodTypes.contains(registerDonorRequest.getBloodType())) {
             throw new IllegalArgumentException("Blood type is not valid");
         }
 
@@ -49,7 +52,7 @@ public class DonorServiceImp implements DonorService{
         if (registerDonorRequest.getLatitude() != 0 && registerDonorRequest.getLongitude() != 0) {
             userEntity.setLatitude(registerDonorRequest.getLatitude());
             userEntity.setLongitude(registerDonorRequest.getLongitude());
-        }else{
+        } else {
             throw new LocationException("Latitude and Longitude must not be null");
         }
 
@@ -74,4 +77,7 @@ public class DonorServiceImp implements DonorService{
 
 
     }
+
+
 }
+

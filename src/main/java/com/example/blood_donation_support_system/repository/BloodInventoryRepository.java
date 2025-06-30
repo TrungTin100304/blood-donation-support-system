@@ -1,11 +1,13 @@
 package com.example.blood_donation_support_system.repository;
 
 
+import com.example.blood_donation_support_system.dto.BloodQuantityByTypeDTO;
 import com.example.blood_donation_support_system.entity.BloodInventoryEntity;
 import com.example.blood_donation_support_system.entity.BloodUnitEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +17,10 @@ import java.util.Optional;
 public interface BloodInventoryRepository extends JpaRepository<BloodInventoryEntity, Integer> {
     List<BloodInventoryEntity> findByHospitalHospitalId(Integer hospitalId);
     Optional<BloodInventoryEntity> findByBloodUnit(BloodUnitEntity  bloodUnitId);
+
+    List<BloodInventoryEntity> findByHospitalNameContainingIgnoreCase(String name);
+    List<BloodInventoryEntity> findByBloodUnitBloodType(String bloodType);
+    Optional<BloodInventoryEntity> findByBloodUnitBloodUnitId(int bloodUnitId);
     List<BloodInventoryEntity> findByStatus(BloodInventoryEntity.BloodInventoryStatus status);
 
 
@@ -35,4 +41,14 @@ public interface BloodInventoryRepository extends JpaRepository<BloodInventoryEn
 //            @Param("componentType") String componentType
 //    );
 
+
+    @Query("SELECT bu.bloodType AS bloodType, bu.componentType AS componentType, COALESCE(SUM(bu.quantity), 1.0) AS totalQuantity, h.name AS name " +
+            "FROM BloodUnitEntity bu " +
+            "LEFT JOIN BloodInventoryEntity bi ON bu.bloodUnitId = bi.bloodUnit.bloodUnitId " +
+            "LEFT JOIN HospitalEntity h ON bi.hospital.hospitalId = h.hospitalId " +
+            "WHERE (bi.status = 'IN_STOCK' OR bi.status IS NULL) " +
+            "AND (:hospitalId IS NULL OR bi.hospital.hospitalId = :hospitalId) " +
+            "GROUP BY bu.bloodType, bu.componentType, h.name " +
+            "ORDER BY bu.componentType ASC, bu.bloodType ASC")
+    List<BloodQuantityByTypeRepository> findBloodQuantityByType(@Param("hospitalId") Integer hospitalId);
 }
