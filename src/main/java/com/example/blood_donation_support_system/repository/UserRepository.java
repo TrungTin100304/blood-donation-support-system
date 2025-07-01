@@ -75,12 +75,12 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 //    );
 
 
-
-//    // Đếm số người dùng mới trong tháng hiện tại
-//    long countByCreatedAtAfter(LocalDateTime startOfMonth);
+    List<UserEntity> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+    // Đếm số người dùng mới trong tháng hiện tại
+    long countByCreatedAtAfter(LocalDateTime startOfMonth);
 
     // Đếm tổng số người hiến máu (vai trò ROLE_MEMBER)
-    long countByRole_RoleName(String roleName);
+    long countByRoleEntity_RoleName(String roleName);
 
     // Đếm số người dùng chưa có lịch sử hiến máu
     long countByUserIdNotIn(List<Integer> userIdsWithDonationHistory);

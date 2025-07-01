@@ -26,7 +26,7 @@ public class DashboardController {
 
     // Tạo báo cáo (nếu đã triển khai)
     @PostMapping("/report")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
     public ResponseEntity<ReportDto> generateReport(@RequestBody ReportRequest request) {
         ReportDto report = dashboardService.generateReport(request);
         return ResponseEntity.ok(report);

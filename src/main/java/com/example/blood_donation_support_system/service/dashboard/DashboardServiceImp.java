@@ -77,9 +77,9 @@ public class DashboardServiceImp implements DashboardService {
         dto.setAppointmentsThisWeek(appointmentRepository.countByAppointmentDateBetween(startOfDay, endOfWeek));
 
         // Thống kê người dùng
-        dto.setTotalDonors(userRepository.countByRole_RoleName("USER")); // Giả sử USER là người hiến
+        dto.setTotalDonors(userRepository.countByRoleEntity_RoleName("ROLE_MEMBER")); // Giả sử USER là người hiến
         dto.setTotalRecipients(emergencyRepository.countDistinctByRequester());
-//        dto.setNewUsersThisMonth(userRepository.countByCreatedAtAfter(LocalDateTime.now().minusMonths(1)));
+        dto.setNewUsersThisMonth(userRepository.countByCreatedAtAfter(LocalDateTime.now().minusMonths(1)));
 
         // Thống kê hiến máu
         dto.setDonationsThisMonth(donationHistoryRepository.countByDonationDateAfter(LocalDateTime.now().minusMonths(1)));

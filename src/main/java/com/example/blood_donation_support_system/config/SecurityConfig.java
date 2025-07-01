@@ -58,10 +58,12 @@ public class SecurityConfig {
 //                    request.requestMatchers(HttpMethod.POST,"/api/inventory/update").hasAnyRole("ADMIN", "STAFF","MEMBER");
 //                    request.requestMatchers(HttpMethod.GET,"/api/inventory/**").hasAnyRole("ADMIN", "STAFF", "MEMBER");
                     request.requestMatchers( "/api/inventory/**").permitAll();
+
+                    request.requestMatchers("/api/dashboard/**").hasAnyRole("ADMIN");
                     request.anyRequest().authenticated();
 
                        // dashboard
-                    request.requestMatchers("/api/dashboard/**").hasAnyRole("ADMIN");
+
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .build();
