@@ -124,6 +124,51 @@ public class UserProfileServiceImp implements UserProfileService {
         return ResponseEntity.ok(userDtos);
     }
 
+    @Override
+    public ResponseEntity<List<UserDto>> searchGender(String gender) {
+        List<UserEntity> users = new ArrayList<>();
+        if (gender != null && !gender.isEmpty()) {
+            users = userRepository.findByGender(gender);
+        }
+        List<UserDto> userDtos = users.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userDtos);
+    }
+
+
+
+    @Override
+    public ResponseEntity<String> updateUserRole(Integer userId, String roleName) {
+        try {
+            Optional<UserEntity> userOpt = userRepository.findByUserId(userId);
+            if (!userOpt.isPresent()) {
+                return ResponseEntity.badRequest().body("User not found");
+            }
+
+            UserEntity user = userOpt.get();
+            if (user.getRoleEntity() == null) {
+                return ResponseEntity.badRequest().body("User does not have an existing role");
+            }
+
+            Optional<RoleEntity> roleOpt = roleRepository.findByRoleName(roleName);
+            if (!roleOpt.isPresent()) {
+                return ResponseEntity.badRequest().body("Role not found");
+            }
+
+            RoleEntity role = roleOpt.get();
+            if (user.getRoleEntity().getRoleID() == role.getRoleID()) {
+                return ResponseEntity.badRequest().body("User already has this role");
+            }
+
+            user.setRoleEntity(role);
+            userRepository.save(user);
+            return ResponseEntity.ok("User role updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to update user role: " + e.getMessage());
+        }
+    }
+
 
 
     private UserDto convertToDto(UserEntity userEntity) {

@@ -20,6 +20,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     List<UserEntity> findByBloodTypeIn(List<String> bloodTypes);
     Optional<UserEntity> findByGooleId(String gooleId);
     Optional<UserEntity> findByUserId(int userId);
+    List<UserEntity> findByGender(String gender);
 
     @Query("SELECT u FROM UserEntity u WHERE NOT EXISTS (SELECT dh FROM DonationHistoryEntity dh WHERE dh.user.userId = u.userId)")
     List<UserEntity> findUsersWithNoDonationHistory();

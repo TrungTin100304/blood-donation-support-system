@@ -96,6 +96,20 @@ public class UserProfileController {
         return userProfileService.searchUsers(userName);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF') or hasRole('MEMBER')")
+    @GetMapping("/search-gender")
+    public ResponseEntity<List<UserDto>> searchGender(
+            @RequestParam String gender) {
+        return userProfileService.searchGender(gender);
+    }
+
+
+    @PutMapping("/{userId}/role")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> updateUserRole(@PathVariable Integer userId, @RequestParam String roleName) {
+        return userProfileService.updateUserRole(userId, roleName);
+    }
+
 
     @GetMapping("/history/{userId}")
     public ResponseEntity<List<DonationHistoryDto>> getDonationHistory(@PathVariable int userId) {

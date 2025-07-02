@@ -18,4 +18,8 @@ public interface UserProfileService {
     ResponseEntity<String> deleteUserProfile(Integer  userId);
 
     ResponseEntity<List<UserDto>> searchUsers(String userName);
+
+    ResponseEntity<List<UserDto>> searchGender(String gender);
+
+    ResponseEntity<String> updateUserRole(Integer userId, String roleName);
 }
