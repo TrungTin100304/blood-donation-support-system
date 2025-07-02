@@ -124,7 +124,7 @@ public class EmergencyServiceImp implements EmergencyService {
         donationRequestEntity.setRequiredComponentType(request.getComponentType());
         donationRequestEntity.setRequiredQuantity(request.getQuantity());
         donationRequestEntity.setStatus("Pending");
-        donationRequestEntity.setRequestDate(donor.getReadyTime());
+        donationRequestEntity.setRequestDate(request.getNeededTime());
         donationRequestRepository.save(donationRequestEntity);
 
         //Tạo lịch hẹn
@@ -134,7 +134,7 @@ public class EmergencyServiceImp implements EmergencyService {
         UserEntity receiver = userRepository.findById(receiptId).orElseThrow(() -> new UserNotFoundException("User not found"));
         AppointmentEntity appointmentEntity = new AppointmentEntity();
         appointmentEntity.setDonor(donor);
-        appointmentEntity.setAppointmentDate(donor.getReadyTime());
+        appointmentEntity.setAppointmentDate(request.getNeededTime());
         appointmentEntity.setLocation(hospitalId.getAddress());
         appointmentEntity.setRecipient(receiver);
         appointmentEntity.setStatus("Confirmed");
@@ -150,7 +150,7 @@ public class EmergencyServiceImp implements EmergencyService {
         emergencyEntity.setBloodType(donor.getBloodType());
         emergencyEntity.setHospital(hospitalId);
         emergencyEntity.setQuantity(request.getQuantity());
-        emergencyEntity.setNeededTime(donor.getReadyTime());
+        emergencyEntity.setNeededTime(request.getNeededTime());
         emergencyEntity.setCreatedAt(LocalDateTime.now());
         emergencyRepository.save(emergencyEntity);
     }
