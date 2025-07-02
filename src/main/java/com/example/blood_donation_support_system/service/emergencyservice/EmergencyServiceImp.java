@@ -110,6 +110,8 @@ public class EmergencyServiceImp implements EmergencyService {
         emergencyRepository.save(emergencyEntity);
     }
 
+
+
     @Override
     @Transactional
     public void handleNoAvailableBlood(EmergencyRequest request, Integer donorId, Integer receiptId) {
