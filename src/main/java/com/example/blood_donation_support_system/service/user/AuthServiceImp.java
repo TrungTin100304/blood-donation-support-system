@@ -5,12 +5,19 @@ import com.example.blood_donation_support_system.entity.RoleEntity;
 import com.example.blood_donation_support_system.entity.UserEntity;
 import com.example.blood_donation_support_system.repository.RoleRepository;
 import com.example.blood_donation_support_system.repository.UserRepository;
+import com.example.blood_donation_support_system.service.EmailService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -50,6 +58,15 @@ public class AuthServiceImp implements AuthService {
     private RoleRepository roleRepository;
     @Value("${jwt.secret}")
     private String secret;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Autowired
+    private EmailService emailService;
 
     @Value("${spring.upload.path}" + "/useravatars")
     private String uploadPath;
@@ -177,6 +194,38 @@ public class AuthServiceImp implements AuthService {
         }
 
         return token;
+    }
+
+    @Override
+    public void sentOtpToEmail(String email) throws MessagingException {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found: " + email));
+        String otp = String.valueOf(new Random().nextInt(900000) + 100000);
+        userEntity.setResetOtp(otp);
+        userEntity.setOtpExpiry(LocalDateTime.now().plusMinutes(2));
+        userRepository.save(userEntity);
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+
+        helper.setTo(email);
+        helper.setSubject("Reset Password - OTP Verification");
+        helper.setText(emailService.htmlContent(otp), true);
+        javaMailSender.send(mimeMessage);
+    }
+
+    @Override
+    public void resetPassword(String email, String otp, String newPassword) {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found: " + email));
+        if(userEntity.getResetOtp() == null || !userEntity.getResetOtp().equals(otp)){
+            throw new IllegalArgumentException("Invalid OTP");
+        }
+        if (userEntity.getOtpExpiry() == null || userEntity.getOtpExpiry().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("OTP expired");
+        }
+        userEntity.setPassword(passwordEncoder.encode(newPassword));
+        userEntity.setResetOtp(null);
+        userEntity.setOtpExpiry(null);
+        userRepository.save(userEntity);
     }
 
     private String downloadImageFromUrl(String imageUrl, String saveDir) {

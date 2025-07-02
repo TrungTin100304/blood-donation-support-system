@@ -1,8 +1,10 @@
 package com.example.blood_donation_support_system.controller;
 
 
+import com.example.blood_donation_support_system.request.UserRequest;
 import com.example.blood_donation_support_system.response.BaseResponse;
 import com.example.blood_donation_support_system.service.user.AuthService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,4 +48,23 @@ public class AuthController {
         response.setData(token);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/request-reset")
+    public ResponseEntity<?> requestReset(@RequestBody UserRequest userRequest) throws MessagingException {
+        authService.sentOtpToEmail(userRequest.getEmail());
+        BaseResponse response = new BaseResponse();
+        response.setCode(200);
+        response.setMessage("OTP sent to email.");
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody UserRequest userRequest){
+        authService.resetPassword(userRequest.getEmail(), userRequest.getOtp(), userRequest.getNewPassword());
+        BaseResponse response = new BaseResponse();
+        response.setCode(200);
+        response.setMessage("Password reset successfully.");
+        return ResponseEntity.ok(response);
+    }
+
 }
