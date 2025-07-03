@@ -65,14 +65,17 @@ public class UserEntity {
 
     private LocalDateTime readyTime;
 
-
     @Column(name = "avatar")
     private String avatar;
 
     @Column(name = "note", columnDefinition = "TEXT")
     private String note;
 
+    @Column(name = "ResetOtp")
+    private String resetOtp;
 
+    @Column(name = "OtpExpiry")
+    private LocalDateTime otpExpiry;
 
     @Column(name="status", nullable = false, length = 10)
     @ColumnDefault("'ACTIVE'")

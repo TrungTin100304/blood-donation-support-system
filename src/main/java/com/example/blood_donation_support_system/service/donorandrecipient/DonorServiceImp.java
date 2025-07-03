@@ -20,9 +20,8 @@ import org.springframework.stereotype.Service;
 
 
 
-import java.time.LocalDate;
-
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import java.util.List;
 
@@ -38,9 +37,12 @@ public class DonorServiceImp implements DonorService {
         UserEntity userEntity = userRepository.findById(userId).
                 orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
 
+
+
         if (userEntity.getBloodType() != null && userEntity.getReadyTime() != null) {
             throw new IllegalArgumentException("User already has ready time");
         }
+
         List<String> valiBloodTypes = List.of("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-");
         if (!valiBloodTypes.contains(registerDonorRequest.getBloodType())) {
             throw new IllegalArgumentException("Blood type is not valid");
@@ -52,6 +54,17 @@ public class DonorServiceImp implements DonorService {
             userEntity.setLongitude(registerDonorRequest.getLongitude());
         } else {
             throw new LocationException("Latitude and Longitude must not be null");
+        }
+
+        // Nếu đã có readyTime, thì kiểm tra thời gian phục hồi (ví dụ: 2 tháng)
+        if (userEntity.getReadyTime() != null) {
+            LocalDateTime lastReadyTime = userEntity.getReadyTime();
+            LocalDateTime now = LocalDateTime.now();
+
+            long monthsSinceLastDonation = ChronoUnit.MONTHS.between(lastReadyTime, now);
+            if (monthsSinceLastDonation < 2) {
+                throw new IllegalArgumentException("You must wait 2 months before donating again");
+            }
         }
 
 

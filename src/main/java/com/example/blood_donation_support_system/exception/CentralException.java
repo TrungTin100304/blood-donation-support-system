@@ -65,5 +65,12 @@ public class CentralException {
         return ResponseEntity.status(404).body(response);
     }
 
+    @ExceptionHandler({UserIdNotFoundException.class})
+    public ResponseEntity<?> userIdNotFound(Exception e) {
+        BaseResponse response = new BaseResponse();
+        response.setCode(404);
+        response.setMessage(e.getMessage());
+        return ResponseEntity.status(404).body(response);
+    }
 
 }

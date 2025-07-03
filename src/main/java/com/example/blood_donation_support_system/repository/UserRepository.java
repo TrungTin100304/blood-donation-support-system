@@ -42,7 +42,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
           AND u.longitude IS NOT NULL
           AND u.ready_time IS NOT NULL
           AND r.role_name = 'ROLE_MEMBER'
-          AND u.blood_type IN (:bloodType)
     ) AS subquery
     WHERE subquery.distance <= :maxDistance
     ORDER BY subquery.distance
@@ -50,31 +49,36 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     List<UserEntity> findNearbyDonors(
             @Param("lat") double lat,
             @Param("lng") double lng,
-            @Param("maxDistance") double maxDistance,
-            @Param("bloodType") List<String> bloodType
+            @Param("maxDistance") double maxDistance
     );
 
+    @Query("SELECT u FROM UserEntity u WHERE u.roleEntity.roleName = 'ROLE_MEMBER' AND u.status = 'ACTIVE' AND u.readyTime IS NOT NULL")
+    List<UserEntity> findAllDonors();
 
-//    // Người cần máu
-//    @Query(value = """
-//            SELECT u.*,
-//                       (6371 * acos(
-//                           cos(radians(:lat)) * cos(radians(u.latitude)) *
-//                           cos(radians(u.longitude) - radians(:lng)) +
-//                           sin(radians(:lat)) * sin(radians(u.latitude))
-//                       )) AS distance
-//                FROM user u
-//                JOIN emergency_request er ON u.user_id  = er.requester_id
-//                WHERE u.latitude IS NOT NULL AND u.longitude IS NOT NULL
-//                HAVING distance <= :maxDistance
-//                ORDER BY distance
-//        """, nativeQuery = true)
-//    List<UserEntity> findNearbyRecipients(
-//            @Param("lat") double lat,
-//            @Param("lng") double lng,
-//            @Param("maxDistance") double maxDistance
-//    );
-
+    // tìm kiếm khoảng cách giữa bệnh viện và hospital
+    @Query(value = """
+    SELECT u.*
+    FROM user u
+    JOIN hospital h ON h.hospital_id = :hospitalId
+    WHERE u.latitude IS NOT NULL AND u.longitude IS NOT NULL
+      AND h.latitude IS NOT NULL AND h.longitude IS NOT NULL
+      AND u.status = 'ACTIVE'
+      AND (
+          6371 * ACOS(
+              COS(RADIANS(u.latitude)) * COS(RADIANS(h.latitude)) *
+              COS(RADIANS(h.longitude) - RADIANS(u.longitude)) +
+              SIN(RADIANS(u.latitude)) * SIN(RADIANS(h.latitude))
+          )
+      ) <= :maxDistanceKm
+    ORDER BY (
+        6371 * ACOS(
+            COS(RADIANS(u.latitude)) * COS(RADIANS(h.latitude)) *
+            COS(RADIANS(h.longitude) - RADIANS(u.longitude)) +
+            SIN(RADIANS(u.latitude)) * SIN(RADIANS(h.latitude))
+        )
+    )
+""", nativeQuery = true)
+    List<UserEntity> findActiveUsersNearHospital(@Param("hospitalId") Long hospitalId, @Param("maxDistanceKm") Double maxDistanceKm);
 
     List<UserEntity> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
     // Đếm số người dùng mới trong tháng hiện tại

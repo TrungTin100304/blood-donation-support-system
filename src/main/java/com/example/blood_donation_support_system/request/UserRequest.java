@@ -17,4 +17,6 @@ public class UserRequest {
     private String bloodType;
     private double latitude;
     private double longitude;
+    private String otp;
+    private String newPassword;
 }

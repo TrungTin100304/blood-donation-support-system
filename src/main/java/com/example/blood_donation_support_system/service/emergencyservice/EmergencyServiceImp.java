@@ -1,5 +1,6 @@
 package com.example.blood_donation_support_system.service.emergencyservice;
 
+import com.example.blood_donation_support_system.dto.EmergencyDto;
 import com.example.blood_donation_support_system.entity.*;
 import com.example.blood_donation_support_system.exception.BloodUnitNotFoundException;
 import com.example.blood_donation_support_system.exception.BloodUnitQuantity;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,14 +50,19 @@ public class EmergencyServiceImp implements EmergencyService {
 
     @Override
     @Transactional
-    public void handleRequest(EmergencyRequest request) {
+    public void handleRequest(EmergencyRequest request, Integer requesterId) {
         //B1: Lưu yêu cầu vào emergency_request
         HospitalEntity hospitalId = hospitalRepository.findById(request.getHospitalId()).orElse(null);
+        UserEntity receiver = userRepository.findById(requesterId).orElseThrow(() -> new UserNotFoundException("User not found with id: " + requesterId));
+
         EmergencyEntity emergencyEntity = new EmergencyEntity();
         emergencyEntity.setBloodType(request.getBloodType());
+        emergencyEntity.setRequester(receiver);
+        emergencyEntity.setNote(request.getNote());
         emergencyEntity.setComponentType(request.getComponentType());
         emergencyEntity.setHospital(hospitalId);
         emergencyEntity.setQuantity(request.getQuantity());
+        emergencyEntity.setCreatedAt(LocalDateTime.now());
         emergencyEntity.setNeededTime(request.getNeededTime());
         emergencyEntity.setStatus("Pending");
         emergencyRepository.save(emergencyEntity);
@@ -103,6 +110,8 @@ public class EmergencyServiceImp implements EmergencyService {
         emergencyRepository.save(emergencyEntity);
     }
 
+
+
     @Override
     @Transactional
     public void handleNoAvailableBlood(EmergencyRequest request, Integer donorId, Integer receiptId) {
@@ -115,7 +124,7 @@ public class EmergencyServiceImp implements EmergencyService {
         donationRequestEntity.setRequiredComponentType(request.getComponentType());
         donationRequestEntity.setRequiredQuantity(request.getQuantity());
         donationRequestEntity.setStatus("Pending");
-        donationRequestEntity.setRequestDate(request.getNeededTime().plusDays(1));
+        donationRequestEntity.setRequestDate(request.getNeededTime());
         donationRequestRepository.save(donationRequestEntity);
 
         //Tạo lịch hẹn
@@ -125,24 +134,24 @@ public class EmergencyServiceImp implements EmergencyService {
         UserEntity receiver = userRepository.findById(receiptId).orElseThrow(() -> new UserNotFoundException("User not found"));
         AppointmentEntity appointmentEntity = new AppointmentEntity();
         appointmentEntity.setDonor(donor);
-        appointmentEntity.setAppointmentDate(request.getNeededTime().plusDays(1));
+        appointmentEntity.setAppointmentDate(request.getNeededTime());
         appointmentEntity.setLocation(hospitalId.getAddress());
         appointmentEntity.setRecipient(receiver);
         appointmentEntity.setStatus("Confirmed");
-        emailService.sendAppointmentEmail(donor, receiver, hospitalId, request.getNeededTime().plusDays(1));
+        emailService.sendAppointmentEmail(donor, receiver, hospitalId, LocalDateTime.now());
         appointmentRepository.save(appointmentEntity);
 
         //Cập nhật trạng thái yêu cầu khẩn cấp
         EmergencyEntity emergencyEntity = new EmergencyEntity();
         emergencyEntity.setStatus("Matched");
         emergencyEntity.setRequester(receiver);
+        emergencyEntity.setNote(request.getNote());
         emergencyEntity.setComponentType(request.getComponentType());
         emergencyEntity.setBloodType(donor.getBloodType());
         emergencyEntity.setHospital(hospitalId);
         emergencyEntity.setQuantity(request.getQuantity());
-        emergencyEntity.setNeededTime(request.getNeededTime().plusDays(1));
-        emergencyEntity.setNote(request.getNote());
-        emergencyEntity.setCreatedAt(request.getNeededTime());
+        emergencyEntity.setNeededTime(request.getNeededTime());
+        emergencyEntity.setCreatedAt(LocalDateTime.now());
         emergencyRepository.save(emergencyEntity);
     }
 
@@ -173,6 +182,7 @@ public class EmergencyServiceImp implements EmergencyService {
 
         //Tim donation_request
         DonationRequestEntity donationRequestEntity = donationRequestRepository.findByUserEntityOrderByRequestDateDesc(donor).orElseThrow(() -> new UserNotFoundException("User not found"));
+
         donationRequestEntity.setStatus("Completed");
         donationRequestEntity.setCompletedDate(LocalDateTime.now());
         donationRequestRepository.save(donationRequestEntity);
@@ -184,7 +194,7 @@ public class EmergencyServiceImp implements EmergencyService {
         bloodUnit.setQuantity(emergency.getQuantity());
         bloodUnit.setStatus("Available");
         bloodUnit.setUserId(donor);
-        bloodUnit.setReceviedDate(LocalDate.now());
+        bloodUnit.setReceivedDate(LocalDate.now());
         bloodUnit = bloodUnitRepository.save(bloodUnit);
 
         //Đưa đơn vị máu vào kho
@@ -202,10 +212,35 @@ public class EmergencyServiceImp implements EmergencyService {
         donationHistoryEntity.setDonationDate(donationRequestEntity.getRequestDate());
         donationHistoryEntity.setRecoveryTime(LocalDateTime.now().plusDays(7));
         donationHistoryEntity.setCreatedAt(LocalDateTime.now());
-        donationHistoryEntity.setRecoveryStatus("RECOVERING");
+        donationHistoryEntity.setRecoveryStatus("Recovering");
         donationHistoryEntity.setCreatedAt(LocalDateTime.now());
         donationHistoryRepository.save(donationHistoryEntity);
     }
 
+    @Override
+    public List<EmergencyDto> getAllEmergencies() {
+        List<EmergencyEntity> emergencyEntity = emergencyRepository.findAll();
+        List<EmergencyDto> emergencyDto = new ArrayList<>();
+        for (EmergencyEntity item : emergencyEntity) {
+            emergencyDto.add(convertEmergencyEntityToDto(item));
+        }
+        return emergencyDto;
+    }
+
+
+    private EmergencyDto convertEmergencyEntityToDto (EmergencyEntity emergencyEntity) {
+        EmergencyDto emergencyDto = new EmergencyDto();
+        emergencyDto.setEmergencyId(emergencyEntity.getRequestId());
+        emergencyDto.setReceiver(emergencyEntity.getRequester().getFullName());
+        emergencyDto.setBloodType(emergencyEntity.getBloodType());
+        emergencyDto.setComponentType(emergencyEntity.getComponentType());
+        emergencyDto.setQuantity(emergencyEntity.getQuantity());
+        emergencyDto.setNote(emergencyEntity.getNote());
+        emergencyDto.setNeedTime(emergencyEntity.getNeededTime());
+        emergencyDto.setCreateAt(emergencyEntity.getCreatedAt());
+        emergencyDto.setStatus(emergencyEntity.getStatus());
+        emergencyDto.setHospitalName(emergencyEntity.getHospital().getName());
+        return emergencyDto;
+    }
 
 }

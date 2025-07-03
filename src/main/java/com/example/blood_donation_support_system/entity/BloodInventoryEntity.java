@@ -6,6 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
+
 @Data
 @Entity
 @Table(name = "blood_inventory")

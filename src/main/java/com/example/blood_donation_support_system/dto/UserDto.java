@@ -27,6 +27,7 @@ public class UserDto {
     private int userId;
     private String status;
 
+
 }
 
 
