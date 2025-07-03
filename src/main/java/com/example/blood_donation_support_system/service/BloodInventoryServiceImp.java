@@ -6,7 +6,6 @@ import com.example.blood_donation_support_system.entity.BloodInventoryEntity;
 import com.example.blood_donation_support_system.entity.BloodUnitEntity;
 import com.example.blood_donation_support_system.entity.HospitalEntity;
 import com.example.blood_donation_support_system.repository.BloodInventoryRepository;
-import com.example.blood_donation_support_system.repository.BloodQuantityByTypeRepository;
 import com.example.blood_donation_support_system.repository.BloodUnitRepository;
 import com.example.blood_donation_support_system.repository.HospitalRepository;
 import com.example.blood_donation_support_system.request.BloodInventoryRequest;
@@ -97,7 +96,7 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
 
     @Override
     public List<BloodQuantityByTypeDTO> getBloodQuantityByType(@RequestParam("hospitalId") Integer hospitalId ) {
-        List<BloodQuantityByTypeRepository> total = bloodInventoryRepository.findBloodQuantityByType(hospitalId);
+        List<BloodQuantityByTypeDTO> total = bloodInventoryRepository.findBloodQuantityByType(hospitalId);
         return total.stream()
                 .map(proj -> new BloodQuantityByTypeDTO(
                         proj.getName(),
@@ -124,7 +123,7 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
             dto.setQuantity(bloodUnit.getQuantity());
             dto.setReceivedDate(bloodUnit.getReceivedDate());
             dto.setStatusUnit(bloodUnit.getStatus());
-            dto.setExpiryDate(bloodUnit.getExpiryDate());
+            dto.setExpiryDate(bloodUnit.getReceviedDate().plusDays(28));
         }
         if(entity.getHospital() != null) {
             dto.setHospitalId(entity.getHospital().getHospitalId());

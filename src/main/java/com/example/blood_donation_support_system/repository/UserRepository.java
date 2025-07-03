@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     List<UserEntity> findByBloodTypeIn(List<String> bloodTypes);
     Optional<UserEntity> findByGooleId(String gooleId);
     Optional<UserEntity> findByUserId(int userId);
+    List<UserEntity> findByGender(String gender);
 
     @Query("SELECT u FROM UserEntity u WHERE NOT EXISTS (SELECT dh FROM DonationHistoryEntity dh WHERE dh.user.userId = u.userId)")
     List<UserEntity> findUsersWithNoDonationHistory();
@@ -77,4 +79,14 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     )
 """, nativeQuery = true)
     List<UserEntity> findActiveUsersNearHospital(@Param("hospitalId") Long hospitalId, @Param("maxDistanceKm") Double maxDistanceKm);
+
+    List<UserEntity> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+    // Đếm số người dùng mới trong tháng hiện tại
+    long countByCreatedAtAfter(LocalDateTime startOfMonth);
+
+    // Đếm tổng số người hiến máu (vai trò ROLE_MEMBER)
+    long countByRoleEntity_RoleName(String roleName);
+
+    // Đếm số người dùng chưa có lịch sử hiến máu
+    long countByUserIdNotIn(List<Integer> userIdsWithDonationHistory);
 }

@@ -82,6 +82,10 @@ public class UserEntity {
     private String status;
 
 
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt; // Thêm cột ngày tạo
+
     @ManyToOne
     @JoinColumn(name = "role_id") // khóa ngoại trong bảng user
     private RoleEntity roleEntity;

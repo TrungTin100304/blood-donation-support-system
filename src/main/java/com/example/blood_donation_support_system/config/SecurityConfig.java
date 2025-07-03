@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> {
                     //FindLoaction
-                    request.requestMatchers(HttpMethod.GET, "/api/search/**").hasAnyRole("ADMIN","STAFF");
+                    request.requestMatchers(HttpMethod.GET, "/api/search/**").permitAll();
 
                     // giúp định nghĩa quyền truy cập cho các link
                     request.requestMatchers(HttpMethod.POST, "/api/updateProfile/update").permitAll();
@@ -40,7 +40,7 @@ public class SecurityConfig {
                     request.requestMatchers(HttpMethod.POST, "/api/register/admin", "/api/register/staff").hasRole("ADMIN");
                     request.requestMatchers(HttpMethod.POST, "/api/donor/register").hasAnyRole("MEMBER", "ADMIN","STAFF");
 
-                    request.requestMatchers(HttpMethod.GET, "/api/matching/**").hasAnyRole( "ADMIN","STAFF");
+                    request.requestMatchers(HttpMethod.GET, "/api/matching/**").hasAnyRole("MEMBER", "ADMIN","STAFF");
 
 
                     request.requestMatchers("/api/emergency-requests/**").hasAnyRole("ADMIN","STAFF");
@@ -63,8 +63,13 @@ public class SecurityConfig {
 //                    request.requestMatchers(HttpMethod.POST,"/api/inventory/update").hasAnyRole("ADMIN", "STAFF","MEMBER");
 //                    request.requestMatchers(HttpMethod.GET,"/api/inventory/**").hasAnyRole("ADMIN", "STAFF", "MEMBER");
                     request.requestMatchers( "/api/inventory/**").permitAll();
+
+                    request.requestMatchers("/api/dashboard/**").hasAnyRole("ADMIN");
                     request.anyRequest().authenticated();
 
+
+
+                       // dashboard
 
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
