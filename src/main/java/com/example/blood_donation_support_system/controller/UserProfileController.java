@@ -117,4 +117,12 @@ public class UserProfileController {
         return ResponseEntity.ok(histories);
     }
 
+
+    @GetMapping("/history/all")
+    public ResponseEntity<List<DonationHistoryDto>> getAllDonationHistory() {
+        List<DonationHistoryDto> histories = donationHistoryService.getAllDonationHistoryDtos();
+        return ResponseEntity.ok(histories);
+    }
+
+
 }

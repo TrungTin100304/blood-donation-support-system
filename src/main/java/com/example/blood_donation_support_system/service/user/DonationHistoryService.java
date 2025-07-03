@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface DonationHistoryService {
     List<DonationHistoryDto> getDonationHistoryByUserId(int userId);
+
+    List<DonationHistoryDto> getAllDonationHistoryDtos();
 }

@@ -123,7 +123,7 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
             dto.setQuantity(bloodUnit.getQuantity());
             dto.setReceivedDate(bloodUnit.getReceivedDate());
             dto.setStatusUnit(bloodUnit.getStatus());
-            dto.setExpiryDate(bloodUnit.getReceviedDate().plusDays(28));
+            dto.setExpiryDate(bloodUnit.getReceivedDate().plusDays(28));
         }
         if(entity.getHospital() != null) {
             dto.setHospitalId(entity.getHospital().getHospitalId());

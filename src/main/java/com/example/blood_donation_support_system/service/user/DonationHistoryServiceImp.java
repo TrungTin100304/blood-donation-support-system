@@ -22,7 +22,13 @@ public class DonationHistoryServiceImp implements DonationHistoryService{
             return donations.stream().map(this::convertToDto).collect(Collectors.toList());
         }
 
-        private DonationHistoryDto convertToDto(DonationHistoryEntity entity) {
+    @Override
+    public List<DonationHistoryDto> getAllDonationHistoryDtos() {
+        List<DonationHistoryEntity> donations = donationHistoryRepository.findAll();
+        return donations.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    private DonationHistoryDto convertToDto(DonationHistoryEntity entity) {
             DonationHistoryDto dto = new DonationHistoryDto();
             dto.setHistoryId(entity.getHistoryId());
             dto.setUserId(entity.getUser().getUserId());
