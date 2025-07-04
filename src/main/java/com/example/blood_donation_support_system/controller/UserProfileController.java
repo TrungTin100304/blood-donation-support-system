@@ -2,11 +2,9 @@ package com.example.blood_donation_support_system.controller;
 
 import com.example.blood_donation_support_system.dto.DonationHistoryDto;
 import com.example.blood_donation_support_system.dto.UserDto;
-import com.example.blood_donation_support_system.entity.DonationHistoryEntity;
 import com.example.blood_donation_support_system.request.RoleRequest;
-import com.example.blood_donation_support_system.request.UserRequest;
 import com.example.blood_donation_support_system.service.user.DonationHistoryService;
-import com.example.blood_donation_support_system.service.user.GetUserService;
+import com.example.blood_donation_support_system.service.donorandrecipient.GetUserService;
 import com.example.blood_donation_support_system.service.user.UserProfileService;
 import com.example.blood_donation_support_system.utils.JwtHelper;
 import org.springframework.beans.factory.annotation.Autowired;

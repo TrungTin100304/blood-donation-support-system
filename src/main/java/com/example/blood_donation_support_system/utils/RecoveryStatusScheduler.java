@@ -30,15 +30,22 @@ public class RecoveryStatusScheduler {
         for (DonationHistoryEntity history : recoveringList) {
             if (history.getCreatedAt().plusMinutes(1).isBefore(now)) {
 
-                String email = history.getUser().getEmail();
-                String fullName = history.getUser().getFullName();
-                LocalDate ngayHienGanNhat = history.getCreatedAt().toLocalDate();
-                //String toEmail, String fullName, LocalDate ngayHienGanNhat
-                emailService.sendDonationReminder(email, fullName, ngayHienGanNhat);
-                history.setRecoveryStatus("Recovered");
-            }
-        }
+                String email = history.getUser().getEmail().trim();
+                String fullName = history.getUser().getFullName().trim();
+                if (email != null && fullName != null) {
+                    email = email.trim();
+                    fullName = fullName.trim();
 
-        donationHistoryRepository.saveAll(recoveringList);
+                    if (!email.isBlank()) {
+                        LocalDate ngayHienGanNhat = history.getCreatedAt().toLocalDate();
+                        emailService.sendDonationReminder(fullName, email, ngayHienGanNhat);
+                        history.setRecoveryStatus("Recovered");
+                    }
+                }
+            }
+
+            donationHistoryRepository.saveAll(recoveringList);
+        }
     }
 }
+
