@@ -1,4 +1,4 @@
-package com.example.blood_donation_support_system.service.user;
+package com.example.blood_donation_support_system.service.donorandrecipient;
 
 import com.example.blood_donation_support_system.dto.DonorDto;
 import com.example.blood_donation_support_system.dto.UserDto;

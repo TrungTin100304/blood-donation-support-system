@@ -1,4 +1,4 @@
-package com.example.blood_donation_support_system.service.user;
+package com.example.blood_donation_support_system.service.donorandrecipient;
 
 import com.example.blood_donation_support_system.dto.DonorDto;
 import com.example.blood_donation_support_system.dto.UserDto;
@@ -29,7 +29,7 @@ public class GetUserServiceImp implements GetUserService {
 
     @Override
     public List<DonorDto> getAllDonors() {
-        List<UserEntity> donors = userRepository.findAllDonors();
+        List<UserEntity> donors = userRepository.findByDonationStatus("Pending");
         List<DonorDto> donorDtos = donors.stream()
                 .map(this::convertUserEntityToUserDto)
                 .toList();

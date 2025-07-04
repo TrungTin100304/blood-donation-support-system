@@ -81,10 +81,14 @@ public class UserEntity {
     @ColumnDefault("'ACTIVE'")
     private String status;
 
+    @Column(name="donation_status", nullable = false, length = 10)
+    private String donationStatus = "Eligible";
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt; // Thêm cột ngày tạo
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+
 
     @ManyToOne
     @JoinColumn(name = "role_id") // khóa ngoại trong bảng user
@@ -110,4 +114,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
     private List<AppointmentEntity> receivedAppointmentEntities;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<DonationHistoryEntity> donationHistoryEntities;
 }

@@ -1,6 +1,7 @@
 package com.example.blood_donation_support_system.repository;
 
 import com.example.blood_donation_support_system.entity.UserEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,6 +13,8 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+    List<UserEntity> findByDonationStatus(String donationStatus);
+
     Optional<UserEntity> findFirstByUserName(String userName);
     boolean existsByUserName(String UserName);
     Optional<UserEntity> findByEmail(String email);
@@ -63,6 +66,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     WHERE u.latitude IS NOT NULL AND u.longitude IS NOT NULL
       AND h.latitude IS NOT NULL AND h.longitude IS NOT NULL
       AND u.status = 'ACTIVE'
+      AND u.donation_status = 'Pending' 
       AND (
           6371 * ACOS(
               COS(RADIANS(u.latitude)) * COS(RADIANS(h.latitude)) *
