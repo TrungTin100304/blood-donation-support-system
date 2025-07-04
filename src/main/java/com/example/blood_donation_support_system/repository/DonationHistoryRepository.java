@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface DonationHistoryRepository extends JpaRepository<DonationHistoryEntity, Integer> {
-    List<DonationHistoryEntity> findByUserUserIdOrderByDonationDateDesc(Integer userId);
+    List<DonationHistoryEntity> findByUserUserNameOrderByDonationDateDesc(String  userName);
     Page<DonationHistoryEntity> findByRecoveryStatus(String recoveryStatus, Pageable pageable);
     @Query("SELECT COUNT(dh) FROM DonationHistoryEntity dh WHERE dh.recoveryStatus = :status")
     long countByRecoveryStatus(String status);

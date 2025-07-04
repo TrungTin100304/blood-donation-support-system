@@ -17,12 +17,18 @@ public class DonationHistoryServiceImp implements DonationHistoryService{
         private DonationHistoryRepository donationHistoryRepository;
 
         @Override
-        public List<DonationHistoryDto> getDonationHistoryByUserId(int userId) {
-            List<DonationHistoryEntity> donations = donationHistoryRepository.findByUserUserIdOrderByDonationDateDesc(userId);
+        public List<DonationHistoryDto> getDonationHistoryByUserName(String userName) {
+            List<DonationHistoryEntity> donations = donationHistoryRepository.findByUserUserNameOrderByDonationDateDesc(userName);
             return donations.stream().map(this::convertToDto).collect(Collectors.toList());
         }
 
-        private DonationHistoryDto convertToDto(DonationHistoryEntity entity) {
+    @Override
+    public List<DonationHistoryDto> getAllDonationHistoryDtos() {
+        List<DonationHistoryEntity> donations = donationHistoryRepository.findAll();
+        return donations.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    private DonationHistoryDto convertToDto(DonationHistoryEntity entity) {
             DonationHistoryDto dto = new DonationHistoryDto();
             dto.setHistoryId(entity.getHistoryId());
             dto.setUserId(entity.getUser().getUserId());
