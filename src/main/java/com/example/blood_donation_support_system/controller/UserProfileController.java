@@ -3,6 +3,7 @@ package com.example.blood_donation_support_system.controller;
 import com.example.blood_donation_support_system.dto.DonationHistoryDto;
 import com.example.blood_donation_support_system.dto.UserDto;
 import com.example.blood_donation_support_system.entity.DonationHistoryEntity;
+import com.example.blood_donation_support_system.request.RoleRequest;
 import com.example.blood_donation_support_system.request.UserRequest;
 import com.example.blood_donation_support_system.service.user.DonationHistoryService;
 import com.example.blood_donation_support_system.service.user.GetUserService;
@@ -106,14 +107,14 @@ public class UserProfileController {
 
     @PutMapping("/{userId}/role")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> updateUserRole(@PathVariable Integer userId, @RequestParam String roleName) {
-        return userProfileService.updateUserRole(userId, roleName);
+    public ResponseEntity<String> updateUserRole(@RequestBody RoleRequest request) {
+        return userProfileService.updateUserRole(request.getUserId(), request.getRoleName() );
     }
 
 
-    @GetMapping("/history/{userId}")
-    public ResponseEntity<List<DonationHistoryDto>> getDonationHistory(@PathVariable int userId) {
-        List<DonationHistoryDto> histories = donationHistoryService.getDonationHistoryByUserId(userId);
+    @GetMapping("/history-donor")
+    public ResponseEntity<List<DonationHistoryDto>> getDonationHistory(@RequestParam String userName) {
+        List<DonationHistoryDto> histories = donationHistoryService.getDonationHistoryByUserName(userName);
         return ResponseEntity.ok(histories);
     }
 
