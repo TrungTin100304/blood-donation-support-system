@@ -105,7 +105,7 @@ public class UserProfileController {
     }
 
 
-    @PutMapping("/{userId}/role")
+    @PostMapping("/edit-role")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> updateUserRole(@RequestBody RoleRequest request) {
         return userProfileService.updateUserRole(request.getUserId(), request.getRoleName() );
