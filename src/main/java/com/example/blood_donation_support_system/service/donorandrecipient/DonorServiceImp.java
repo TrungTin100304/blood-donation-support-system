@@ -1,9 +1,11 @@
 package com.example.blood_donation_support_system.service.donorandrecipient;
 
+import com.example.blood_donation_support_system.dto.UserDto;
 import com.example.blood_donation_support_system.entity.BloodUnitEntity;
 import com.example.blood_donation_support_system.entity.DonationHistoryEntity;
 import com.example.blood_donation_support_system.entity.UserEntity;
 import com.example.blood_donation_support_system.exception.LocationException;
+import com.example.blood_donation_support_system.exception.UserIdNotFoundException;
 import com.example.blood_donation_support_system.repository.BloodUnitRepository;
 import com.example.blood_donation_support_system.repository.HospitalRepository;
 import com.example.blood_donation_support_system.repository.UserRepository;
@@ -80,6 +82,22 @@ public class DonorServiceImp implements DonorService {
 
     }
 
+    @Override
+    public UserDto getDonorById(Integer id) {
+        UserEntity donors = userRepository.findById(id).get();
+        return convertToDto(donors);
+    }
+
+    private UserDto convertToDto(UserEntity userEntity) {
+        UserDto userDto = new UserDto();
+        userDto.setUserId(userEntity.getUserId());
+        userDto.setName(userEntity.getFullName());
+        userDto.setBloodType(userEntity.getBloodType());
+        userDto.setReadyTime(userEntity.getReadyTime());
+        userDto.setGender(userEntity.getGender());
+        userDto.setDonationStatus(userEntity.getDonationStatus());
+        return userDto;
+    }
 
 }
 
