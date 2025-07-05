@@ -52,7 +52,7 @@ public class UserProfileController {
 
 
     // API để xem hồ sơ người dùng
-    @GetMapping("/{userId}")
+    @GetMapping("/{userId}")        // staff vs admin
     public ResponseEntity<?> getUserProfile(@PathVariable int userId) {
 
         BaseResponse response = new BaseResponse();
@@ -64,8 +64,7 @@ public class UserProfileController {
     }
 
     // API để xem danh sách tất cả người dùng
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
-    @GetMapping("/all")
+    @GetMapping("/all")              // staff vs admin
     public ResponseEntity<?> getAllUsers() {
 
         BaseResponse response = new BaseResponse();
@@ -77,7 +76,7 @@ public class UserProfileController {
     }
 
     // API để xem thông tin cá nhân (người dùng đang đăng nhập)
-    @GetMapping("/me")
+    @GetMapping("/me")           // cả 3 role
     public ResponseEntity<?> getCurrentUserProfile(@RequestHeader("Authorization") String token) {
         String userName = jwtHelper.getUsername(token.replace("Bearer ", ""));
 
@@ -92,7 +91,7 @@ public class UserProfileController {
 
     // API để xóa hồ sơ người dùng
     @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF') or hasRole('MEMBER')")
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{userId}")      // admin
     public ResponseEntity<?> deleteUserProfile(@PathVariable Integer userId) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
@@ -103,8 +102,7 @@ public class UserProfileController {
     }
 
     // API để tìm kiếm hồ sơ người dùng theo username
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF') or hasRole('MEMBER')")
-    @GetMapping("/search")
+    @GetMapping("/search")         //staff vs admin
     public ResponseEntity<?> searchUsers(
             @RequestParam String userName) {
         BaseResponse response = new BaseResponse();
@@ -116,7 +114,7 @@ public class UserProfileController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF') or hasRole('MEMBER')")
-    @GetMapping("/search-gender")
+    @GetMapping("/search-gender")     //staff vs admin
     public ResponseEntity<?> searchGender(
             @RequestParam String gender) {
         BaseResponse response = new BaseResponse();
@@ -128,8 +126,7 @@ public class UserProfileController {
     }
 
 
-    @PostMapping("/edit-role")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/edit-role")     // admin
     public ResponseEntity<?> updateUserRole(@RequestBody RoleRequest request) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
@@ -140,8 +137,7 @@ public class UserProfileController {
     }
 
 
-    @GetMapping("/history-donor")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/history-donor") //staff vs admin
     public ResponseEntity<?> getDonationHistory(@RequestParam String userName) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
@@ -153,7 +149,7 @@ public class UserProfileController {
     }
 
 
-    @GetMapping("/history-donor/me")
+    @GetMapping("/history-donor/me")    // cả 3
     public ResponseEntity<?> getCurrentUserHistoryDonor(@RequestHeader("Authorization") String token) {
         try {
             // Lấy userId từ token
@@ -172,7 +168,7 @@ public class UserProfileController {
     }
 
 
-    @GetMapping("/history/all")
+    @GetMapping("/history/all")      //staff vs admin
     public ResponseEntity<?> getAllDonationHistory() {
 //        List<DonationHistoryDto> histories = donationHistoryService.getAllDonationHistoryDtos();
         BaseResponse response = new BaseResponse();
