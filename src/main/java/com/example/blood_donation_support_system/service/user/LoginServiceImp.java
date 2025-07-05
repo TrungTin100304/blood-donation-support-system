@@ -25,11 +25,13 @@ public class LoginServiceImp implements LoginService {
     @Value("${jwt.secret}")
     private String secret;
 
+    private final String status = "ACTIVE";
     @Override
     public String login(String tenDangNhap, String matKhau) {
+
         String token = "";
 
-        Optional<UserEntity> user = userRepository.findFirstByUserName(tenDangNhap);
+        Optional<UserEntity> user = userRepository.findFirstByUserNameAndStatus(tenDangNhap, status);
         if (user.isPresent()) {
             UserEntity userEntity = user.get();
             // Set issued at and expiration times

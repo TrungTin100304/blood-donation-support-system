@@ -30,8 +30,8 @@ public class RecoveryStatusScheduler {
         for (DonationHistoryEntity history : recoveringList) {
             if (history.getCreatedAt().plusMinutes(1).isBefore(now)) {
 
-                String email = history.getUser().getEmail().trim();
-                String fullName = history.getUser().getFullName().trim();
+                String email = history.getUser().getEmail();
+                String fullName = history.getUser().getFullName();
                 if (email != null && fullName != null) {
                     email = email.trim();
                     fullName = fullName.trim();

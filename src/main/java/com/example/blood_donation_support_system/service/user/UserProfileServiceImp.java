@@ -185,6 +185,7 @@ public class UserProfileServiceImp implements UserProfileService {
         userDto.setReadyTime(userEntity.getReadyTime());
         userDto.setStatus(userEntity.getStatus());
         userDto.setRoleName(userEntity.getRoleEntity().getRoleName());
+        userDto.setDonationStatus(userEntity.getDonationStatus());
         return userDto;
     }
 }
