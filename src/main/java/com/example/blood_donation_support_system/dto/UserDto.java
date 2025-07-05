@@ -27,7 +27,7 @@ public class UserDto {
     private int userId;
     private String status;
     private String donationStatus;
-
+    private String roleName;
 
 }
 

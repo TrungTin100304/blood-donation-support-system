@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DonationHistoryRepository extends JpaRepository<DonationHistoryEntity, Integer> {
@@ -19,6 +20,9 @@ public interface DonationHistoryRepository extends JpaRepository<DonationHistory
     long countByRecoveryStatus(String status);
 
     List<DonationHistoryEntity> findByRecoveryStatus(String status);
+
+
+    List<DonationHistoryEntity> findByUser(UserEntity user);
 
 
     // Đếm số lần hiến máu sau một ngày cụ thể
