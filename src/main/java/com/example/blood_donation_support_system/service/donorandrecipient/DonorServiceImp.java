@@ -1,6 +1,7 @@
 package com.example.blood_donation_support_system.service.donorandrecipient;
 
 import com.example.blood_donation_support_system.entity.BloodUnitEntity;
+import com.example.blood_donation_support_system.entity.DonationHistoryEntity;
 import com.example.blood_donation_support_system.entity.UserEntity;
 import com.example.blood_donation_support_system.exception.LocationException;
 import com.example.blood_donation_support_system.repository.BloodUnitRepository;
@@ -8,6 +9,8 @@ import com.example.blood_donation_support_system.repository.HospitalRepository;
 import com.example.blood_donation_support_system.repository.UserRepository;
 import com.example.blood_donation_support_system.request.RegisterDonorRequest;
 
+import com.example.blood_donation_support_system.service.user.DonationHistoryService;
+import com.example.blood_donation_support_system.service.user.DonationHistoryServiceImp;
 import com.example.blood_donation_support_system.utils.JwtHelper;
 import jakarta.mail.internet.MimeMessage;
 
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -67,12 +71,10 @@ public class DonorServiceImp implements DonorService {
             }
         }
 
-
         userEntity.setBloodType(registerDonorRequest.getBloodType());
+        userEntity.setDonationStatus("Pending");
         userEntity.setReadyTime(registerDonorRequest.getReadyTime());
         userEntity.setNote(registerDonorRequest.getNote());
-
-
         userRepository.save(userEntity);
 
 

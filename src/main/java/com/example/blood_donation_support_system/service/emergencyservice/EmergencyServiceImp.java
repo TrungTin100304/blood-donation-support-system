@@ -215,6 +215,9 @@ public class EmergencyServiceImp implements EmergencyService {
         donationHistoryEntity.setRecoveryStatus("Recovering");
         donationHistoryEntity.setCreatedAt(LocalDateTime.now());
         donationHistoryRepository.save(donationHistoryEntity);
+
+        donor.setDonationStatus("Completion");
+        userRepository.save(donor);
     }
 
     @Override
