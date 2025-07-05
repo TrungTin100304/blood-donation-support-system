@@ -40,4 +40,11 @@ public class DonorController {
         return ResponseEntity.ok(getUserService.getAllDonors());
     }
 
+    @GetMapping("/donors/me")
+    public ResponseEntity<?> getDonorFromToken(@RequestHeader("Authorization") String token) {
+        Integer donorId = jwtHelper.getUserId(token);
+        return ResponseEntity.ok(donorService.getDonorById(donorId));
+    }
+
+
 }
