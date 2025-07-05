@@ -26,7 +26,7 @@ public class UserDto {
     private LocalDate yearOfBirth;
     private int userId;
     private String status;
-
+    private String roleName;
 
 }
 
