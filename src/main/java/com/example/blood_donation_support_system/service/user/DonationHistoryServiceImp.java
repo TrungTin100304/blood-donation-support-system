@@ -60,6 +60,7 @@ public class DonationHistoryServiceImp implements DonationHistoryService{
             DonationHistoryDto dto = new DonationHistoryDto();
             dto.setHistoryId(entity.getHistoryId());
             dto.setUserId(entity.getUser().getUserId());
+            dto.setUserName(entity.getUser().getUserName());
             dto.setDonationDate(entity.getDonationDate());
             dto.setRecoveryStatus(entity.getRecoveryStatus());
             dto.setRecoveryTime(entity.getRecoveryTime());
