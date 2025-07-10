@@ -40,13 +40,23 @@ public class BloodInventoryController {
         return ResponseEntity.ok(response);
     }
 
-    // Tìm nhóm máu(BloodUnit) trong kho
+    // Tìm nhóm máu(BloodUnit) trong kho nhóm máu
     @GetMapping("/blood-unit")  // admin vs staff
     public ResponseEntity<BaseResponse> getInventoryByBloodType(@RequestBody BloodUnitRequest request ) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setMessage("Danh sách tồn kho máu theo đơn vị máu");
         response.setData(bloodInventoryService.getInventoryByBloodType(request.getBloodType()));
+        return ResponseEntity.ok(response);
+    }
+
+    // Tìm nhóm máu(BloodUnit) trong kho theo thành phần máu
+    @GetMapping("/component")  // admin vs staff
+    public ResponseEntity<BaseResponse> getInventoryByComponentType(@RequestBody BloodUnitRequest request ) {
+        BaseResponse response = new BaseResponse();
+        response.setCode(200);
+        response.setMessage("Danh sách tồn kho máu theo thành phần máu");
+        response.setData(bloodInventoryService.getInventoryByComponentType(request.getComponentType()));
         return ResponseEntity.ok(response);
     }
 
