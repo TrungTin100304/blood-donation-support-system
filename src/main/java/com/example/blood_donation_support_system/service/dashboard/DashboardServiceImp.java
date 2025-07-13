@@ -37,6 +37,9 @@ public class DashboardServiceImp implements DashboardService {
     private UserRepository userRepository;
 
     @Autowired
+    private ArticleRepository articleRepository;
+
+    @Autowired
     private DonationHistoryRepository donationHistoryRepository;
 
     @Autowired
@@ -79,9 +82,10 @@ public class DashboardServiceImp implements DashboardService {
         // Thống kê người dùng
         dto.setTotalDonors(userRepository.countByRoleEntity_RoleName("ROLE_MEMBER")); // Giả sử USER là người hiến
         dto.setTotalRecipients(emergencyRepository.countDistinctByRequester());
+//        (trong khoảng 1 tháng đổ lại chứ không thống kê theo tháng)
         dto.setNewUsersThisMonth(userRepository.countByCreatedAtAfter(LocalDateTime.now().minusMonths(1)));
 
-        // Thống kê hiến máu
+        // Thống kê hiến máu (trong khoảng 1 tháng đổ lại chứ không thống kê theo tháng)
         dto.setDonationsThisMonth(donationHistoryRepository.countByDonationDateAfter(LocalDateTime.now().minusMonths(1)));
 
         logger.info("Generated dashboard data: {}", dto);
@@ -91,8 +95,8 @@ public class DashboardServiceImp implements DashboardService {
     @Override
     public ReportDto generateReport(ReportRequest request) {
         ReportEntity report = new ReportEntity();
-        report.setUserId(userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found")));
+//        report.setUserId(userRepository.findById(request.getUserId())
+//                .orElseThrow(() -> new IllegalArgumentException("User not found")));
         report.setReportType(request.getReportType());
         report.setTitle(request.getTitle());
         report.setCreatedDate(LocalDateTime.now());
@@ -111,7 +115,7 @@ public class DashboardServiceImp implements DashboardService {
 
         ReportDto dto = new ReportDto();
         dto.setReportId(report.getReportId());
-        dto.setUserId(report.getUserId().getUserId());
+//        dto.setUserId(report.getUserId().getUserId());
         dto.setReportType(report.getReportType());
         dto.setTitle(report.getTitle());
         dto.setCreatedDate(report.getCreatedDate());
@@ -152,6 +156,30 @@ public class DashboardServiceImp implements DashboardService {
                 reportData.put("totalRequests", emergencies.size());
                 break;
 
+//            case "DONATION_HISTORY":
+//                List<DonationHistoryEntity> donations = donationHistoryRepository
+//                        .findByDonationDateBetween(startDateTime, endDateTime);
+//                Map<String, Long> donationsByBloodType = donations.stream()
+//                        .collect(Collectors.groupingBy(
+//                                dh -> dh.getBloodUnit().getBloodType(),
+//                                Collectors.counting()
+//                        ));
+//                reportData.put("donationsByBloodType", donationsByBloodType);
+//                reportData.put("totalDonations", donations.size());
+//                break;
+//
+//            case "USER_STATISTICS":
+//                List<UserEntity> users = userRepository
+//                        .findByCreatedAtBetween(startDateTime, endDateTime);
+//                Map<String, Long> usersByRole = users.stream()
+//                        .collect(Collectors.groupingBy(
+//                                user -> user.getRoleEntity().getRoleName(),
+//                                Collectors.counting()
+//                        ));
+//                reportData.put("usersByRole", usersByRole);
+//                reportData.put("totalUsers", users.size());
+//                break;
+
             case "DONATION_HISTORY":
                 List<DonationHistoryEntity> donations = donationHistoryRepository
                         .findByDonationDateBetween(startDateTime, endDateTime);
@@ -162,6 +190,50 @@ public class DashboardServiceImp implements DashboardService {
                         ));
                 reportData.put("donationsByBloodType", donationsByBloodType);
                 reportData.put("totalDonations", donations.size());
+                break;
+
+            case "USER_STATISTICS":
+                List<UserEntity> users = userRepository
+                        .findByCreatedAtBetween(startDateTime, endDateTime);
+                Map<String, Long> usersByRole = users.stream()
+                        .collect(Collectors.groupingBy(
+                                user -> user.getRoleEntity().getRoleName(),
+                                Collectors.counting()
+                        ));
+                List<DonationHistoryEntity> donation = donationHistoryRepository
+                        .findByDonationDateBetween(startDateTime, endDateTime);
+                Map<String, Long> donationsByUser = donation.stream()
+                        .collect(Collectors.groupingBy(
+                                dh -> dh.getUser().getUserName(),
+                                Collectors.counting()
+                        ));
+                reportData.put("usersByRole", usersByRole);
+                reportData.put("totalUsers", users.size());
+                reportData.put("donationsByUser", donationsByUser);
+                break;
+
+            case "APPOINTMENT_STATISTICS":
+                List<AppointmentEntity> appointments = appointmentRepository
+                        .findByAppointmentDateBetween(startDateTime, endDateTime);
+                Map<String, Long> appointmentsByStatus = appointments.stream()
+                        .collect(Collectors.groupingBy(
+                                AppointmentEntity::getStatus,
+                                Collectors.counting()
+                        ));
+                reportData.put("appointmentsByStatus", appointmentsByStatus);
+                reportData.put("totalAppointments", appointments.size());
+                break;
+
+            case "ARTICLE_STATISTICS":
+                List<ArticleEntity> articles = articleRepository
+                        .findByPublishDateBetween(startDateTime, endDateTime);
+                Map<String, Long> articlesByCategory = articles.stream()
+                        .collect(Collectors.groupingBy(
+                                ArticleEntity::getCategory,
+                                Collectors.counting()
+                        ));
+                reportData.put("articlesByCategory", articlesByCategory);
+                reportData.put("totalArticles", articles.size());
                 break;
 
             default:
