@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Sao chép file JAR vào container
-COPY target/your-app.jar app.jar
+COPY target/blood-donation-support-system-0.0.1-SNAPSHOT.jar app.jar
 
 # Cổng ứng dụng Spring Boot (mặc định 8080)
 EXPOSE 8080
