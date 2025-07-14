@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class DonationHistoryDto {
     private int historyId;
     private int userId;
+    private String userName;
     private LocalDateTime donationDate;
     private Integer bloodUnitId;
     private String bloodType;

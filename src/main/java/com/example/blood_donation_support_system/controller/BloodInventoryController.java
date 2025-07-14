@@ -22,8 +22,7 @@ public class BloodInventoryController {
     @Autowired
     private BloodInventoryService bloodInventoryService;
 
-    @PutMapping("/update")
-    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
+    @PutMapping("/update")     // admin vs staff
     public ResponseEntity<BaseResponse> updateInventory(@Valid @RequestBody BloodInventoryRequest request) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
@@ -32,8 +31,7 @@ public class BloodInventoryController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/hospital")
-    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
+    @GetMapping("/hospital")   // admin vs staff
     public ResponseEntity<BaseResponse> getInventoryByHospital(@RequestParam("name") String name) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
@@ -42,9 +40,8 @@ public class BloodInventoryController {
         return ResponseEntity.ok(response);
     }
 
-    // Tìm nhóm máu(BloodUnit) trong kho
-    @GetMapping("/blood-unit")
-    @PreAuthorize("hasAnyRole('ADMIN' or 'STAFF' or 'MEMBER')")
+    // Tìm nhóm máu(BloodUnit) trong kho nhóm máu
+    @GetMapping("/blood-unit")  // admin vs staff
     public ResponseEntity<BaseResponse> getInventoryByBloodType(@RequestBody BloodUnitRequest request ) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
@@ -53,9 +50,18 @@ public class BloodInventoryController {
         return ResponseEntity.ok(response);
     }
 
+    // Tìm nhóm máu(BloodUnit) trong kho theo thành phần máu
+    @GetMapping("/component")  // admin vs staff
+    public ResponseEntity<BaseResponse> getInventoryByComponentType(@RequestBody BloodUnitRequest request ) {
+        BaseResponse response = new BaseResponse();
+        response.setCode(200);
+        response.setMessage("Danh sách tồn kho máu theo thành phần máu");
+        response.setData(bloodInventoryService.getInventoryByComponentType(request.getComponentType()));
+        return ResponseEntity.ok(response);
+    }
 
-    @GetMapping("/all-Inventory")
-    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'MEMBER')")
+
+    @GetMapping("/all-Inventory")  // admin vs staff
     public ResponseEntity<BaseResponse> getAllInventory() {
         BaseResponse response = new BaseResponse();
         response.setCode(200);
@@ -63,7 +69,7 @@ public class BloodInventoryController {
         response.setData(bloodInventoryService.getAllInventory());
         return ResponseEntity.ok(response);
     }
-    @GetMapping("/blood-quantity-by-type")
+    @GetMapping("/blood-quantity-by-type")   // admin vs staff
     public ResponseEntity<BaseResponse> getBloodQuantityByType(@RequestParam(value = "hospitalId", required = false) int hospitalId) {
         BaseResponse response = new BaseResponse();
         response.setCode(200);

@@ -46,11 +46,18 @@ public class SecurityConfig {
                     request.requestMatchers("/api/emergency-requests/**").hasAnyRole("ADMIN","STAFF");
 
                     request.requestMatchers( "/api/article/**").permitAll();
-                    request.requestMatchers(HttpMethod.POST, "/api/donor/send-email").permitAll();
+                    request.requestMatchers(HttpMethod.POST, "/api/donor/send-email").hasAnyRole("ADMIN","STAFF");
 
                     request.requestMatchers( "/api/donation/**").permitAll();
 
+                    //profile
                     request.requestMatchers( "/api/profile/**").permitAll();
+                    request.requestMatchers(HttpMethod.DELETE,  "/api/profile/{userId}").hasAnyRole("ADMIN");
+                    request.requestMatchers(HttpMethod.POST,  "/api/profile/edit-role").hasAnyRole("ADMIN");
+                    request.requestMatchers(HttpMethod.GET,  "/api/profile/{userId}", "/api/profile/all","/api/profile/search", "/api/profile/search-gender", "/api/profile/history-donor", "/api/profile/history/all").hasAnyRole("ADMIN","STAFF");
+                    request.requestMatchers(HttpMethod.GET,  "/api/profile/me",  "/api/profile/history-donor/me").hasAnyRole("ADMIN");
+                    //----------
+
                     request.requestMatchers( "/api/blood-units/**").permitAll();
 
                     request.requestMatchers(HttpMethod.POST, "/api/search/**").hasAnyRole("ADMIN","STAFF");
@@ -60,16 +67,20 @@ public class SecurityConfig {
                     request.requestMatchers(HttpMethod.GET,"/api/donor").hasAnyRole("ADMIN","STAFF");
                     request.requestMatchers(HttpMethod.GET, "/api/appointment").hasAnyRole("ADMIN","STAFF");
 
-//                    request.requestMatchers(HttpMethod.POST,"/api/inventory/update").hasAnyRole("ADMIN", "STAFF","MEMBER");
-//                    request.requestMatchers(HttpMethod.GET,"/api/inventory/**").hasAnyRole("ADMIN", "STAFF", "MEMBER");
-                    request.requestMatchers( "/api/inventory/**").permitAll();
+                    // Inventory
+                    request.requestMatchers( HttpMethod.GET,"/api/inventory/**").hasAnyRole("ADMIN","STAFF");
+                    request.requestMatchers( HttpMethod.PUT,"/api/inventory/update").hasAnyRole("ADMIN","STAFF");
+                    // -----------------
 
+
+                    //dashboard
                     request.requestMatchers("/api/dashboard/**").hasAnyRole("ADMIN");
+                    //-----------
                     request.anyRequest().authenticated();
 
 
 
-                       // dashboard
+
 
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

@@ -16,6 +16,8 @@ public interface BloodInventoryService {
     List<BloodInventoryDto> getInventoryByBloodType(String bloodType);
 
 
+    List<BloodInventoryDto> getInventoryByComponentType(String componentType);
+
     List<BloodInventoryDto> getAllInventory();
 
     List<BloodQuantityByTypeDTO> getBloodQuantityByType(Integer hospitalId);

@@ -15,9 +15,9 @@ public class ReportEntity {
     @Column(name = "report_id")
     private Integer reportId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity userId;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private UserEntity userId;
 
     @Column(name = "report_type", length = 50, nullable = false)
     private String reportType;

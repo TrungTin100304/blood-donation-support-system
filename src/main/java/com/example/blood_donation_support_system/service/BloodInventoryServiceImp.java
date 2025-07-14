@@ -88,6 +88,13 @@ public class BloodInventoryServiceImp implements BloodInventoryService {
     }
 
     @Override
+    public List<BloodInventoryDto> getInventoryByComponentType(String componentType) {
+        List<BloodInventoryEntity> entity = bloodInventoryRepository.findByBloodUnitComponentType(componentType);
+//                .orElseThrow(() -> new EntityNotFoundException("Inventory not found for blood unit type: " + bloodType));
+        return entity.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
     public List<BloodInventoryDto> getAllInventory() {
         List<BloodInventoryEntity> entities = bloodInventoryRepository.findAll();
         return entities.stream().map(this::convertToDto).collect(Collectors.toList());
