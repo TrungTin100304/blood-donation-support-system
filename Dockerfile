@@ -1,13 +1,13 @@
-# Base image với JDK 24 từ Adoptium (Temurin)
-FROM eclipse-temurin:24-jdk
+# Sử dụng image JDK chính thức
+FROM openjdk:17-jdk-slim
 
 # Đặt thư mục làm việc
 WORKDIR /app
 
-# Copy file jar vào image
-COPY target/*.jar app.jar
+# Sao chép file JAR vào container
+COPY target/blood-donation-support-system-0.0.1-SNAPSHOT.jar app.jar
 
-# Mở cổng (tuỳ ứng dụng)
+# Cổng ứng dụng Spring Boot (mặc định 8080)
 EXPOSE 8080
 
 # Lệnh chạy ứng dụng

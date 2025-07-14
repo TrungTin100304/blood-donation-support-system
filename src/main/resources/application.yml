@@ -2,7 +2,7 @@ spring:
   application:
     name: blood_system
   datasource:
-    url: jdbc:mysql://${MYSQL_URL:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:blood_system}
+    url: jdbc:mysql://${MYSQL_URL:localhost}:${MYSQL_PORT:3308}/${MYSQL_DATABASE:blood_system}
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_ROOT_PASSWORD:admin123}
   jpa:
