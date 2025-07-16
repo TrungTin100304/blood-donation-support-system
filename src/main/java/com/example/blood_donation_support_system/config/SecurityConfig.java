@@ -1,6 +1,7 @@
 package com.example.blood_donation_support_system.config;
 
 import com.example.blood_donation_support_system.filter.CustomSecurityFilter;
+import okhttp3.OkHttpClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,6 +28,14 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> {
+
+                    //Chat
+                    request.requestMatchers( "/api/chat/**").permitAll();
+
+                    //Article
+                    request.requestMatchers( "/api/article/**").permitAll();
+                    request.requestMatchers(HttpMethod.POST, "/api/article/save").hasAnyRole( "ADMIN","STAFF");
+
                     //FindLoaction
                     request.requestMatchers(HttpMethod.GET, "/api/search/**").hasAnyRole( "ADMIN","STAFF");
 
@@ -45,7 +54,6 @@ public class SecurityConfig {
 
                     request.requestMatchers("/api/emergency-requests/**").hasAnyRole("ADMIN","STAFF");
 
-                    request.requestMatchers( "/api/article/**").permitAll();
                     request.requestMatchers(HttpMethod.POST, "/api/donor/send-email").hasAnyRole("ADMIN","STAFF");
 
                     request.requestMatchers( "/api/donation/**").permitAll();
@@ -90,6 +98,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public OkHttpClient okHttpClient() {
+        return new OkHttpClient();
     }
 
     @Bean
