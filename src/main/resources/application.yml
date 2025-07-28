@@ -56,7 +56,7 @@ spring:
     path: /upload
 
 jwt:
-  secret: xxxxxxxxxxxx
+  secret: va9TVkfZSFlAI4ifEoV6mjSHkZSYbaIJF8L3Y7douCM=
   expiration: 86400
 
 buildCommand: ./mvnw clean install
