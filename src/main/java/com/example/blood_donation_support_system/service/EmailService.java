@@ -23,7 +23,7 @@ public class EmailService {
 
     public void sendDonationReminder( String fullName,String toEmail, LocalDate ngayHienGanNhat) {
         try {
-            LocalDate ngayTiepTheo = ngayHienGanNhat.plusMonths(2);
+            LocalDate ngayTiepTheo = ngayHienGanNhat.plusDays(56) ;
 
             String subject = "Email từ Hệ thống Hiến máu";
             String body = String.format("""
