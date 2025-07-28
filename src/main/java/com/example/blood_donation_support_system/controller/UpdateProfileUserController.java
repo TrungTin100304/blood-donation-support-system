@@ -5,8 +5,10 @@ import com.example.blood_donation_support_system.response.BaseResponse;
 import com.example.blood_donation_support_system.response.UpdateResultResponse;
 import com.example.blood_donation_support_system.service.user.UpdateProfileUserService;
 import com.example.blood_donation_support_system.utils.JwtHelper;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,8 +23,17 @@ public class UpdateProfileUserController {
     @PostMapping(value = "/update", consumes = {"multipart/form-data"})
     public ResponseEntity<?> updateProfileUser(
             @RequestHeader("Authorization") String auHeader,
-            @ModelAttribute UserRequest userRequest,
+            @Valid @ModelAttribute UserRequest userRequest,
+            BindingResult bindingResult,
             @RequestPart(required = false) MultipartFile avatarFile) {
+
+
+        if (bindingResult.hasErrors()) {
+            BaseResponse errorResponse = new BaseResponse();
+            errorResponse.setCode(400);
+            errorResponse.setMessage(bindingResult.getAllErrors().get(0).getDefaultMessage()); // chỉ trả lỗi đầu tiên
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
 
         Integer userId = jwtHelper.getUserId(auHeader);
         System.out.println(userId);

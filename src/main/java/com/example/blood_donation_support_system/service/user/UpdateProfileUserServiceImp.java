@@ -40,6 +40,10 @@ public class UpdateProfileUserServiceImp implements UpdateProfileUserService {
         if(userRequest.getYearOfBirth().getYear() < 1900 || userRequest.getYearOfBirth().getYear() > 2020){
             return new UpdateResultResponse(false, "Year of birth must be between 1900 and 2020");
         }
+        Optional<UserEntity> existingUser = userRepository.findByPhoneNumber(userRequest.getPhoneNumber());
+        if (existingUser.isPresent()) {
+            return new UpdateResultResponse(false, "PhoneNumber already exists");
+        }
 
         userEntity.setAddress(userRequest.getAddress());
         userEntity.setPhoneNumber(userRequest.getPhoneNumber());
