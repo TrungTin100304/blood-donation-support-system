@@ -20,7 +20,7 @@ public class UpdateProfileUserServiceImp implements UpdateProfileUserService {
     @Autowired
     private UploadFileService uploadFileService;
 
-    @Value("${spring.upload.path}/useravatars")
+    @Value("upload/useravatars")
     private String uploadPath;
 
     @Override
@@ -51,6 +51,7 @@ public class UpdateProfileUserServiceImp implements UpdateProfileUserService {
         if (avatarFile != null && !avatarFile.isEmpty()) {
             try {
                 String fileName = uploadFileService.uploadFile(avatarFile, uploadPath);
+                System.out.println("upload path = " + uploadPath);
                 String avatarPath = uploadPath + "/"  + fileName;
                 userEntity.setAvatar(avatarPath);
             } catch (FileUploadException e) {

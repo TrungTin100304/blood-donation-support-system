@@ -97,7 +97,7 @@ public class ArticleServiceImp implements ArticleService{
         if (avatarFile != null && !avatarFile.isEmpty()) {
             try {
                 String fileName = uploadFileService.uploadFile(avatarFile, uploadPath);
-                String avatarPath = uploadPath + "/"  + fileName;
+                String avatarPath = "/" + uploadPath + "/"  + fileName;
                 articleEntity.setImagePath(avatarPath);
             } catch (FileUploadException e) {
                 throw new UnsupportedOperationException("File upload failed");
