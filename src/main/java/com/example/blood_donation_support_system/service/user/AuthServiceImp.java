@@ -68,7 +68,7 @@ public class AuthServiceImp implements AuthService {
     @Autowired
     private EmailService emailService;
 
-    @Value("${spring.upload.path}" + "/useravatars")
+    @Value("upload/useravatars")
     private String uploadPath;
 
     @Override
@@ -129,7 +129,7 @@ public class AuthServiceImp implements AuthService {
         // Tải avatar từ Google và lưu về máy chủ
         String avatarUrl = userInfo.get("picture").toString();
         String fileName = downloadImageFromUrl(avatarUrl, uploadPath);
-        userDTO.setAvatar(fileName != null ? "./upload/useravatars/" + fileName : null);
+        userDTO.setAvatar(fileName != null ? "/upload/useravatars/" + fileName : null);
         System.out.println(userDTO.getAvatar());
 
         // Kiểm tra googleId có tồn tại ở database chưa
@@ -171,6 +171,7 @@ public class AuthServiceImp implements AuthService {
             userEntity.setGooleId(userDTO.getSub());
             userEntity.setAvatar(userDTO.getAvatar());
             userEntity.setRoleEntity(roleEntity);
+            userEntity.setStatus("ACTIVE");
             userEntity.setLoginProvider("google");
             userRepository.save(userEntity);
 

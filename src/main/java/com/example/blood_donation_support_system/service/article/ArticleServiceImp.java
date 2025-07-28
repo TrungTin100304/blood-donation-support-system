@@ -28,7 +28,7 @@ public class ArticleServiceImp implements ArticleService{
     @Autowired
     private UploadFileService uploadFileService;
 
-    @Value("${spring.upload.path}/articleavatars")
+    @Value("upload/articleavatars")
     private String uploadPath;
 
     @Override
